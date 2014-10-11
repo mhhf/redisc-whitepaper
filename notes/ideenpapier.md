@@ -2,46 +2,47 @@
 
 Im Internet werden zunehmend inhalte kollaborativ erzeugt. 
 Dabei entsteht ein Ergebnis, durch Beiträge einzelner **Akteure**.
-Eine zentrale Frage dabei die Bewertung der einzelnen Beiträge,
+Eine zentrale Frage ist die Bewertung der einzelnen Beiträge,
 und damit ihren Anteil am Gesamtergebnis.
-Wikipedia folgt hierbei einem streng hirarchischem Modell, in welchem Vertrauenspersonen die Ihnalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
-Der Trend geht jedoch zu demokratischen Prinzipien (Voting) wie z.B. bei Reddit[^reddit] oder StackOverflow[^stackoverflow],
-bei denen die Benutzer die Inhalte der Anderen bewerten.
-Ein solches demokratischens Prinzip könnte man auf das Verwalten aller digitaler geteilter Inhalte veralgemeinern.
 
-Nehmen wir z.B. an, es gibt eine Webseite, die sich im Besitz von n Akteuren befindet. Alle Akteure wollen **gerecht**, also proportional zu ihrem Besitz, über die Ihnalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für Mediale Inhalte, sowie für die Programmierung, Architektur und Prozesse, im Zusammenhang mit der Webseite, wie das validiren neuer Beiträge. Das eigendliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
+Wikipedia folgt einem streng hierarchischem Modell, in welchem Vertrauenspersonen die Ihnalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
+Effizienter sind jedoch selbstregulierende Systheme, bei denen die Benutzer die Inhalte der Anderen bewerten. Beispiele währen die auf *voting* und *reputation* basierende Plattformen Reddit[^reddit] und StackOverflow[^stackoverflow].
 
-Die Piratenbartei hat durch *"liquid Democraty"*[^Lindenberg:2010] einen deligierten Abstimmungsprozess digital Abgebildet. Jedoch bedarf es bei ihrem Ansatz einers zentralisierten Servers, wecher als Angrifspunkt die Sicherheit des Prozesses gefährdet. 
+Ein solches Prinzip könnte man auf das Verwalten aller digital geteilter Inhalte veralgemeinern.
 
-Auch eignet sich das Konzept auch nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da der Besitz und somit die Stimmengewichtung in solchen nicht unter den mitgliedern Gleichverteilt ist. Auch fehlt es an eienr Rechte und Rollenverteilung. 
+Nehmen wir z.B. an, es gibt eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen **gerecht**, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für Mediale Inhalte, für die Programmierung, Architektur, Werteflüsse wie ein Geteiltes Budget oder eine Einkommensverteilung sowie nicht automatisierbare Prozesse, wie das valiediren neuer Beiträge. Das eigendliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
 
-Das 2009 eingeführte Konzept des Bitcoins[^Nakamoto:2009] hat zumindest den Aspekt der sicherheit gelöst, in dem sie die verteilung von Tokens under Akteuren auf eine dezentrale weise modellieren. Die manipulation der Tokens ist durch ein Identität und ein Kryptografisches systhem **gesichert**.
+Die Piratenpartei hat mit *Liquid Democracy*[^Lindenberg:2010] einen deligierten Abstimmungsprozess digital abgebildet. Jedoch bedarf es bei ihrem Ansatz eines zentralisierten Servers, welcher als Angrifspunkt die Sicherheit des Prozesses gefährdet. 
 
-Das Ethereum Team hat die grundlegende Technologie des Bitcoins generalisiert[^Wood:2014].
-Sie haben eine Virtuellen Maschine (vm) mit einer turing vollständigen maschinensprache herrausbringen können.
-Diese Erlaubt das sichere ausführen von Berrechnungen in einem dezentralen netzwerk, 
-welches nicht nur einen Informationsfluss, 
-sondern auch durch die einbindung der lokalen währung Ether, 
-einen Wertefluss ermöglicht.
+Auch eignet sich das Konzept nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da der Besitz und somit die Stimmengewichtung in solchen nicht unter den Mitgliedern gleichverteilt ist. Auch fehlt es an eienr Rechte- und Rollenverteilung. 
+
+Das 2009 eingeführte Konzept des Bitcoins[^Nakamoto:2009] hat zumindest den Aspekt der Sicherheit gelöst, in dem sie die Verteilung von Tokens unter Akteuren auf eine dezentrale Weise modellieren. Die Manipulation der Tokens ist durch eine Identität und ein Kryptografisches systhem **gesichert**.
 
 Sicher bedeutet hierbei, dass einmal getroffene Vereinbarungen auch eingehalten werden.
 
-Hierdurch entstehet eine vielzahl von neuen Anwendungsmöglichkeiten, wie Verbindliche, autonome Verträge zwischen mehreren Parteien oder Dezentrale Autonome Organisationen (DAO) und profitorientierte Cooperationen (DAC).
+Das Ethereum Team hat die grundlegende Technologie des Bitcoins generalisiert[^Wood:2014].
+Sie haben eine Virtuellen Maschine mit einer turing vollständigen Maschinensprache herausbringen können.
+Diese Erlaubt das *sichere* Ausführen von Berechnungen in einem dezentralen Netzwerk, 
+welches nicht nur einen Informationsfluss, 
+sondern auch durch die Einbindung der lokalen Währung Ether, 
+einen Wertefluss ermöglicht.
 
-Ein Beispiel einer solchen DAO ist das "namecoin" konzept, welches als alternative zur ICANN Organisation die TLD ".bit" verwaltet und in naher zukunft die ICANN ablösen könnte.[^ICANN:2014] Die Regeln, unter denen DACs und DAOs funktionieren werden durch eine Programmiersprache in die Ethereum VM gespielt und auf dieser ausgeführt.
+Es entstehet eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, autonome Verträge zwischen mehreren Parteien, Dezentrale Autonome Organisationen (DAO) oder profitorientierte Kooperationen (DAC).
 
-Jedoch fehlt den beteiligten Aktoren ein formaler Prozess, sich demokratisch auf eben solche Regeln zu einigen unter denen Sie funktionieren werden. 
-Der Einigung geschieht noch auf einer vertrauensinstanz, z.b. durch bestimmte Schlüsselpersonen.
+Ein Beispiel einer solchen DAO ist das *namecoin* Konzept, welches als Alternative zur ICANN Organisation die TLD ".bit" verwaltet und in naher zukunft die ICANN ablösen könnte.[^ICANN:2014] Die Regeln unter denen DACs und DAOs funktionieren, wie das Bewilligen einer neuen TLD, werden auf der Ethereum VM programmiert.
+Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine Vertrauensinstanz, z.b. bestimmte Schlüsselpersonen.
 
-Im dieser Arbeit möchte ich ein Modell für eine Meta-Programmiersprache für verteiltes programmieren auf Basis von Ehtereum entwickeln und analysieren. In dieser werden Einigungsprozesse als Bestandteil des Entwicklungsprozesses angesehen.
+*In dieser Arbeit möchte ich ein Modell für eine Meta-Programmiersprache für verteiltes Programmieren auf Basis von Ehtereum entwickeln und untersuchen. In dieser werden Einigungsprozesse als Bestandteil des Entwicklungsprozesses angesehen.*
 
-Das Modell soll mit formaler Logik sowie modelltheoretischen Konzepten beschrieben werden und anschließend auf machbarkeit und wiederspruchsfreiheit Analysiert werden. 
+Grundlegende Aktionen eines Akteurs ist das Vorschlagen von Alternativknoten (klassisches Programmieren), sowie das Partizipieren an Wahlen über Alternativen.
 
-Hierzu dient der Prozess des "transitive delegatet voting" aus Liquid Democraty als eine Grundlage des Wahlprozesses. Diese wird durch das Modell von Eigentum und Delegationsbedinungen erweitert, welches eine Rechte und Rollenverwaltung ermöglicht. Die für die Programmausführung gewählte Option wird dabei durch eine mehrheit der Besitzer bestimmt. 
+Das Modell soll mit formaler Logik sowie modelltheoretischen Konzepten beschrieben werden und anschließend auf Machbarkeit und Wiederspruchsfreiheit untersucht werden. 
 
-Die Syntax der Programmiersprache ist ein LISP dialekt, mit dem Paradigma, dass Knoten des Abstrakten Syntaxbaumes als Daten sowie als Code interpretiert werden können. Die Daten befinden sich in einem kryptografisch gesicherten verteilten netzwerk ähnlich der auf BitTorrent aufbauenden IPFS[^IPFS:2014] oder der Maidsafe[^Maidsafe:2014] Architektur.
+Der Prozess des "transitive delegatet voting" aus Liquid Democraty dient als Grundlage des Wahlprozesses. Diese wird durch das Modell von Eigentum und Delegationsbedinungen erweitert, welches eine Rechte- und Rollenverwaltung ermöglicht. Eine Mehrheit der Besitzer bestimmt dabei die für die Programmausführung gewählte Optionen.
 
-Grundlegende Aktionen eines Akteurs ist das vorschlagen von Alternativknoten (klassisches Programmieren), sowie das partizipieren an Wahlen über alternativen.
+Die Syntax der Programmiersprache ist ein LISP Dialekt, mit dem Paradigma, dass Knoten des Abstrakten Syntaxbaumes als Daten sowie als Code interpretiert werden können. Die Daten befinden sich teilweise in einem kryptografisch gesicherten verteilten Netzwerk ähnlich der auf BitTorrent aufbauenden IPFS[^IPFS:2014] oder der Maidsafe[^Maidsafe:2014] Architektur und teilweise in dem Ethereum Speicher.
+
+Diese Sprache soll das oben beschriebene Problem der *gerechten* und *sicheren* verwaltung der geteilten Webseite lösen.
 
 
 [^reddit]: http://reddit.com
