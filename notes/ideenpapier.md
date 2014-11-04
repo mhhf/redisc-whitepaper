@@ -1,48 +1,37 @@
-## Formales Modell einer Domänenspezifische Sprache zur verteilten Programmierung mit Mehrheitenbildung
+## Formales Modell einer Domänenspezifischen Sprache zur verteilten Programmierung mit Mehrheitenbildung
 
 Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
 Dabei entsteht ein Ergebnis durch Beiträge einzelner **Akteure**.
-Eine zentrale Frage ist die Bewertung der einzelnen Beiträge,
+Zentral ist die Frage nach der Bewertung der einzelnen Beiträge,
 und damit ihren Anteil am Gesamtergebnis.
+
+Nehmen wir z.B. an, es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen **gerecht**, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse wie ein Geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
 
 Wikipedia folgt einem streng hierarchischem Modell, in welchem Vertrauenspersonen die Ihnalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
 Effizienter sind jedoch selbstregulierende Systeme, bei denen die Benutzer die Inhalte der Anderen bewerten. Beispiele wären die auf *Voting* und *Reputation* basierenden Plattformen Reddit[^reddit] und StackOverflow[^stackoverflow].
 Ein solches Prinzip könnte man auf das Verwalten aller digital geteilter Inhalte verallgemeinern.
+Ein weiteres Beispiel für die Bewertung von Inhalten ist das Konzept 
+*Liquid Democracy*[^Lindenberg:2010], ein Vorschlag der Piratenpartei für eine moderne politische Konsensbildungsprozess.
 
-Nehmen wir z.B. an, es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen **gerecht**, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse wie ein Geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
+Jedoch eignen sich die Konzepte nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da Abstimmungen auf eine informale Weise vorgenommen werden. Es fehlt einer formalen Syntax, welche die Implekationen einer potentiellen Entscheidung vor der Wahl klarer Zeigt, sowie nach der Wahl automatisch ausführt.
+Außerdem bedarf es bei den Ansatzen eines zentralisierten Servers, welcher als Angriffspunkt die Glaubwürdigkeit des Prozesses gefährdet, da die Akteure auf die Korrektheit des Servers vertrauen müssen. 
 
-Die Piratenpartei hat mit *Liquid Democracy*[^Lindenberg:2010] einen deligierten Abstimmungsprozess digital abgebildet. Jedoch bedarf es bei ihrem Ansatz eines zentralisierten Servers, welcher als Angriffspunkt die Sicherheit des Prozesses gefährdet, da die Akteure auf die Korrektheit des Servers vertrauen müssen. 
+Das 2009 eingeführte Konzept des Bitcoins und der Blockchain[^Nakamoto:2009] bietet eine Alternative zur zentralen Server-Architektur. Dieses beschreibt ein Protokoll in einem Netzwerk, welches Inhalte aus einem gebildeten Konsens bereitstellt. Es besitzt eine einfache, nicht turing vollständige Skriptsprache, sowie durch ein asymmetrisches Kryptosystem, Rechte und Rollen. Neue Inhalte werden nach einer Validierung ebenfalls in den Konsens aufgenommen. Die einfachste Interpretation von Bitcoin ist die eines Werteträgers, wobei die beschränkung der Skriptsprache wenig Spielraum für weitere Interpretationen lässt.
+Allgemeiner ist das auf dem Bitcoin-Protokoll aufbauende Ethereum [^Wood:2014], welches eine turing vollständige Skriptsprache besitzt.
+Es entsteht eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, autonome Verträge zwischen mehreren Parteien, dezentrale autonome Organisationen (DAO) oder profitorientierte Kooperationen (DAC), die allesamt Werte- und Informationsflüsse ermöglichen.
+Ein Beispiel einer solchen DAO ist das *namecoin* Konzept, welches als Alternative zur ICANN[^ICANN] Organisation die TLD ".bit" verwaltet und in naher Zukunft die ICANN ablösen könnte.[^ICANN:2014] Die Regeln unter denen DACs und DAOs funktionieren, wie das Bewilligen einer neuen TLD, werden auf der Ethereum VM programmiert.
+Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine zentrale Vertrauensinstanz, z.b. bestimmten Schlüsselpersonen.
 
-Auch eignet sich das Konzept nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da der Besitz und somit die Stimmengewichtung nicht unter den Mitgliedern gleichverteilt ist. Auch fehlt es an eienr Rechte- und Rollenverteilung. 
+**In dieser Arbeit möchte ich ein Modell einer Programmiersprache für verteiltes Programmieren auf Basis von Ehtereum entwickeln und untersuchen. In dieser werden Einigungsprozesse als Bestandteil des Entwicklungsprozesses angesehen.**
 
-Das 2009 eingeführte Konzept des Bitcoins[^Nakamoto:2009] hat zumindest den Aspekt der Sicherheit gelöst, indem sie die Verteilung von Tokens unter Akteuren auf eine dezentrale Weise modellieren. Die Manipulation der Tokens ist durch eine Identität und ein kryptografisches System **gesichert**.
-
-Sicher bedeutet hierbei, dass einmal getroffene Vereinbarungen auch eingehalten werden.
-
-Das Ethereum Team hat die grundlegende Technologie des Bitcoins generalisiert[^Wood:2014].
-Sie haben eine virtuelle Maschine mit einer turing vollständigen Maschinensprache entwickelt.
-Diese erlaubt das *sichere* Ausführen von Berechnungen in einem dezentralen Netzwerk, 
-welches nicht nur einen Informationsfluss, 
-sondern auch durch die Einbindung der lokalen Währung Ether, 
-einen Wertefluss ermöglicht.
-
-Es entsteht eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, autonome Verträge zwischen mehreren Parteien, dezentrale autonome Organisationen (DAO) oder profitorientierte Kooperationen (DAC).
-
-Ein Beispiel einer solchen DAO ist das *namecoin* Konzept, welches als Alternative zur ICANN Organisation die TLD ".bit" verwaltet und in naher Zukunft die ICANN ablösen könnte.[^ICANN:2014] Die Regeln unter denen DACs und DAOs funktionieren, wie das Bewilligen einer neuen TLD, werden auf der Ethereum VM programmiert.
-Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine Vertrauensinstanz, z.b. bestimmten Schlüsselpersonen.
-
-*In dieser Arbeit möchte ich ein Modell einer Meta-Programmiersprache für verteiltes Programmieren auf Basis von Ehtereum entwickeln und untersuchen. In dieser werden Einigungsprozesse als Bestandteil des Entwicklungsprozesses angesehen.*
-
+Das Modell soll mit formaler Logik sowie modelltheoretischen Konzepten beschrieben werden. Anschließend werde ich das Modell auf Machbarkeit sowie auf die richtige Architektur untersuchen. 
 Grundlegende Aktionen eines Akteurs ist das Vorschlagen von Alternativknoten (klassisches Programmieren), sowie das Partizipieren an Wahlen über Alternativen.
-
-Das Modell soll mit formaler Logik sowie modelltheoretischen Konzepten beschrieben werden und anschließend auf Machbarkeit und Wiederspruchsfreiheit untersucht werden. 
-
 Der Prozess des "transitive delegated voting" aus Liquid Democraty dient als Grundlage des Wahlprozesses. Diese wird durch das Modell von Eigentum und Delegationsbedingungen erweitert, welches eine Rechte- und Rollenverwaltung ermöglicht. Eine Mehrheit der Besitzer bestimmt dabei die für die Programmausführung gewählte Optionen.
+Daten befinden sich teilweise in einem kryptografisch gesicherten, verteilten Netzwerk ähnlich der auf BitTorrent aufbauenden IPFS[^IPFS:2014] oder der Maidsafe[^Maidsafe:2014] Architektur und teilweise in dem Ethereum Speicher.
 
-Die Syntax der Programmiersprache ist ein LISP Dialekt, mit dem Paradigma, dass Knoten des abstrakten Syntaxbaumes als Daten sowie als Code interpretiert werden können. Die Daten befinden sich teilweise in einem kryptografisch gesicherten, verteilten Netzwerk ähnlich der auf BitTorrent aufbauenden IPFS[^IPFS:2014] oder der Maidsafe[^Maidsafe:2014] Architektur und teilweise in dem Ethereum Speicher.
+Diese Sprache soll das oben beschriebene Problem der dezentralen und *gerechten* Verwaltung der geteilten Webseite lösen.
 
-Diese Sprache soll das oben beschriebene Problem der *gerechten* und *sicheren* Verwaltung der geteilten Webseite lösen.
-
+[^ICANN]: Internet Corporation for Assigned Names and Numbers
 
 [^reddit]: http://reddit.com
 [^stackoverflow]: http://stackoverflow.com
