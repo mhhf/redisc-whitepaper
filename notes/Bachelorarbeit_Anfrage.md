@@ -6,8 +6,11 @@ jpr@informatik.hu-berlin.de
 
 ## Bachelorarbeit Anfrage
 
-Sehr geehrter Prof. <Name>
+Sehr geehrter Prof. Dr. Fischer
 
-Ich bin Monobachelor-Informatik Student an der Hu Berlin und auf der Suche nache einem Betreuenden Professor für ein konkretes Thema für meine Bachelorarbeit. Da es sich im Groben um formale Modellierung und verteilte Netzwerke handelt, glaube ich, dass dieses Thema gut in Ihren Fachberreich passt. 
+Ich bin Monobachelor-Informatik Student an der Hu Berlin und auf der Suche nache einem Betreuenden Professor für meine Bachelorarbeit, für welches ich bereits ein konkretes Thama habe. Da es sich im Groben um formale Modellierung und verteilte Netzwerke handelt, glaube ich, dass dieses Thema gut in Ihren Fachberreich passt. 
 Eine Einleitende Beschreibung finen Sie als Ideenpapier im Anhang.
 Ich würde mich um ein persönliches Gespräch freuen.
+
+Mit freundlichen Grüßen,
+Denis Erfurt
