@@ -5,7 +5,7 @@ bibtex:         library.bib
 
 ### Gloede2006
 * Mittelpunkt der modernen Mathematik
-* Struktur S ist ein 4-Tupel: $(A,(R_i^S,f_j^S,c_k^S)$
+* Struktur S ist ein 4-Tupel: $(A,R_i^S,f_j^S,c_k^S)$
     * $A \neq \emptyset$ ist der **Individuenbereich** (**Grundbereich**,**Träger**) der Struktur S
     * $R_i^S \subseteq A^{n_i}$ ist eine $n_i$-stellige **Relation** auf A
     * $f_j^S: A^{m_j} \rightarrow A$ ist eine $m_j$-stellige **Funktion** auf A
@@ -40,3 +40,13 @@ BSP.: Die geordnete Gruppe $(\mathbb{Z},<,+,0)$ ist eine Struktur mit der Signat
     * With $n_i$ the arity of the constant of function $f_i$, the arity tuple $(n_1,...,n_k)$ is the type of S.
     * A signature $\Sigma$ with symbols $f_1, ..., f_l$ is usually written $\Sigma = (f_1,...,f_l,a_1,...,a_l)$
     
+
+### Glausch2003
+* **Signatur** $\Sigma$ ist ein Tupel $(f_1,...,f_k,n_1,...,n_k)$
+    * $f_i$ sind **Funktionssymbole**
+    * $n_i$ ist die Stelligkeit des Funktionssymbol $f_i$
+* **$\Sigma$-Algebra** Algebra $\mathfrak{A}$ über der Signatur $\Sigma$ ist ein Tupel $(U,g_1,...,g_k)$
+    * ist eine semantische Interpretation einer Signatur $\Sigma$
+    * $U$ eine nichtleere Menge (Universum)
+    * $g_i$ ist eine $n_i$ stellige Funktion mit Werte- und Bildbereich in U
+        * $g_i$ wird auch mit $[\![f_i]\!]_\mathfrak{A}$  der **Interpretation** von $f_i$ durch die Algebra $\mathfrak{A}$ bezeichnet

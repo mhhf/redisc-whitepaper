@@ -1,0 +1,307 @@
+\documentclass[]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \usepackage{fontspec}
+  \ifxetex
+    \usepackage{xltxtra,xunicode}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            pdfauthor={},
+            pdftitle={},
+            colorlinks=true,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+% Treeview
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+
+
+
+\author{}
+\date{}
+
+\begin{document}
+
+
+
+Es geht um Den Besitz und die Herrschaft von geteilten digitalen Inhalten. 
+
+\subsection{Einleitung}
+
+
+In dieser Arbeit möchte ich eine Meta-Programmiersprache
+(\textbf{$SCFG$}) für eine beliebige eindeutige kontextfreie Grammatik
+$G$ herrausarbeiten, die das verteilte Programmieren ermöglichen soll.
+Hierfür werden in (1) zwei Funktion angegeben. Eine erweitert eine
+gegebene kontextfreie Grammatik zu einer $SCFG$, die andere erzeugt aus
+einem Wort der Sprache $L(SCFG)$, ein Wort in der ursprünglichen Sprache
+$L(G)$. Manipulationen eines Wortes einer SCFG-Sprache sind bedingungen
+unterworfen, die in (2) angegeben sind.
+
+
+
+\subsection{1. Meta - Programmiersprache}
+
+\subsubsection{Einleitung}
+
+% example
+% \Tree [.S [.NP LaTeX ] [.VP [.V is ] [.NP fun ] ] ]
+
+Die Idee hinter der erweiterung der SCFG Sprache ist, dass der Besitz
+eines Programms eindeutig beteiligten \textbf{Akteuren} zugeordnet ist. Die
+Zuordnung repräsentiert auch das mitspracherecht der Akteure.
+Manipulationen am Programm können jederzeit vorgenommen werden, solange die Manipulation ein valides Wort in $L(G)$ ergibt. Manipulierte Wörter kommen als Option zu den bestehenden Wörtern hinzu, sodass Informationen nicht verlohren gehen.
+Optionen können durch Akteure bewertet werden.
+
+Eine Konsensfunktion bestimmt dann die Option, die die beste Bewertung durch die Mehrheit der Akteure erhalten hat. Sie gilt als \textbf{gerecht}, wenn sie die besitzgewichtung der Akteure berücksichtigt.
+% Um den Konsensprozess effizienter zu gestalten, können Akteure ihre Stimme für bestimmte Bereiche der Sprache an andere Akteure Delegieren.
+
+% \subsubsection{Programmiersprache}
+% Zur eindeutigen bestimmung der Syntax einer Programmiersprache reicht es, eine eindeutige CFG $G$ anzugeben. Anders gibt es auch zu jeder Syntax einer Programmiersprache auch eine CFG. Ein Programm ist ein Wort aus der Sprache $w\in L(G)$. 
+% Ausgeführt wird es durch die Interpretation eines Compilers $[\![w]\!]_\mathcal{C}$.
+
+% Die validität einer Sprache ist jedoch meist nicht nur aus der kontextfreien syntax zu schließen. So werden namensresolutionen und typisierung beim compilieren in späteren schritten auf eine kontext sensitive weise überprüft. Dies
+% Syntax von Programmiersprachen sind nicht kontextfrei, sondern Kontextsensitiv \cite{Otto}
+
+\subsubsection{Sprach-Erweiterung}
+
+Abhängig von einer gegebenen Programmiersprache $G=(N,T,S,P)$ soll eine Erweiterte Programmiersprache $L(SCFG)$ konstruiert werden. Die Wörter der neuen Sprache repräsentieren ein geteiltes Programm $O$ und besitzen folgende Informationen:
+
+\begin{enumerate}
+\item $n\in\mathbb{N}$ Akteure
+\item eindeutige \textbf{Besitzgewichtung} von Akteuren 
+  $w_i$ für den Akteur $1\leq i \leq n$
+\item eine Menge von validen Programmen mit mindestes einem Element 
+  $$P_O \subseteq \{w|S \rightarrow^*_P w \land w\in T^* \} \land |P_O| \geq 1$$
+\item eine Bewertung der Programme durch die Akteure. 
+  $$rate_O: A\times P \rightarrow [0,1]$$
+\end{enumerate}
+
+Zu dem wird eine Compilierfunktion gesucht, die Wörter der $L(SCFG)$ Sprache, wörter der Ursprünglichen Sprache $L(G)$ zuweist. 
+$$ consens_O: L(SCFG) \rightarrow L(G)$$
+
+% Zusätzlich zur Sprache wird eine Funktion gesucht, die aus der Besitzverteilung, der Programmme und deren Bewertungen eine Gruppenbewertung der Programme erstellt. Das Programm mit der maximalen Gruppenbewertung wird als \textbf{Konsensprogramm} angesehen. 
+% $$ consens_O: A\times (A,\mathbb{N})\times P \times (A,P,[0,1]) \rightarrow P $$
+
+% Die gesuchte Sprache $L(SCFG)$ kann folglich auch durch eine CFG bestimmt werden. Die Interpretation eines Wortes aus der Sprache 
+
+\subsection{Qualitätskritärien}
+
+\begin{enumerate}
+  \item die wörter der Sprache $L(SCFG)$ sind möglichst klein
+  \item es ist einfach Optionen zu Bewerten: Die Anzahl der transitionen ist möglichst klein, um auf ein gewünschtes Bewertungsprofil zu kommen.
+    
+    Sei $a\in A$ ein Akteur, sei $X_i\subseteq P\times [0,1]$ die derzeitige Bewertung der Programme von $a$ und sei $X_j\subseteq P\times [0,1]$ die gewünschte Bewertung. Sei $t$ eine von $a$ gültige Transformation, so dass $X_k \rightarrow_{t} X_{k+1}$ und sei T die Menge der von a gültigen Transformationen. Die Bewertung ist einfach, wenn für $X_i \rightarrow_{ T }^n X_j$ n möglichst minimal ist.
+\end{enumerate}
+
+\paragraph{Besitz}
+
+Der Besitz eines Objekts $O$ wird durch das Recht bestimmt, dieses Objekt kontrollieren zu können. Besitzen mehrere Akteure ein Objekt, so gibt der Anteil am Objekt an, zu welcher gewichtung jeder einzelne Akteur über das Objekt mit bestimmen kann. 
+
+Seien $a$ \textbf{Akteure} und sei A die Menge aller Akteure.
+
+Die Funktion $share_O: A \rightarrow \mathbb{N}$ gibt den Teil von a an, der im Besitz von einem Akteur $a\in A$ ist. Den Anteil am Objekt.
+
+Gilt $share_O(a) > 0$, so nennt man $a$ auch ein \textbf{Member} von $O$.
+
+$M_O \subseteq A$ ist die Menge aller Member von $O$.
+
+$|O| := \sum_{m\in M_O} share_O(m)$ gibt die \textbf{Größe} des jeweiligen Objekts an.
+
+\subsubsection{Bewertung}
+Diese werden entweder \textbf{direkt}, also vom Akteur selber, oder \textbf{indirekt} also durch eine Delegation an einen anderen Akteur angegeben.
+% \subsubsection{Intuition}
+% 
+% 
+% Eine \textbf{Optionsmenge}, oder Kurz eine \textbf{Option}, können wir
+% als eine Menge von Kandidaten modellieren, von denen jeder ein Gültiger
+% Kandidat für eine Spezifikation ist. Ist eine \textbf{Option} im Besitz
+% mehrerer \textbf{Akteure}, so müssen die Akteure einen Weg finden über
+% die Option zu entscheiden. Dies bedeutet durch einen Konsensprozess sich
+% auf einen kandidaten Einigen.
+% 
+% \begin{verbatim}
+% Optionsmengen können als Mengen von Aussagen angesehen werden. Eine Ableitung durch eine Konsesnfunktion vielleicht durch eine Logische Ableitung einer Akteurgruppe.
+% 
+% Vielleicht ist das Konzept, welches ich Modelliere eine contextsensitive Sprache, da Optionen nur im Kontext ihre gültigkeit besitzen.
+% 
+% was ist mit der 'löschungs' Regel, sie ist nicht Teil der Kontextsensitiven Grammatik
+% 
+% \end{verbatim}
+
+\subsubsection{1.1 erweiterung einer CFG zu einer SCFG}
+
+Sei $G = (N,T,S,P)$ eine eindeutige contextfreie Grammatik.
+
+Eine Erweiterung auf eine SCFG definieren wir als
+$S(G) := (N',T',S',P')$, mit:
+
+$N' := N \cup \{O,D,A\}\ mit\ O,D,A\notin N$
+
+$T' := T \cup \{[ , ], \oplus, number, float, hash \}\ mit\ [,],\oplus \notin T$
+
+\textbf{number} stellt eine ganzzahlige Nummer dar. \textbf{float}
+stellt eine fließkommazahl dar. \textbf{hash} ist ein identifikatior für
+einen akteur, hier ein 64 bit hex string.
+
+$P' := P\cup P_{Options} \cup P_{Start} \cup P_{Delegations} \cup P_{Voting} \cup P_{Acteurs}$
+
+$P_{Options} := \{R \rightarrow [O][D], O \rightarrow r\oplus [V] O \vert R\rightarrow r\in P$
+mit $r\in\Sigma^*\}\cup\{ O \rightarrow \varepsilon \}$
+
+$P_{Start} := \{S'\rightarrow [A]S\}$
+
+$P_{Delegations} := \{D\rightarrow [hash\ hash];D,D\rightarrow [hash\ hash]\}$
+
+$P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}$
+
+$P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}$
+
+\paragraph{zu zeigen}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  eindeutigkeit der SCFG
+\end{itemize}
+
+\subsubsection{1.2 erzeugung eines Wortes der Ursprungsgrammatik aus
+einem Wort der SCFG}
+
+Die Idee hier ist, dass die transitive Hülle der Delegationen als
+Attribut während der Ableitung vererbt(inherited) wird. Die Votemenge
+wird hingegen als Attribut synthetisiert. Die Delegationen zusammen mit
+den Stimmen quantifizieren jede Option aus einer Optionsmenge und wählen
+eine Konsens-Option.
+
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  zirkuläre delegationen
+\item
+  implekation von Arrow's Theorem auf strategisches voten
+\end{itemize}
+
+\subsection{2. Manipulation der Wörder einer SCFG-Sprache}
+
+Die Idee hinter der manipulation ist des es sich bei den Wörter um eine Persistente Datenstruktur handelt. Demnach können Optionen nur hinzu kommen, jedoch nicht gelöscht werden. Jeder Akteur kann Delegationen und Stimmen abgeben sowie
+die eigenen löschen, hat jedoch keine Macht über die Stimmen und
+Delegationen der Anderen.
+
+Die Manipulation wird durch ein \textbf{initialisiertes Transitionssysthem $T$}
+beschrieben.
+
+Sei $G = (N,T,S,P)$ eine eindeutige Grammatik sowie
+$G'=S(G)=(N',T',S',P')$ die dazugehörige SCFG.
+
+
+\subsubsection{Qualitätskritärien}
+
+\begin{enumerate}
+  \item operationen wie $vote, delegate, addOption$ sind effizient in bezug auf Laufzeit und Speicherverbrauch.
+  \item Die Verifikation der Transaktion durch das Netzwerk soll möglichst effizient sein.
+\end{enumerate}
+\paragraph{zu untersuchen}
+
+\subsubsection{States}
+
+Ein Zustand der  ist eine Struktur der form $(U, compile, w)$
+
+U ist das Universum der Struktur und wird definiert durch:
+\[U=\{w\vert S'\rightarrow_p^* w \land w\in T'^*\}\]
+
+$compile$ ist die in (1.2) definierte Funktion der Form:
+$compile: L(G') \rightarrow L(G)$
+
+$w\in U$ ist das derzeitige Wort
+
+\subsubsection{Transitionen}
+
+Bei der Interaktion eines Programms, ist der Akteur bekannt und wird
+durch ein Public Key ausgewiesen. Der Akteur kann in einem
+Interaktionsschritt das derzeitige Wort altuallisieren, wenn es
+bestimmte Bedingungen erfüllt. Eine Interaktion ist also ein Tupel
+$(h,w')$ so, dass $h$ der Public Key des Akteurs ist, sowie $w'$ das
+neue Wort.
+
+% Die Transitionen können zu den Auslösenden Akteuren ebenfalls durch eine Kontextuelle Grammatik beschrieben werden.
+
+\paragraph{Erzeugen einer Optionsmenge}
+
+Sei $\alpha,\beta,o_1,o_2 \in T'^*$ sowie $R\in N$ und
+$V \rightarrow_P^* v$ Sei $w=\alpha o_1 \beta \oplus [v]$ Sei weiter
+$R\rightarrow_p^* o_1$ sowie $R\rightarrow_p^* o_2$ Dann ist
+$w:=\alpha [o_1\oplus [v] o_2\oplus []][]\beta$ eine valide Transition.
+
+\paragraph{Erweitern einer Optionsmenge}
+
+Sei $w=\alpha[o]\beta \land S'\rightarrow_P^* \alpha R \beta$ mit
+$O\rightarrow_P^* o, o\in T'^*, R\in N$ Dann ist
+$w:=\alpha[o r\oplus []]\beta$ mit $R \rightarrow_P^* r, r\in T'^*$ eine
+valide Transition.
+
+\paragraph{Hinzufügen einer Stimme}
+
+Sei $w=\alpha r\oplus [v]\beta$
+
+Dann ist $w:=\alpha r \oplus [v[h n]]\beta$ mit $n=float$ eine valide
+Transition.
+
+\paragraph{Löschen einer Stimme}
+
+Sei $w=\alpha [hn]\beta$
+
+Dann ist $w:=\alpha\beta$ mit eine valide Transition.
+
+\paragraph{Hinzufügen einer Delegation}
+Analog der Stimme
+
+\paragraph{Löschen einer Delegation}
+Analog der Stimme
+
+\subsubsection{Delegationsprogrammierung}
+
+\paragraph{Context Delegation}
+\paragraph{A/B Tester}
+
+\subsubsection{zu untersuchen}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  wie werden neue anteile vergeben
+\end{itemize}
+
+
+% \bibliography{gramast}
+\bibliographystyle{alpha}
+
+\end{document}

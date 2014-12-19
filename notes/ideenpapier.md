@@ -2,10 +2,10 @@
 
 Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
 Dabei entsteht ein Ergebnis durch Beiträge einzelner **Akteure**.
-Zentral ist die Frage nach der Bewertung der einzelnen Beiträge,
+Zentral ist die Frage nach der Bewertung der einzelnen Beiträge
 und damit ihren Anteil am Gesamtergebnis.
 
-Nehmen wir z.B. an, es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen **gerecht**, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse wie ein Geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
+Nehmen wir z.B. an, es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen **gerecht**, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse wie ein geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
 
 Wikipedia folgt einem streng hierarchischem Modell, in welchem Vertrauenspersonen die Inhalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
 Effizienter sind jedoch selbstregulierende Systeme, bei denen die Benutzer die Inhalte der Anderen bewerten. Beispiele wären die auf *Voting* und *Reputation* basierenden Plattformen Reddit[^reddit] und StackOverflow[^stackoverflow].
@@ -13,7 +13,7 @@ Ein weiteres Beispiel für die Bewertung von Inhalten ist das Konzept
 *Liquid Democracy*[^Lindenberg:2010], ein Vorschlag der Piratenpartei für eine moderne politische Konsensbildung.
 Ein solches Prinzip könnte man auf das Verwalten aller digital geteilter Inhalte verallgemeinern.
 
-Jedoch eignen sich diese Konzepte nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da Abstimmungen auf eine informale Weise vorgenommen werden. Es fehlt einer formalen Syntax, welche die Implikationen einer potentiellen Entscheidung vor der Wahl durch simulation klarer Zeigt, sowie nach der Wahl automatisch ausführt.
+Jedoch eignen sich diese Konzepte nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da Abstimmungen auf eine informale Weise vorgenommen werden. Es fehlt einer formalen Syntax, welche die Implikationen einer potentiellen Entscheidung vor der Wahl durch Simulation klarer zeigt, sowie nach der Wahl automatisch ausführt.
 Außerdem bedarf es bei den Ansätzen eines zentralisierten Servers, welcher als Angriffspunkt die Glaubwürdigkeit des Prozesses gefährdet, da die Akteure auf die Korrektheit des Servers vertrauen müssen. 
 
 Das 2009 eingeführte Konzept des Bitcoins und der Blockchain[^Nakamoto:2009] bietet eine Alternative zur zentralen Server-Architektur. Dieses beschreibt ein Protokoll in einem Netzwerk, welches Inhalte aus einem gebildeten Konsens bereitstellt. Es besitzt eine einfache, nicht turing vollständige Skriptsprache, sowie durch ein asymmetrisches Kryptosystem, Rechte und Rollen. Neue Inhalte werden nach einer Validierung ebenfalls in den Konsens aufgenommen. Die einfachste Interpretation von Bitcoin ist die eines Werteträgers, wobei die Beschränkung der Skriptsprache wenig Spielraum für weitere Interpretationen lässt.
@@ -22,12 +22,11 @@ Es entsteht eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, auto
 Ein Beispiel einer solchen DAO ist das *namecoin* Konzept, welches als Alternative zur ICANN[^ICANN] Organisation die TLD ".bit" verwaltet und in naher Zukunft die ICANN ablösen könnte.[^ICANN:2014] Die Regeln unter denen DACs und DAOs funktionieren, wie das Bewilligen einer neuen TLD, werden auf der Ethereum VM programmiert.
 Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine zentrale Vertrauensinstanz, z.b. bestimmten Schlüsselpersonen.
 
-**In dieser Arbeit möchte ich ein Modell einer Programmiersprache für verteiltes Programmieren auf Basis von Ehtereum entwickeln und untersuchen. In dieser werden Einigungsprozesse als Bestandteil des Entwicklungsprozesses angesehen.**
+**In dieser Arbeit möchte ich ein Modell einer Meta-Programmiersprache für verteiltes Programmieren auf Basis von Ehtereum entwickeln und untersuchen. In dieser werden Einigungsprozesse als Bestandteil des Entwicklungsprozesses angesehen.**
 
-Grundlegende Aktionen eines Akteurs ist das Vorschlagen von Alternativknoten (klassisches Programmieren), sowie das Partizipieren an Wahlen über Alternativen.
-Der Prozess des "transitive delegated voting" aus Liquid Democracy dient als Grundlage des Wahlprozesses. Diese wird durch das Modell von Eigentum und Delegationsbedingungen erweitert, welches eine Rechte- und Rollenverwaltung ermöglicht. Eine Mehrheit der Besitzer bestimmt dabei die für die Programmausführung gewählte Optionen.
-Daten befinden sich teilweise in einem kryptografisch gesicherten, verteilten Netzwerk ähnlich der auf BitTorrent aufbauenden IPFS[^IPFS:2014] oder der Maidsafe[^Maidsafe:2014] Architektur und teilweise in dem Ethereum Speicher.
-Das Modell soll mit formaler Logik sowie modelltheoretischen Konzepten beschrieben werden. Anschließend werde ich das Modell auf Machbarkeit sowie auf die richtige Architektur untersuchen. 
+Die Grundlegende Idee ist, das der Besitz eines Programms eindeutig beteiligten Akteuren zugeordnet ist. Aktionen eines Akteurs ist das Vorschlagen von Alternativknoten (klassisches Programmieren), sowie das Partizipieren an Wahlen über Alternativen, für welches "transitive delegated voting" aus Liquid Democracy als Grundlage verwendet wird.
+
+Technisch werde ich eine Funktion beschreiben, die eine gegebene eindeutige kontextfreie Grammatik so erweitert, dass diese zu der gesuchten verteilten Grammatik wird (im Folgenden **SCFG** genannt). Worte aus $L(SCFG)$ beinhalten die Besitzverteilung beteiligter Akteure, sowie Optionsmengen, Delegierungen und Stimmen für Optionen. Eine Konsens-Funktion erzeugt aus einem Wort der $L(SCFG)$ Sprache ein Wort der ursprünglichen Sprache ($L(G)$). Manipulation eines Wortes der $L(SCFG)$ Sprache sind Regeln unterworfen, hierdurch können die Akteure nur ihre eigenen Stimmen und Delegationen bearbeiten. Optionsmengen können an beliebiger Stelle erstellt und erweitert werden, solange ein Wort mit der neuen Option ebenfalls ein valides Wort aus $L(G)$ bildet. Die Manipulation des Wortes aus $L(SCFG)$ wird durch ein Transitionssystem modelliert. Durch die verifikation des Ethereum Netzwerkes ist eine dezentrale Interaktion der Akteure möglich.
 
 Diese Sprache soll das oben beschriebene Problem der dezentralen und *gerechten* Verwaltung der geteilten Webseite lösen.
 
@@ -35,9 +34,6 @@ Diese Sprache soll das oben beschriebene Problem der dezentralen und *gerechten*
 
 [^reddit]: http://reddit.com
 [^stackoverflow]: http://stackoverflow.com
-
-[^Maidsafe:2014]: David Irvine, MaidSafe Distributed File System. http://maidsafe.net/Whitepapers/pdf/MaidSafeDistributedFileSystem.pdf
-[^IPFS:2014]: Juan Benet, IPFS - Content Addressed, Versioned, P2P File System. http://static.benet.ai/t/ipfs.pdf
 
 [^Lindenberg:2010]: Friedrich Lindenberg. Konzeption und Erprobung einer Liquid Democracy Plattform anhand von Gruppendiskussionen.  TU Ilmenau, 2010.
 
