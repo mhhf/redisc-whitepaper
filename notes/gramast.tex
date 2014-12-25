@@ -4,6 +4,7 @@
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
+
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
@@ -42,6 +43,18 @@
 \usepackage{tikz}
 \usepackage{tikz-qtree}
 
+% Graphviz
+\usepackage{graphvizzz}
+
+% Source Code so found here: http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+\usepackage{listings}
+
+% Definitionen
+\usepackage{amsthm}
+
+
+
+\newtheorem{mydef}{Definition}
 
 
 \author{}
@@ -50,37 +63,200 @@
 \begin{document}
 
 
+\tableofcontents
 
-Es geht um Den Besitz und die Herrschaft von geteilten digitalen Inhalten. 
 
-\subsection{Einleitung}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      EINLEITUNG
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Einleitung}
+
+% Es geht um Akteure, Besitz, Bewertung
+Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
+Dabei entsteht ein Inhalt durch Beiträge einzelner \textbf{Akteure}.
+Zentral ist die Frage nach dem \textbf{Besitz} des Inhaltes sowie die \textbf{Bewertung} der einzelnen Beiträge durch die Besitzer und damit ihren Anteil am \textbf{Gesamtergebnis}. 
+
+
+
+
+
+% Problem: der Verwaltung( Manipulation ) und der besitzallokation
 
 In dieser Arbeit möchte ich eine Meta-Programmiersprache
-(\textbf{$SCFG$}) für eine beliebige eindeutige kontextfreie Grammatik
-$G$ herrausarbeiten, die das verteilte Programmieren ermöglichen soll.
+\textbf{$S(G)$} für eine beliebige eindeutige kontextfreie Grammatik
+$G$ herrausarbeiten, die die verteilte Steuerung Contextfreier Inhalte ermöglichen soll.
 Hierfür werden in (1) zwei Funktion angegeben. Eine erweitert eine
-gegebene kontextfreie Grammatik zu einer $SCFG$, die andere erzeugt aus
-einem Wort der Sprache $L(SCFG)$, ein Wort in der ursprünglichen Sprache
-$L(G)$. Manipulationen eines Wortes einer SCFG-Sprache sind bedingungen
+gegebene kontextfreie Grammatik $G$ zu einer $S(G)$, eine Konsensfunktion erzeugt aus einem Wort der Sprache $L(S(G))$, ein Wort in der ursprünglichen Sprache
+$L(G)$. Manipulationen eines Wortes einer $L(S(G))$-Sprache sind bedingungen
 unterworfen, die in (2) angegeben sind.
 
 
+\newpage
 
-\subsection{1. Meta - Programmiersprache}
 
-\subsubsection{Einleitung}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      VERIFIZIERUNG 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Dezentrale Verifizierung}
+
+Das auf dem Bitcoin-Protokoll aufbauende Ethereum \cite{Wood2014}, beschreibt ein Protokoll in einem Netzwerk zur dezentralen Verifizierung von turing-vollständigen Programmausführungen. 
+Es stellt einen gebildeten Konsens von Programmen mit Aktuellen Zuständen bereit. 
+Neue Inhalte wie neue Programme oder neue Interaktionen von Akteuren mit Programmen werden nach einer veröffentlichung und Validierung der Ausführung durch das Netzwerk mit dem neu berechnetem Zustand in den Konsens aufgenommen.
+
+Akteure werden durch ein 20-byte Adresse identifiziert. Ihre Interaktion mit dem Netzwerk ist durch ein asymmetrisches Kryptosystem gesichtert.
+
+Das Netzwerk finanziert sich durch die Validierung der Programme. Für jeden Berrechnungsschritt wird ein kleiner Betrag vom Interagierenden Akteur erhoben. Ist nicht genügend Wert verfügbar, terminiert die Transaktion und wird vom Netzwerk abgelehnt. So wird auch das Halteproblem umgangen.
+
+Ein Beispiel für ein Programm währe eine dezentrale Währung, wie sie derzeit vom Bitcoin Protokoll repräsentiert wird (Quelle \cite{Butterin2014}):
+
+% Speicher & Rechenleistung = Geld
+
+
+% ! Akteure = Programme | Benutzer
+
+\begin{lstlisting}
+  from = msg.sender
+  to = msg.data[0]
+  value = msg.data[1]
+
+  if self.storage[from] >= value:
+  self.storage[from] = self.storage[from] - value
+  self.storage[to] = self.storage[to] + value
+\end{lstlisting}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   GETEILTES OBJEKT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Digitale Geteiltes Objekt}
+
+Digitale Geteilte Objekte müssen in digitaler repräsentation vorliegen, sowie für die Anteilseigner in verschlüsselter oder unverschlüsselter form zugänglich sein.
+
+Beispiele währen: 
+
+\begin{itemize}
+  \item medialen Inhalte wie Bilder, Texte oder Videos
+  \item Programme und contextuelle Angaben wie deren Compiler oder die Architektur
+  \item Besitzrepräsentation wie Bitcoin Anteile oder Aktien
+\end{itemize}
+
+
+% um alle inhalte abzudecken reicht es die abzudecken, die eine eine repräsentation als worte einer contextfreien sprache besitzen
+Sie können einerseits in direkter Form, oder als Referenz unter angabe einer $URI$ angegeben werden.
+
+Andererseits können digitale geteilte Objekte dynamische Ihnalte repräsentieren, welche eine Syntax besitzen und durch ein Compiler Interpretiert werden können. Da URI's durch reguläre Sprachen ($REG$) konstruiert werden können und $L(REG) \subsetneq L(CFG)$ ist. Reicht es zur betrachtung aller digitaler Objekte 
+solche zu betrachten, die durch eine $CFG$ Syntax besitzen, oder durch eine Solche referenziert werden können.
+
+% \begin{mydef}
+Ein \textbf{geteiltes digitales Objekt} ist ein Tupel $O_G=(A, K, w, rate, consens)$ bestehend aus:
+
+\begin{enumerate}
+\item Eine endliche Menge von Akteuren $A$
+\item Eine eindeutige \textbf{Besitzverteilung} von Akteuren zum Objekt
+  \[w: A \rightarrow \mathbb{N}\]
+\item eine endliche Menge von validen Kandidaten mit mindestes einem Element 
+  \[K_G \subseteq \{w|S \rightarrow^*_P w \land w\in T^* \} \land |K_G| \geq 1\] 
+\item eine Bewertung der Kandidaten durch die Akteure. 
+  \[rate: A\times K \rightarrow [0,1]\]
+\item einer Konsensfunktion
+  \[consens: A\times K\times w \times rate \rightarrow L(G)\] 
+\end{enumerate}
+
+Sei $\mathbf{SOBJ_G}$ die Menge aller geteilten Objekte in der Grammatik $G$.
+% \end{mydef}
+
+
+\subsection {Repräsentation}
+
+\subsubsection {Akteure}
+
+% Motivation
+
+% Inhalt besitzt einen Wert, Akteure wollen ihren Besitz Maximieren
+Da ein Geteiltes Objekt auch Werte in Form einer Kryptowährung wie Bitcoin beinhalten kann, strategische wertvolle Attribute in einem Netzwerk besitzt, wie Reputation oder Namensrechte, geschlossene Informationen beinhaltet auf die nur die Eigentümer zugreifen können oder Gewinnüberschüsse an die Besitzer ausschüttet, besitzt das Objekt und somit auch seine Anteile auf einem freien Markt einen reellen und spekulativen Wert. Somit könenn wir davon ausgehen, dass es im Interesse jedes rationalen Akteurs ist, seinen Besitzanteil zu maximieren. (\textbf{AMAX})
+
+% Vergrößerung durch strategischen tausch gegen andere Werteträger oder durch vorschlagen von Optionen
+
+
+\subsubsection{Besitzverteilung}
+
+%Aktienmodell
+
+Die Besitzverteilung wird änlich dem Aktienmarkt Modelliert. Dabei hat ein geteiltes Objekt eine bestimmte Anzahl an Teilen (geschrieben $|O| \in \mathbb{N}$), die unter den Akteuren aufgeteilt sind. 
+\[ |O| := \sum_{a \in A} w(a) \] 
+% todo: warum?
+
+% Besitz = Bestimmung
+Der Besitz eines Objekts $O$ wird durch das Recht definiert, auf dieses zugreifen zu können und es Kontrollieren zu können\cite{Waldron2004}. Besitzen mehrere Akteure ein Objekt, so gibt der Anteil am Objekt an, zu welcher gewichtung jeder einzelne Akteur über das Objekt mit bestimmen kann.
+
+Eine Konsensfunktion entscheidet über die Ausführung der Kontrolle. Dabei kann eine Zustimmung von $\frac{1}{2}|O|$ eine Ausführung bedingen. Man spricht von einer \textbf{majorität}. Eine Zustimmung von $\frac{2}{3}|O|$ heißt \textbf{super majorität}.
+
+
+% Intuitiev sollte der initialle Besitzer eines Inhalts sein Schöpfer sein. Dieser kann sein Besitz bei einer einigung an dritte abgeben, oder der Allgemeinheit überlassen. Bei einem Kollaborativ entstandenem Inhalt, bewerten die Besitzer die Beiträge
+
+
+% Die Funktion $w_O: A \rightarrow \mathbb{N}$ gibt den Anteil von O an, der im Besitz von einem Akteur ist. 
+
+% Gilt $share_O(a) > 0$, so nennt man $a$ auch ein \textbf{Member} von $O$.
+% 
+% $M_O \subseteq A$ ist die Menge aller Member von $O$.
+
+
+
+\subsection {Transaktionen}
+
+Transaktionen werden \textbf{immer} von einem Akteur $a$ ausgelöst und besitzen die Form $(a, O')$. $O'$ ist dabei das manipulierte geteilte Objekt.
+
+Wir betrachten vorerst nur die Manipulation der Kandidatenmenge $K$, der Besitzgewichtung $w$ sowie der Kandidatenbewertung $rate$. 
+% Hierzu wird die Bedingungen gestellt, dass bestehende Kandidaten nicht entfernt werden ($K \subseteq K'$).
+
+
+\subsection {Qualitätskriterien}
+
+Für die Implementation ist auf folgende Qualitätskriterien zu achten:
+
+\begin{description} 
+  \item[\textbf{RESMIN:}]\hfill \\
+    Es sind möglichst wenig Ressourcen (Speicher und Rechenleistung) vom Ethereum-Netzwerk notwendig, um Transaktionen zu validieren.
+  \item[\textbf{INTMIN:}]\hfill \\
+    Eine Akteur soll möglichst wenig Interaktionen benötigen, um auf eine gewünschte, von ihm erreichbare Manipulation zu kommen.
+\end{description}
+
+% 
+%   * die Kandidatenmenge muss komprimiert werden, damit deren Speicherung möglichst wenig Speicher in anspruch nimmt.
+%   * die validierung der manipulation muss eine kleine laufzeit haben.
+
+% 
+
+% es ist einfach für einen Akteur eine Bewertung über viele Kandidaten abzugeben.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     IMPLEMENTATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Implementation}
+
+\subsection{Einleitung}
+Eine Idee hinter der Implementation ist nah am Parsebaum der Grammatik zu arbeiten um die Kandidatenmenge dadurch zu komprimieren. Die Kandidatenmenge ergibt sich durch die verschiedenen Kombination der mehrdeutigen Optionen, die an jedem Ableitungsschritt entstehen können.
+
+Der derzeitige Ansatz ist es eine Grammatikerweiterung $S: CFG \rightarrow CFG$ zusammen mit einem Isomorphismus $\phi: SOBJ_G \rightarrow L(S(G))$ und einer Konsensfunktion $c: L(S(G)) \rightarrow L(G)$ zu finden, so dass alle Transaktionen des Objektes als Transaktionen eines contextfreien Wortes angesehen werden können. Die Transaktionsbedingungen können als Struktur des Wortes aufgefasst werden.
+
+% Sei $\Sigma$ eine Signatur der Form $(w,0)$. Sei $A$ eine dazu passende Algebra der Form $(L(S(G)),w)$. Der derzeitige Ansatz ist ein Isomorphismus $\phi$ zu funden
+
 
 % example
 % \Tree [.S [.NP LaTeX ] [.VP [.V is ] [.NP fun ] ] ]
 
-Die Idee hinter der erweiterung der SCFG Sprache ist, dass der Besitz
-eines Programms eindeutig beteiligten \textbf{Akteuren} zugeordnet ist. Die
-Zuordnung repräsentiert auch das mitspracherecht der Akteure.
-Manipulationen am Programm können jederzeit vorgenommen werden, solange die Manipulation ein valides Wort in $L(G)$ ergibt. Manipulierte Wörter kommen als Option zu den bestehenden Wörtern hinzu, sodass Informationen nicht verlohren gehen.
-Optionen können durch Akteure bewertet werden.
-
-Eine Konsensfunktion bestimmt dann die Option, die die beste Bewertung durch die Mehrheit der Akteure erhalten hat. Sie gilt als \textbf{gerecht}, wenn sie die besitzgewichtung der Akteure berücksichtigt.
 % Um den Konsensprozess effizienter zu gestalten, können Akteure ihre Stimme für bestimmte Bereiche der Sprache an andere Akteure Delegieren.
 
 % \subsubsection{Programmiersprache}
@@ -90,52 +266,30 @@ Eine Konsensfunktion bestimmt dann die Option, die die beste Bewertung durch die
 % Die validität einer Sprache ist jedoch meist nicht nur aus der kontextfreien syntax zu schließen. So werden namensresolutionen und typisierung beim compilieren in späteren schritten auf eine kontext sensitive weise überprüft. Dies
 % Syntax von Programmiersprachen sind nicht kontextfrei, sondern Kontextsensitiv \cite{Otto}
 
-\subsubsection{Sprach-Erweiterung}
+\subsection{Sprach-Erweiterung}
 
-Abhängig von einer gegebenen Programmiersprache $G=(N,T,S,P)$ soll eine Erweiterte Programmiersprache $L(SCFG)$ konstruiert werden. Die Wörter der neuen Sprache repräsentieren ein geteiltes Programm $O$ und besitzen folgende Informationen:
+% Abhängig von einer gegebenen Programmiersprache $G=(N,T,S,P)$ soll eine Erweiterte Programmiersprache $L(S(G))$ konstruiert werden. Die Wörter der neuen Sprache repräsentieren ein geteiltes Programm $O$ und besitzen folgende Informationen:
 
-\begin{enumerate}
-\item $n\in\mathbb{N}$ Akteure
-\item eindeutige \textbf{Besitzgewichtung} von Akteuren 
-  $w_i$ für den Akteur $1\leq i \leq n$
-\item eine Menge von validen Programmen mit mindestes einem Element 
-  $$P_O \subseteq \{w|S \rightarrow^*_P w \land w\in T^* \} \land |P_O| \geq 1$$
-\item eine Bewertung der Programme durch die Akteure. 
-  $$rate_O: A\times P \rightarrow [0,1]$$
-\end{enumerate}
 
-Zu dem wird eine Compilierfunktion gesucht, die Wörter der $L(SCFG)$ Sprache, wörter der Ursprünglichen Sprache $L(G)$ zuweist. 
-$$ consens_O: L(SCFG) \rightarrow L(G)$$
+% Zu dem wird eine Compilierfunktion gesucht, die Wörter der $L(SCFG)$ Sprache, wörter der Ursprünglichen Sprache $L(G)$ zuweist. 
+% $$ consens_O: L(SCFG) \rightarrow L(G)$$
 
 % Zusätzlich zur Sprache wird eine Funktion gesucht, die aus der Besitzverteilung, der Programmme und deren Bewertungen eine Gruppenbewertung der Programme erstellt. Das Programm mit der maximalen Gruppenbewertung wird als \textbf{Konsensprogramm} angesehen. 
 % $$ consens_O: A\times (A,\mathbb{N})\times P \times (A,P,[0,1]) \rightarrow P $$
 
 % Die gesuchte Sprache $L(SCFG)$ kann folglich auch durch eine CFG bestimmt werden. Die Interpretation eines Wortes aus der Sprache 
 
-\subsection{Qualitätskritärien}
+% \subsection{Qualitätskritärien}
+% 
+% \begin{enumerate}
+%   \item die wörter der Sprache $L(SCFG)$ sind möglichst klein
+%   \item es ist einfach Optionen zu Bewerten: Die Anzahl der transitionen ist möglichst klein, um auf ein gewünschtes Bewertungsprofil zu kommen.
+%     
+%     Sei $a\in A$ ein Akteur, sei $X_i\subseteq P\times [0,1]$ die derzeitige Bewertung der Programme von $a$ und sei $X_j\subseteq P\times [0,1]$ die gewünschte Bewertung. Sei $t$ eine von $a$ gültige Transformation, so dass $X_k \rightarrow_{t} X_{k+1}$ und sei T die Menge der von a gültigen Transformationen. Die Bewertung ist einfach, wenn für $X_i \rightarrow_{ T }^n X_j$ n möglichst minimal ist.
+% \end{enumerate}
 
-\begin{enumerate}
-  \item die wörter der Sprache $L(SCFG)$ sind möglichst klein
-  \item es ist einfach Optionen zu Bewerten: Die Anzahl der transitionen ist möglichst klein, um auf ein gewünschtes Bewertungsprofil zu kommen.
-    
-    Sei $a\in A$ ein Akteur, sei $X_i\subseteq P\times [0,1]$ die derzeitige Bewertung der Programme von $a$ und sei $X_j\subseteq P\times [0,1]$ die gewünschte Bewertung. Sei $t$ eine von $a$ gültige Transformation, so dass $X_k \rightarrow_{t} X_{k+1}$ und sei T die Menge der von a gültigen Transformationen. Die Bewertung ist einfach, wenn für $X_i \rightarrow_{ T }^n X_j$ n möglichst minimal ist.
-\end{enumerate}
 
-\paragraph{Besitz}
-
-Der Besitz eines Objekts $O$ wird durch das Recht bestimmt, dieses Objekt kontrollieren zu können. Besitzen mehrere Akteure ein Objekt, so gibt der Anteil am Objekt an, zu welcher gewichtung jeder einzelne Akteur über das Objekt mit bestimmen kann. 
-
-Seien $a$ \textbf{Akteure} und sei A die Menge aller Akteure.
-
-Die Funktion $share_O: A \rightarrow \mathbb{N}$ gibt den Teil von a an, der im Besitz von einem Akteur $a\in A$ ist. Den Anteil am Objekt.
-
-Gilt $share_O(a) > 0$, so nennt man $a$ auch ein \textbf{Member} von $O$.
-
-$M_O \subseteq A$ ist die Menge aller Member von $O$.
-
-$|O| := \sum_{m\in M_O} share_O(m)$ gibt die \textbf{Größe} des jeweiligen Objekts an.
-
-\subsubsection{Bewertung}
+\subsection{Bewertung}
 Diese werden entweder \textbf{direkt}, also vom Akteur selber, oder \textbf{indirekt} also durch eine Delegation an einen anderen Akteur angegeben.
 % \subsubsection{Intuition}
 % 
@@ -156,7 +310,7 @@ Diese werden entweder \textbf{direkt}, also vom Akteur selber, oder \textbf{indi
 % 
 % \end{verbatim}
 
-\subsubsection{1.1 erweiterung einer CFG zu einer SCFG}
+\subsection{Grammatikerweiterung}
 
 Sei $G = (N,T,S,P)$ eine eindeutige contextfreie Grammatik.
 
@@ -169,7 +323,7 @@ $T' := T \cup \{[ , ], \oplus, number, float, hash \}\ mit\ [,],\oplus \notin T$
 
 \textbf{number} stellt eine ganzzahlige Nummer dar. \textbf{float}
 stellt eine fließkommazahl dar. \textbf{hash} ist ein identifikatior für
-einen akteur, hier ein 64 bit hex string.
+einen akteur, hier ein 20 bytes hex string.
 
 $P' := P\cup P_{Options} \cup P_{Start} \cup P_{Delegations} \cup P_{Voting} \cup P_{Acteurs}$
 
@@ -178,7 +332,7 @@ mit $r\in\Sigma^*\}\cup\{ O \rightarrow \varepsilon \}$
 
 $P_{Start} := \{S'\rightarrow [A]S\}$
 
-$P_{Delegations} := \{D\rightarrow [hash\ hash];D,D\rightarrow [hash\ hash]\}$
+$P_{Delegations} := \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\}$
 
 $P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}$
 
@@ -192,8 +346,7 @@ $P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}$
   eindeutigkeit der SCFG
 \end{itemize}
 
-\subsubsection{1.2 erzeugung eines Wortes der Ursprungsgrammatik aus
-einem Wort der SCFG}
+\subsection{Compile}
 
 Die Idee hier ist, dass die transitive Hülle der Delegationen als
 Attribut während der Ableitung vererbt(inherited) wird. Die Votemenge
@@ -210,7 +363,11 @@ eine Konsens-Option.
   implekation von Arrow's Theorem auf strategisches voten
 \end{itemize}
 
-\subsection{2. Manipulation der Wörder einer SCFG-Sprache}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    MANIPULATION 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{2. Manipulation}
 
 Die Idee hinter der manipulation ist des es sich bei den Wörter um eine Persistente Datenstruktur handelt. Demnach können Optionen nur hinzu kommen, jedoch nicht gelöscht werden. Jeder Akteur kann Delegationen und Stimmen abgeben sowie
 die eigenen löschen, hat jedoch keine Macht über die Stimmen und
@@ -223,15 +380,14 @@ Sei $G = (N,T,S,P)$ eine eindeutige Grammatik sowie
 $G'=S(G)=(N',T',S',P')$ die dazugehörige SCFG.
 
 
-\subsubsection{Qualitätskritärien}
+\subsection{Qualitätskritärien}
 
 \begin{enumerate}
   \item operationen wie $vote, delegate, addOption$ sind effizient in bezug auf Laufzeit und Speicherverbrauch.
   \item Die Verifikation der Transaktion durch das Netzwerk soll möglichst effizient sein.
 \end{enumerate}
-\paragraph{zu untersuchen}
 
-\subsubsection{States}
+\subsection{States}
 
 Ein Zustand der  ist eine Struktur der form $(U, compile, w)$
 
@@ -243,7 +399,7 @@ $compile: L(G') \rightarrow L(G)$
 
 $w\in U$ ist das derzeitige Wort
 
-\subsubsection{Transitionen}
+\subsection{Transitionen}
 
 Bei der Interaktion eines Programms, ist der Akteur bekannt und wird
 durch ein Public Key ausgewiesen. Der Akteur kann in einem
@@ -253,46 +409,58 @@ $(h,w')$ so, dass $h$ der Public Key des Akteurs ist, sowie $w'$ das
 neue Wort.
 
 % Die Transitionen können zu den Auslösenden Akteuren ebenfalls durch eine Kontextuelle Grammatik beschrieben werden.
+\subsubsection*{Erzeugen einer Optionsmenge}
 
-\paragraph{Erzeugen einer Optionsmenge}
+
+% \Tree [.S [.NP LaTeX ] [.VP [.V is ] [.NP fun ] ] ]
+% \begin{center}
+% \Tree [.O $\alpha$ [.R $o_1$ ] $\beta$ $\oplus$ $\lbrack$ [.V v ] $\rbrack$ ]
+% \end{center}
+% 
+% \begin{center}
+% \Tree [.O $\alpha$ [.R $\lbrack$ [.O $o_1$ $\oplus$ $\lbrack$ [.V v ]  $\rbrack$ [.O $o_2$ $\oplus$ $\lbrack$ $\rbrack$ ] ] $\rbrack$ $\lbrack$ [.D $\epsilon$ ] $\rbrack$ ] $\beta$ $\oplus$ $\lbrack$ $\rbrack$ ]
+% \end{center}
+
 
 Sei $\alpha,\beta,o_1,o_2 \in T'^*$ sowie $R\in N$ und
 $V \rightarrow_P^* v$ Sei $w=\alpha o_1 \beta \oplus [v]$ Sei weiter
 $R\rightarrow_p^* o_1$ sowie $R\rightarrow_p^* o_2$ Dann ist
 $w:=\alpha [o_1\oplus [v] o_2\oplus []][]\beta$ eine valide Transition.
 
-\paragraph{Erweitern einer Optionsmenge}
+\subsubsection*{Erweitern einer Optionsmenge}
 
 Sei $w=\alpha[o]\beta \land S'\rightarrow_P^* \alpha R \beta$ mit
 $O\rightarrow_P^* o, o\in T'^*, R\in N$ Dann ist
 $w:=\alpha[o r\oplus []]\beta$ mit $R \rightarrow_P^* r, r\in T'^*$ eine
 valide Transition.
 
-\paragraph{Hinzufügen einer Stimme}
+\subsubsection*{Hinzufügen einer Stimme}
 
 Sei $w=\alpha r\oplus [v]\beta$
 
 Dann ist $w:=\alpha r \oplus [v[h n]]\beta$ mit $n=float$ eine valide
 Transition.
 
-\paragraph{Löschen einer Stimme}
+\subsubsection*{Löschen einer Stimme}
 
 Sei $w=\alpha [hn]\beta$
 
 Dann ist $w:=\alpha\beta$ mit eine valide Transition.
 
-\paragraph{Hinzufügen einer Delegation}
+\subsubsection*{Hinzufügen einer Delegation}
 Analog der Stimme
 
-\paragraph{Löschen einer Delegation}
+\subsubsection*{Löschen einer Delegation}
 Analog der Stimme
 
-\subsubsection{Delegationsprogrammierung}
+\subsubsection*{Transaktion} %Überweisung
+
+\subsection{Delegationsprogrammierung}
 
 \paragraph{Context Delegation}
 \paragraph{A/B Tester}
 
-\subsubsection{zu untersuchen}
+\subsection{zu untersuchen}
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -301,7 +469,60 @@ Analog der Stimme
 \end{itemize}
 
 
-% \bibliography{gramast}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      IMPLEMENTATIONSPLAN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Umfang der Arbeit}
+
+\subsection*{Konzeptuell}
+\begin{itemize}
+  \item Überarbeitung der Spracherweiterung
+    \begin{itemize}
+      \item macht eine Spracherweiterung überhaupt sinn?
+    \end{itemize}
+\end{itemize}
+
+
+\subsection*{Implementation}
+\begin{itemize}
+  \item Eine Zentralisierte Version der $L(S(G))$-Sprache sowie des Transitionsysthems wird implementiert 
+  \begin{itemize}
+    \item JISON, ein Bison/Flex ähnlicher javascript LALR(1) parser generator wird so erweitert, dass bei Eingabe einer beliebigen Grammatik $G$ dieser einen Parser erzeugt welcher Wörter aus der $L(S(G))$ Sprache als Eingabe bekommt und ein öffentliches Transitionsysthem erzeugt.
+    \item Ein Initialscript, welches aus einem Wort der $L(G)$ Sprache und einer Besitzgewichtung gegeben als $\{(a,n)| a\in 20byteHexString \land n\in \mathbb{N} \}$ ein valiedes initiales Wort in der $L(S(G))$ Sprache erzeugt 
+    \item Akteure können durch eine Öffentliche Schnittstelle( Webseite ) in die Historie einsehen, sowie das Wort valide manipulieren.
+    \item Die Konsensfunktion wird ebenfalls Implementiert.
+  \end{itemize}
+  \item Es wird keine Dezentrale version Implementiert.
+  \item Die Delegationen sowie die Abstimmungen werden direkt Implementiert und können jederzeit beteiligten Akteuren zugeordnet werden. Eine anonyme Lösung, mithilfe einer homomorphen verschlüsselung oder eines zero knowledge proofs wird zwar diskutiert, jedoch weder konzipiert noch implementiert
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%       Aussicht
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Aussicht}
+
+\subsection{Dezentralisierung}
+
+\begin{itemize}
+  \item änderungen der Grammatik berücksichtigen
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      QUELLEN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpage
+\section{Quellen}
+
+
+\bibliography{library}
+
 \bibliographystyle{alpha}
 
 \end{document}
+

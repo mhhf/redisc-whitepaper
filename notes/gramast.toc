@@ -1,0 +1,27 @@
+\contentsline {section}{Einleitung}{2}{section*.2}
+\contentsline {section}{Dezentrale Verifizierung}{3}{section*.3}
+\contentsline {section}{Digitale Geteiltes Objekt}{4}{section*.4}
+\contentsline {subsection}{Repr\IeC {\"a}sentation}{5}{section*.5}
+\contentsline {subsubsection}{Akteure}{5}{section*.6}
+\contentsline {subsubsection}{Besitzverteilung}{5}{section*.7}
+\contentsline {subsection}{Transaktionen}{5}{section*.8}
+\contentsline {subsection}{Qualit\IeC {\"a}tskriterien}{5}{section*.9}
+\contentsline {section}{Implementation}{6}{section*.10}
+\contentsline {subsection}{Einleitung}{6}{section*.11}
+\contentsline {subsection}{Sprach-Erweiterung}{6}{section*.12}
+\contentsline {subsection}{Bewertung}{6}{section*.13}
+\contentsline {subsection}{1.1 erweiterung einer CFG zu einer SCFG}{6}{section*.14}
+\contentsline {paragraph}{zu zeigen}{7}{section*.15}
+\contentsline {subsection}{Compile}{7}{section*.16}
+\contentsline {section}{2. Manipulation}{7}{section*.17}
+\contentsline {subsection}{Qualit\IeC {\"a}tskrit\IeC {\"a}rien}{7}{section*.18}
+\contentsline {subsection}{States}{8}{section*.19}
+\contentsline {subsection}{Transitionen}{8}{section*.20}
+\contentsline {subsection}{Delegationsprogrammierung}{9}{section*.28}
+\contentsline {paragraph}{Context Delegation}{9}{section*.29}
+\contentsline {paragraph}{A/B Tester}{9}{section*.30}
+\contentsline {subsection}{zu untersuchen}{9}{section*.31}
+\contentsline {section}{Umfang der Arbeit}{9}{section*.32}
+\contentsline {section}{Aussicht}{10}{section*.35}
+\contentsline {subsection}{Dezentralisierung}{10}{section*.36}
+\contentsline {section}{Quellen}{11}{section*.37}

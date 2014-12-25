@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.3.3)  19 DEC 2014 19:38
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2013.3.3)  25 DEC 2014 18:35
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
 **gramast.tex
@@ -621,8 +621,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip47
 )
-Package hyperref Info: Option `breaklinks' set `true' on input line 34.
-Package hyperref Info: Option `colorlinks' set `true' on input line 34.
+Package hyperref Info: Option `breaklinks' set `true' on input line 35.
+Package hyperref Info: Option `colorlinks' set `true' on input line 35.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/local/texlive/2012/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/texlive/2012/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/local/texlive/2012/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
 \pgfutil@everybye=\toks24
 ) (/usr/local/texlive/2012/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
@@ -848,36 +848,73 @@ File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
 \@result=\toks33
 \child@list=\toks34
 \root@node=\toks35
-)) (./gramast.aux)
+)) (./graphvizzz.sty
+Package: graphvizzz 
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count133
+\lst@gtempboxa=\box38
+\lst@token=\toks36
+\lst@length=\count134
+\lst@currlwidth=\dimen182
+\lst@column=\count135
+\lst@pos=\count136
+\lst@lostspace=\dimen183
+\lst@width=\dimen184
+\lst@newlines=\count137
+\lst@lineno=\count138
+\lst@maxwidth=\dimen185
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count139
+\lst@skipnumbers=\count140
+\lst@framebox=\box39
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2009/07/02 v2.20.1
+\thm@style=\toks37
+\thm@bodyfont=\toks38
+\thm@headfont=\toks39
+\thm@notefont=\toks40
+\thm@headpunct=\toks41
+\thm@preskip=\skip48
+\thm@postskip=\skip49
+\thm@headsep=\skip50
+\dth@everypar=\toks42
+)
+\c@mydef=\count141
+(./gramast.aux)
 \openout1 = `gramast.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 50.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 50.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 63.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 63.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 50.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 63.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 50.
+LaTeX Info: Redefining \microtypecontext on input line 63.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -890,35 +927,35 @@ Package microtype Info: No adjustment of character kerning.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2009/11/09 v2.0 microtype config. file: Computer Modern Roman (RS)
 )
-\AtBeginShipoutBox=\box38
-Package hyperref Info: Link coloring ON on input line 50.
+\AtBeginShipoutBox=\box40
+Package hyperref Info: Link coloring ON on input line 63.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count133
+\c@section@level=\count142
 )
-LaTeX Info: Redefining \ref on input line 50.
-LaTeX Info: Redefining \pageref on input line 50.
-LaTeX Info: Redefining \nameref on input line 50.
+LaTeX Info: Redefining \ref on input line 63.
+LaTeX Info: Redefining \pageref on input line 63.
+LaTeX Info: Redefining \nameref on input line 63.
 (./gramast.out) (./gramast.out)
 \@outlinefile=\write4
 \openout4 = `gramast.out'.
 
 ABD: EveryShipout initializing macros (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count134
-\scratchdimen=\dimen182
-\scratchbox=\box39
-\nofMPsegments=\count135
-\nofMParguments=\count136
-\everyMPshowfont=\toks36
-\MPscratchCnt=\count137
-\MPscratchDim=\dimen183
-\MPnumerator=\count138
-\makeMPintoPDFobject=\count139
-\everyMPtoPDFconversion=\toks37
+\scratchcounter=\count143
+\scratchdimen=\dimen186
+\scratchbox=\box41
+\nofMPsegments=\count144
+\nofMParguments=\count145
+\everyMPshowfont=\toks43
+\MPscratchCnt=\count146
+\MPscratchDim=\dimen187
+\MPnumerator=\count147
+\makeMPintoPDFobject=\count148
+\everyMPtoPDFconversion=\toks44
 ) (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/grfext.sty
@@ -930,69 +967,75 @@ Package grfext Info: Graphics extension search list:
 (/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 60.
+\c@lstlisting=\count149
+(./gramast.toc
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 4.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 60.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 4.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 60.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 4.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 60.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 4.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 60.
+(Font)              <10> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 60.
+(Font)              <7> on input line 4.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 60.
-LaTeX Font Info:    Try loading font information for U+msa on input line 60.
+(Font)              <5> on input line 4.
+LaTeX Font Info:    Try loading font information for U+msa on input line 4.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 ) (/usr/local/texlive/2012/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 60.
+LaTeX Font Info:    Try loading font information for U+msb on input line 4.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 ) (/usr/local/texlive/2012/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) [1
+))
+\tf@toc=\write5
+\openout5 = `gramast.toc'.
 
-{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 193.
+[1
+
+{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 145.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [3] [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 308.
-[5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 308.
+) [4] [5] [6] [7] [8] [9] [10] (./gramast.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 527.
+[11]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 527.
 (./gramast.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 308.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 308.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 527.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 527.
 Package rerunfilecheck Info: File `gramast.out' has not changed.
-(rerunfilecheck)             Checksum: 536F25A72D5038CBC9329856910C6586;2448.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 308.
+(rerunfilecheck)             Checksum: AFE4E0642AFC58EF4DA6EF7C9AC47EBB;3124.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 527.
  ) 
 Here is how much of TeX's memory you used:
- 17785 strings out of 493488
- 305689 string characters out of 3141327
- 389356 words of memory out of 3000000
- 20661 multiletter control sequences out of 15000+200000
- 31179 words of font info for 62 fonts, out of 3000000 for 9000
+ 19511 strings out of 493488
+ 328203 string characters out of 3141327
+ 414468 words of memory out of 3000000
+ 22322 multiletter control sequences out of 15000+200000
+ 46329 words of font info for 71 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 56i,8n,55p,494b,421s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmmi5.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on gramast.pdf (5 pages, 160430 bytes).
+ 56i,8n,55p,574b,993s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmbx7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on gramast.pdf (11 pages, 189143 bytes).
 PDF statistics:
- 172 PDF objects out of 1000 (max. 8388607)
- 152 compressed objects within 2 object streams
- 39 named destinations out of 1000 (max. 500000)
- 8829 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 286 PDF objects out of 1000 (max. 8388607)
+ 259 compressed objects within 3 object streams
+ 68 named destinations out of 1000 (max. 500000)
+ 11469 words of extra memory for PDF output out of 12000 (max. 10000000)
 

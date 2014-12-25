@@ -1,3 +1,19 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{Woo14}
+
+\bibitem[But14]{Butterin2014}
+V~Butterin.
+\newblock {A next-generation smart contract and decentralized application
+  platform}.
+\newblock (January):1--36, 2014.
+
+\bibitem[Wal04]{Waldron2004}
+Jeremy Waldron.
+\newblock {Property and Ownership}.
+\newblock September 2004.
+
+\bibitem[Woo14]{Wood2014}
+Gavin Wood.
+\newblock {ETHEREUM: A SECURE DECENTRALISED GENERALISED TRANSACTION LEDGER}.
+\newblock 2014.
 
 \end{thebibliography}
