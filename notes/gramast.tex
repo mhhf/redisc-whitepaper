@@ -8,7 +8,7 @@
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[utf8]{inputenc}
+  \usepackage[utf8x]{inputenc}
 \else % if luatex or xelatex
   \usepackage{fontspec}
   \ifxetex
@@ -52,6 +52,17 @@
 % Definitionen
 \usepackage{amsthm}
 
+% Algorithmen
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+%todo 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+\usepackage{xargs}                      % Use more than one optional parameter in a new commands
+
+\newcommandx{\TODO}[2][1=]{\todo[linecolor=none,backgroundcolor=gray!25,bordercolor=none,#1]{\textbf{TODO: }#2}}
+
 
 
 \newtheorem{mydef}{Definition}
@@ -79,14 +90,14 @@ Dabei entsteht ein Inhalt durch Beiträge einzelner \textbf{Akteure}.
 Zentral ist die Frage nach dem \textbf{Besitz} des Inhaltes sowie die \textbf{Bewertung} der einzelnen Beiträge durch die Besitzer und damit ihren Anteil am \textbf{Gesamtergebnis}. 
 
 
-
-
-
 % Problem: der Verwaltung( Manipulation ) und der besitzallokation
 
 In dieser Arbeit möchte ich eine Meta-Programmiersprache
-\textbf{$S(G)$} für eine beliebige eindeutige kontextfreie Grammatik
-$G$ herrausarbeiten, die die verteilte Steuerung Contextfreier Inhalte ermöglichen soll.
+\textbf{$S(G)$} für eine beliebige linksreguläre Grammatik
+$G$ herrausarbeiten, die die verteilte Steuerung von Inhalten ermöglichen soll, die eine reguläre Grammatik besitzen.
+
+
+
 Hierfür werden in (1) zwei Funktion angegeben. Eine erweitert eine
 gegebene kontextfreie Grammatik $G$ zu einer $S(G)$, eine Konsensfunktion erzeugt aus einem Wort der Sprache $L(S(G))$, ein Wort in der ursprünglichen Sprache
 $L(G)$. Manipulationen eines Wortes einer $L(S(G))$-Sprache sind bedingungen
@@ -137,6 +148,9 @@ Ein Beispiel für ein Programm währe eine dezentrale Währung, wie sie derzeit 
 \newpage
 \section{Digitale Geteiltes Objekt}
 
+% Inhalte können referenziert werden, doch wer stellt die referenz bereit?
+
+% Betrachtung von Sprachen die contextfrei interpretiert werden.
 Digitale Geteilte Objekte müssen in digitaler repräsentation vorliegen, sowie für die Anteilseigner in verschlüsselter oder unverschlüsselter form zugänglich sein.
 
 Beispiele währen: 
@@ -169,7 +183,8 @@ Ein \textbf{geteiltes digitales Objekt} ist ein Tupel $O_G=(A, K, w, rate, conse
   \[consens: A\times K\times w \times rate \rightarrow L(G)\] 
 \end{enumerate}
 
-Sei $\mathbf{SOBJ_G}$ die Menge aller geteilten Objekte in der Grammatik $G$.
+Sei $\mathbf{SOBJ_G}$ die Menge aller geteilten Objekte in der Grammatik $G$ sowie 
+ $\mathbf{KAND_G}:= \{ K_G | K_G \subseteq L(G) \}$ die Menge aller möglichen Kandidatenmengen.
 % \end{mydef}
 
 
@@ -209,14 +224,45 @@ Eine Konsensfunktion entscheidet über die Ausführung der Kontrolle. Dabei kann
 % $M_O \subseteq A$ ist die Menge aller Member von $O$.
 
 
+\subsection{Kandidaten}
+
+Eine wichtige Frage ist, ob alle syntaktisch validen Kandidaten zugelassen werden, oder nur semantisch valide. Falls nur semantisch valide zugelassen werden stellt sich die Frage wo geschieht diese Validierung.
 
 \subsection {Transaktionen}
 
-Transaktionen werden \textbf{immer} von einem Akteur $a$ ausgelöst und besitzen die Form $(a, O')$. $O'$ ist dabei das manipulierte geteilte Objekt.
+Transaktionen sind Manipulationen des derzeitigen Zustandes des Objektes. Sie werden \textbf{immer} von einem Akteur $a$ ausgelöst und besitzen die Form $(a, O')$. $O'$ ist dabei das manipulierte geteilte Objekt.
 
-Wir betrachten vorerst nur die Manipulation der Kandidatenmenge $K$, der Besitzgewichtung $w$ sowie der Kandidatenbewertung $rate$. 
+Wir betrachten vorerst nur die Manipulation der Kandidatenmenge $K$ sowie der Kandidatenbewertung $rate$. 
+
+
+
 % Hierzu wird die Bedingungen gestellt, dass bestehende Kandidaten nicht entfernt werden ($K \subseteq K'$).
 
+
+\subsection{Konsens}
+
+
+% Die Idee hier ist, dass die transitive Hülle der Delegationen als
+% Attribut während der Ableitung vererbt(inherited) wird. Die Votemenge
+% wird hingegen als Attribut synthetisiert. Die Delegationen zusammen mit
+% den Stimmen quantifizieren jede Option aus einer Optionsmenge und wählen
+% eine Konsens-Option.
+% 
+% 
+% 
+% \begin{itemize}
+% \itemsep1pt\parskip0pt\parsep0pt
+% \item
+%   zirkuläre delegationen
+% \item
+%   implekation von Arrow's Theorem auf strategisches voten
+% \end{itemize}
+
+
+\subsection {Bewertung}
+
+%todo: bewertung kann kontextfrei sein -> an die spracherweiterung binden? 
+%todo: für kontextsensitive bewertungen gibt es 1) deligationen und 2) direkte kandidatenbewertungen
 
 \subsection {Qualitätskriterien}
 
@@ -238,18 +284,30 @@ Für die Implementation ist auf folgende Qualitätskriterien zu achten:
 % es ist einfach für einen Akteur eine Bewertung über viele Kandidaten abzugeben.
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     IMPLEMENTATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Implementation}
+\section{Optimierung}
 
-\subsection{Einleitung}
-Eine Idee hinter der Implementation ist nah am Parsebaum der Grammatik zu arbeiten um die Kandidatenmenge dadurch zu komprimieren. Die Kandidatenmenge ergibt sich durch die verschiedenen Kombination der mehrdeutigen Optionen, die an jedem Ableitungsschritt entstehen können.
+\subsection{Optimierung der Kandidatenmenge}
+Die Idee hinter der Optimierung ist nah am Parsebaum der Grammatik zu arbeiten und die Grammatik so zu erweitern, dass die Wöterer der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. Redundant auftauchende Stellen zwischen den Wörtern werden zusammengefasst. An jedem Ableitungsschrit wird eine Mehrdeutigkeit zugelassen. Die Kandidatenmenge ergibt sich durch die verschiedenen Kombination der mehrdeutigen Ableitung.
 
-Der derzeitige Ansatz ist es eine Grammatikerweiterung $S: CFG \rightarrow CFG$ zusammen mit einem Isomorphismus $\phi: SOBJ_G \rightarrow L(S(G))$ und einer Konsensfunktion $c: L(S(G)) \rightarrow L(G)$ zu finden, so dass alle Transaktionen des Objektes als Transaktionen eines contextfreien Wortes angesehen werden können. Die Transaktionsbedingungen können als Struktur des Wortes aufgefasst werden.
+Dazu muss es eine Grammatikerweiterung $S: CFG \rightarrow CFG$ gefunden werden.
+Um zu zeigen, dass es sich bei $S$ um die gesuchte Funktion handelt, müss die Existenz der Funktionen $\phi: KAND_G \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow KAND_G$ gezeigt werden, sowie folgende Bedingungne erfüllt sein:
+
+\begin{align}
+ K_G &\subseteq \phi\circ\phi^{-1}(K_G) \\
+ |\phi(K_G)| &\lesssim \sum_{k\in K_G} |k|
+\end{align}
+
+In Bedingung (1) ist es zulässig, dass neue Kandidaten hinzu kommen, solange sie valide Wörter in der $L(G)$ Sprache bilden. 
+\TODO[inline]{diskutieren ob hier nicht die stärkere bedingung $\phi\circ\phi^{-1} = id_{KAND_G}$ besser währe}
+In Bedingung (2) werden Edge-Cases ausgeschloßen, die nur bei kleinen diversen lösungen auftauchen können. (z.B.: $\{a\ b\}$)
+
+
+% so dass alle Transaktionen des Objektes als Transaktionen eines contextfreien Wortes angesehen werden können. Die Transaktionsbedingungen können als Struktur des Wortes aufgefasst werden.
 
 % Sei $\Sigma$ eine Signatur der Form $(w,0)$. Sei $A$ eine dazu passende Algebra der Form $(L(S(G)),w)$. Der derzeitige Ansatz ist ein Isomorphismus $\phi$ zu funden
 
@@ -266,7 +324,7 @@ Der derzeitige Ansatz ist es eine Grammatikerweiterung $S: CFG \rightarrow CFG$ 
 % Die validität einer Sprache ist jedoch meist nicht nur aus der kontextfreien syntax zu schließen. So werden namensresolutionen und typisierung beim compilieren in späteren schritten auf eine kontext sensitive weise überprüft. Dies
 % Syntax von Programmiersprachen sind nicht kontextfrei, sondern Kontextsensitiv \cite{Otto}
 
-\subsection{Sprach-Erweiterung}
+% \subsection{Sprach-Erweiterung}
 
 % Abhängig von einer gegebenen Programmiersprache $G=(N,T,S,P)$ soll eine Erweiterte Programmiersprache $L(S(G))$ konstruiert werden. Die Wörter der neuen Sprache repräsentieren ein geteiltes Programm $O$ und besitzen folgende Informationen:
 
@@ -289,8 +347,8 @@ Der derzeitige Ansatz ist es eine Grammatikerweiterung $S: CFG \rightarrow CFG$ 
 % \end{enumerate}
 
 
-\subsection{Bewertung}
-Diese werden entweder \textbf{direkt}, also vom Akteur selber, oder \textbf{indirekt} also durch eine Delegation an einen anderen Akteur angegeben.
+% \subsection{Bewertung}
+% Diese werden entweder \textbf{direkt}, also vom Akteur selber, oder \textbf{indirekt} also durch eine Delegation an einen anderen Akteur angegeben.
 % \subsubsection{Intuition}
 % 
 % 
@@ -310,58 +368,119 @@ Diese werden entweder \textbf{direkt}, also vom Akteur selber, oder \textbf{indi
 % 
 % \end{verbatim}
 
-\subsection{Grammatikerweiterung}
+\subsection{Grammatikerweiterung S}
 
 Sei $G = (N,T,S,P)$ eine eindeutige contextfreie Grammatik.
 
-Eine Erweiterung auf eine SCFG definieren wir als
-$S(G) := (N',T',S',P')$, mit:
+Eine Kompression der Kandidatenmenge wird definiert als:
+\\$S(G) := G' = (N', T', S, P')$, mit:
 
-$N' := N \cup \{O,D,A\}\ mit\ O,D,A\notin N$
+$N' := N \cup \{ O \}\ mit\ O \notin N$
 
-$T' := T \cup \{[ , ], \oplus, number, float, hash \}\ mit\ [,],\oplus \notin T$
+$T' := T \cup \{[ , ] \}\ mit\ [,] \notin T$
 
-\textbf{number} stellt eine ganzzahlige Nummer dar. \textbf{float}
-stellt eine fließkommazahl dar. \textbf{hash} ist ein identifikatior für
-einen akteur, hier ein 20 bytes hex string.
+% \textbf{number} stellt eine ganzzahlige Nummer dar. \textbf{float}
+% stellt eine fließkommazahl dar. \textbf{hash} ist ein identifikatior für
+% einen akteur, hier ein 20 bytes hex string.
 
-$P' := P\cup P_{Options} \cup P_{Start} \cup P_{Delegations} \cup P_{Voting} \cup P_{Acteurs}$
+$P' := P
+\cup P_{Options} 
+% \cup P_{Start} 
+% \cup P_{Delegations} 
+% \cup P_{Voting} 
+% \cup P_{Acteurs}
+$
 
-$P_{Options} := \{R \rightarrow [O][D], O \rightarrow r\oplus [V] O \vert R\rightarrow r\in P$
-mit $r\in\Sigma^*\}\cup\{ O \rightarrow \varepsilon \}$
+$P_{Options} := \{R \rightarrow [O], O \rightarrow r O \ \vert\ R\rightarrow r\in P$
+mit $r\in (N\cup T)^*\}\cup\{ O \rightarrow \varepsilon \}$
 
-$P_{Start} := \{S'\rightarrow [A]S\}$
+% $P_{Start} := \{S'\rightarrow [A]S\}$
 
-$P_{Delegations} := \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\}$
+% $P_{Delegations} := \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\}$
 
-$P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}$
+% $P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}$
 
-$P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}$
+% $P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}$
 
-\paragraph{zu zeigen}
+% \paragraph{zu zeigen}
+% 
+% \begin{itemize}
+% \itemsep1pt\parskip0pt\parsep0pt
+% \item
+%   eindeutigkeit der SCFG
+% \end{itemize}
 
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  eindeutigkeit der SCFG
-\end{itemize}
+\subsection{Morphismus}
+% Sei $\alpha,\beta$ und $o$ Wörter über dem Terminalalphabet. 
+% 
+% \[ \alpha, \beta, o \in T^* \] 
+% 
+% Sei $W_\alpha^\beta\subseteq K_G$ die Menge der Wörter, die $\alpha$ als Prefix und $\beta$ als Suffix besitzen. 
+% 
+% \[W_\alpha^\beta:=\{w|w=\alpha o\beta\land w\in K_G\}\]
+% 
+% 
+% Falls $|W_\alpha^\beta|>1$ sowie $|\alpha| + |\beta| > 0$ gilt, folgt aus der Eindeutigkeit der Ableitung von $G$, dass es eine Regel $(R\rightarrow r)\in P$ exestieren muss, so dass $S \rightarrow^*_P \alpha R \beta$, sowie $\forall \alpha o \beta \in W_\alpha^\beta: R \rightarrow_P^* o$.
+% 
+% Sei $O_\alpha^\beta := \{o\in T^* | \alpha o \beta \in W_\alpha^\beta \}$, so reicht es $\alpha, \beta$ sowie jedes Element von $O_\alpha^\beta$ anzugeben, um die Menge zu beschreiben. 
 
-\subsection{Compile}
+\newpage
+\subsubsection*{Algorithmus}
 
-Die Idee hier ist, dass die transitive Hülle der Delegationen als
-Attribut während der Ableitung vererbt(inherited) wird. Die Votemenge
-wird hingegen als Attribut synthetisiert. Die Delegationen zusammen mit
-den Stimmen quantifizieren jede Option aus einer Optionsmenge und wählen
-eine Konsens-Option.
+Sei $O^R:=\{w| R \rightarrow^* w \}$. Wir definieren $O_r \subseteq O^R$ als die Teilmenge der Wörter von $O^R$, die durch die Regelausführung $(R\rightarrow r)\in P$ gebildet wurden.  \\
 
 
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  zirkuläre delegationen
-\item
-  implekation von Arrow's Theorem auf strategisches voten
-\end{itemize}
+\begin{algorithm}
+  
+\caption{$\phi: KAND_G \rightarrow L(S(G))$}\label{euclid}
+\begin{algorithmic}[1]
+\Function{$\phi$}{$K_G$}
+\State\Return \Call{combine}{$K_G, S$}
+\EndFunction
+\\
+
+\Function{combine}{$O^R, R$} 
+\If {$|O^R| = 1$}
+    \Return $o\in O^R$
+\Else
+  \State $W \gets \{\}$
+  \For{ $(R\rightarrow r)\in P$ }
+    \State $O_{r} \subseteq O^R$
+    \State $W\gets W\cup$ \Call{parse}{$O_r, r$}
+  \EndFor
+  \If {$|W|=1$}
+  \State\Return $w\in W$
+  \Else
+  \State\Return $[w_0 w_1 ... w_{|W|}]$
+  \EndIf
+\EndIf
+\EndFunction  
+\\
+
+\Function{parse}{$O_r, r=s_0s_1...s_n$} 
+  \State $o\gets \epsilon$
+  \For{ $i\gets 0...n$ }
+    \If{$s_i\in T$}
+      \State$o \gets o \circ s_i$
+    \Else
+      \State$o \gets o \circ $ \Call{combine}{$O^s_i, s$}
+    \EndIf
+  \EndFor
+\EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+In Zeile (27) steht $O^s$ für die Menge der teilweörter von O, die an der Stelle von s, durch die regel R erzeugt werden.
+
+\TODO[inline]{$\phi^{-1}$ Definieren}
+\TODO[inline]{Definition und Algorithmus für $O^s_i$ angeben.}
+\TODO[inline]{Beweisen das der Algorithmus die Kritärien Erfüllt}
+
+
+
+\subsection{Abstimmungen}
+Meine erste Idee war es. Abstimmungen an Optionen zu binden. Dadurch würde sich ein Präferenzprofiel für einen Akteur ergeben, bei dem der Akteur die Kandidaten am besten Bewertet, bei denen die meisten Optionen enthalten sind, für die er sich ausgesprochen hat. Ein solchens vorgehen ist zwar bei kontextfreien inhalten sinvoll, da jedoch durch Programme ein kontextsensitiver Inhalt dargestellt ist, muss ein beliebiges Präferenzprofiel über der Kanddatenmenge möglich sein, dieses ist jedoch nicht möglich, wenn die Abstimmungen an Optionen gebungen werdnen.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    MANIPULATION 
@@ -400,6 +519,8 @@ $compile: L(G') \rightarrow L(G)$
 $w\in U$ ist das derzeitige Wort
 
 \subsection{Transitionen}
+
+\TODO[inline]{von delegationen und abstimmungen befreien}
 
 Bei der Interaktion eines Programms, ist der Akteur bekannt und wird
 durch ein Public Key ausgewiesen. Der Akteur kann in einem
@@ -480,6 +601,7 @@ Analog der Stimme
     \begin{itemize}
       \item macht eine Spracherweiterung überhaupt sinn?
     \end{itemize}
+  \item Die Manipulation der Besitzverteilung $w$ sowie der Grammatik $G$ eines Objektes O wird in Aussicht gestellt. Ihre untersuchung ist jedoch nicht gegenstand dieser Arbeit.
 \end{itemize}
 
 
@@ -495,6 +617,10 @@ Analog der Stimme
   \item Es wird keine Dezentrale version Implementiert.
   \item Die Delegationen sowie die Abstimmungen werden direkt Implementiert und können jederzeit beteiligten Akteuren zugeordnet werden. Eine anonyme Lösung, mithilfe einer homomorphen verschlüsselung oder eines zero knowledge proofs wird zwar diskutiert, jedoch weder konzipiert noch implementiert
 \end{itemize}
+
+\subsection*{Todos}
+
+\listoftodos[Notes]
 
 
 
