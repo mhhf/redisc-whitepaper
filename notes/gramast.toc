@@ -1,28 +1,17 @@
 \contentsline {section}{Einleitung}{2}{section*.2}
 \contentsline {section}{Dezentrale Verifizierung}{3}{section*.3}
-\contentsline {section}{Digitale Geteiltes Objekt}{4}{section*.4}
-\contentsline {subsection}{Repr\IeC {\"a}sentation}{5}{section*.5}
-\contentsline {subsubsection}{Akteure}{5}{section*.6}
-\contentsline {subsubsection}{Besitzverteilung}{5}{section*.7}
-\contentsline {subsection}{Kandidaten}{5}{section*.8}
-\contentsline {subsection}{Transaktionen}{5}{section*.9}
-\contentsline {subsection}{Konsens}{6}{section*.10}
-\contentsline {subsection}{Bewertung}{6}{section*.11}
-\contentsline {subsection}{Qualit\IeC {\"a}tskriterien}{6}{section*.12}
-\contentsline {section}{Optimierung}{6}{section*.13}
-\contentsline {subsection}{Optimierung der Kandidatenmenge}{6}{section*.14}
-\contentsline {subsection}{Grammatikerweiterung S}{7}{section*.16}
-\contentsline {subsection}{Morphismus}{7}{section*.17}
-\contentsline {subsection}{Abstimmungen}{9}{section*.22}
-\contentsline {section}{2. Manipulation}{9}{section*.23}
-\contentsline {subsection}{Qualit\IeC {\"a}tskrit\IeC {\"a}rien}{9}{section*.24}
-\contentsline {subsection}{States}{9}{section*.25}
-\contentsline {subsection}{Transitionen}{10}{section*.26}
-\contentsline {subsection}{Delegationsprogrammierung}{11}{section*.35}
-\contentsline {paragraph}{Context Delegation}{11}{section*.36}
-\contentsline {paragraph}{A/B Tester}{11}{section*.37}
-\contentsline {subsection}{zu untersuchen}{11}{section*.38}
-\contentsline {section}{Umfang der Arbeit}{11}{section*.39}
-\contentsline {section}{Aussicht}{12}{section*.44}
-\contentsline {subsection}{Dezentralisierung}{12}{section*.45}
-\contentsline {section}{Quellen}{13}{section*.46}
+\contentsline {section}{Digital Geteiltes Objekt}{4}{section*.4}
+\contentsline {subsection}{Definition}{4}{section*.5}
+\contentsline {subsection}{Erl\IeC {\"a}uterung}{4}{section*.6}
+\contentsline {section}{Anwendung auf regul\IeC {\"a}re Grammatiken}{6}{section*.12}
+\contentsline {subsection}{Optimierung der Kandidatenmenge}{6}{section*.13}
+\contentsline {subsection}{Optimierung der Kandidatenbewertung}{7}{section*.23}
+\contentsline {subsection}{Konsens}{8}{section*.34}
+\contentsline {subsection}{Transitionssystem}{8}{section*.36}
+\contentsline {subsection}{Delegationsprogrammierung}{10}{section*.46}
+\contentsline {paragraph}{Context Delegation}{10}{section*.47}
+\contentsline {paragraph}{Validator}{10}{section*.48}
+\contentsline {paragraph}{A/B Tester}{10}{section*.49}
+\contentsline {section}{Umfang der Arbeit}{10}{section*.50}
+\contentsline {section}{Aussicht}{12}{section*.55}
+\contentsline {section}{Quellen}{13}{section*.61}

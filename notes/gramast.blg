@@ -7,45 +7,45 @@ Warning--empty journal in Butterin2014
 Warning--there's a number but no volume in Butterin2014
 Warning--empty journal in Waldron2004
 Warning--empty journal in Wood2014
-You've used 3 entries,
+You've used 4 entries,
             2543 wiz_defined-function locations,
-            573 strings with 4714 characters,
-and the built_in function-call counts, 882 in all, are:
-= -- 84
-> -- 24
-< -- 3
-+ -- 6
-- -- 6
-* -- 55
-:= -- 154
-add.period$ -- 9
-call.type$ -- 3
-change.case$ -- 15
-chr.to.int$ -- 3
-cite$ -- 7
-duplicate$ -- 43
-empty$ -- 68
-format.name$ -- 12
-if$ -- 169
+            580 strings with 4820 characters,
+and the built_in function-call counts, 1253 in all, are:
+= -- 124
+> -- 32
+< -- 5
++ -- 8
+- -- 8
+* -- 75
+:= -- 210
+add.period$ -- 12
+call.type$ -- 4
+change.case$ -- 20
+chr.to.int$ -- 4
+cite$ -- 8
+duplicate$ -- 63
+empty$ -- 97
+format.name$ -- 16
+if$ -- 250
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 3
-newline$ -- 18
-num.names$ -- 9
-pop$ -- 20
+missing$ -- 4
+newline$ -- 23
+num.names$ -- 12
+pop$ -- 25
 preamble$ -- 1
-purify$ -- 18
+purify$ -- 24
 quote$ -- 0
-skip$ -- 32
+skip$ -- 49
 stack$ -- 0
-substring$ -- 37
-swap$ -- 0
-text.length$ -- 3
-text.prefix$ -- 3
+substring$ -- 60
+swap$ -- 6
+text.length$ -- 5
+text.prefix$ -- 4
 top$ -- 0
-type$ -- 24
+type$ -- 32
 warning$ -- 4
-while$ -- 8
-width$ -- 4
-write$ -- 36
+while$ -- 13
+width$ -- 5
+write$ -- 49
 (There were 4 warnings)
