@@ -5,47 +5,49 @@ The style file: alpha.bst
 Database file #1: library.bib
 Warning--empty journal in Butterin2014
 Warning--there's a number but no volume in Butterin2014
+Warning--empty journal in Glausch
+Warning--empty year in Glausch
 Warning--empty journal in Waldron2004
 Warning--empty journal in Wood2014
-You've used 5 entries,
+You've used 6 entries,
             2543 wiz_defined-function locations,
-            587 strings with 4930 characters,
-and the built_in function-call counts, 1611 in all, are:
-= -- 162
-> -- 40
-< -- 6
-+ -- 10
-- -- 10
-* -- 104
-:= -- 266
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 25
-chr.to.int$ -- 5
-cite$ -- 9
-duplicate$ -- 78
-empty$ -- 127
-format.name$ -- 20
-if$ -- 322
+            592 strings with 5027 characters,
+and the built_in function-call counts, 1991 in all, are:
+= -- 201
+> -- 48
+< -- 8
++ -- 12
+- -- 12
+* -- 127
+:= -- 321
+add.period$ -- 18
+call.type$ -- 6
+change.case$ -- 30
+chr.to.int$ -- 6
+cite$ -- 12
+duplicate$ -- 98
+empty$ -- 157
+format.name$ -- 24
+if$ -- 403
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 5
-newline$ -- 28
-num.names$ -- 15
-pop$ -- 28
+missing$ -- 6
+newline$ -- 33
+num.names$ -- 18
+pop$ -- 39
 preamble$ -- 1
-purify$ -- 30
+purify$ -- 36
 quote$ -- 0
-skip$ -- 60
+skip$ -- 74
 stack$ -- 0
-substring$ -- 92
-swap$ -- 7
-text.length$ -- 6
-text.prefix$ -- 5
+substring$ -- 118
+swap$ -- 12
+text.length$ -- 8
+text.prefix$ -- 6
 top$ -- 0
-type$ -- 40
-warning$ -- 4
-while$ -- 17
-width$ -- 6
-write$ -- 62
-(There were 4 warnings)
+type$ -- 48
+warning$ -- 6
+while$ -- 22
+width$ -- 7
+write$ -- 73
+(There were 6 warnings)

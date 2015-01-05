@@ -8,7 +8,7 @@
 \contentsline {subsection}{Optimierung der Kandidatenbewertung}{7}{section*.22}
 \contentsline {subsection}{Konsens}{8}{section*.30}
 \contentsline {subsection}{Transitionssystem}{8}{section*.32}
-\contentsline {subsection}{Delegationsprogrammierung}{11}{section*.42}
-\contentsline {section}{Umfang der Arbeit}{12}{section*.44}
-\contentsline {section}{Aussicht}{13}{section*.49}
-\contentsline {section}{Quellen}{14}{section*.55}
+\contentsline {subsection}{Delegationsprogrammierung}{12}{section*.45}
+\contentsline {section}{Umfang der Arbeit}{12}{section*.47}
+\contentsline {section}{Aussicht}{14}{section*.52}
+\contentsline {section}{Quellen}{15}{section*.58}

@@ -1,3 +1,6 @@
+% todo: refactor S(G) to gamma
+
+
 \documentclass[]{article}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -468,10 +471,10 @@ $
 % die eigenen löschen, hat jedoch keine Macht über die Stimmen und
 % Delegationen der Anderen.
 
-Die Manipulation wird durch ein \textbf{initialisiertes Transitionssysthem $T=(S,I,\tau)$} beschrieben.
+Die Manipulation wird durch ein \textbf{initialisiertes Transitionssysthem $T=(M,I,\tau)$} beschrieben nach \cite{Glausch}.
 
-Sei $G = (N,T,S,P)$ eine rechtsreguläre Grammatik sowie
-$S(G)=(N',T',S',P')$ die dazugehörige erweiterte Grammatik.
+$M$ ist die Zustandsmenge. $I\subseteq M$ ist die Anfangszustandsmenge und $\tau$ ist die Transformation von M sowie $\tau: M \rightarrow M$. Wir machen weiter die Einschränkung $|I|=1$.
+
 
 % \subsection{Qualitätskritärien}
 % 
@@ -480,9 +483,18 @@ $S(G)=(N',T',S',P')$ die dazugehörige erweiterte Grammatik.
 %   \item Die Verifikation der Transaktion durch das Netzwerk soll möglichst effizient sein.
 % \end{enumerate}
 
+\subsubsection*{Ablauf}
+Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gilt:
+
+\[ s_0 \in I \] 
+\[ s_{i+1} = \tau(s_i) \] 
+
 \subsubsection*{Zustände}
 
-Ein Zustand ist eine Struktur der Form $(U, w) \in S$
+Sei $G = (N,T,S,P)$ eine rechtsreguläre Grammatik sowie
+$S(G)=(N',T',S',P')$ die dazugehörige erweiterte Grammatik.
+
+Ein Zustand ist eine Struktur der Form $(U, w) \in M$
 
 U ist die Trägermenge der Struktur und besteht aus den Wörtern der Sprache $L(S(G))$:
 \[U := L(S(G))\]
@@ -490,8 +502,37 @@ U ist die Trägermenge der Struktur und besteht aus den Wörtern der Sprache $L(
 % $consens$ ist die für $L(S(G))$ definierte konsens Funktion:
 $w\in U$ ist das derzeitige Wort
 
-\subsubsection*{Transitionsbedingungen}
-Um die Validität einer Transaktion zu verifizieren, wird das derzeitige Wort $w$ zusammen mit der Aktualisierung $(a,w')$ betrachtet. Die Transaktion ist valide, falls eines der folgenden Fälle zutrifft:
+\subsubsection*{Aktualisierung}
+Sei $A$ die Menge der Akteure, $L(S(G))$ eine Sprache zur gegebenen Grammatik $G$. Dann ist das Tupel $\delta = (a,w')$ mit $a\in A,\ w'\in L(S(G))$ eine Aktualisierung. Sei $\Delta \subseteq A\times L(S(G))$ die Menge aller aktueller Aktualisierungen.
+
+Akteure können jederzeit die Aktualisierungsmenge erweitertn: 
+\[ \Delta' := \Delta \cup \{(a,w')\} \] 
+
+
+\subsubsection*{Transformation}
+Sei $\Delta \neq \emptyset$ 
+
+\[
+  \tau( w ) = 
+  \begin{cases}
+    w'  & \exists (a,w') \in \Delta \land \beta(a,w,w') = 1 \\
+    w   & andernfalls 
+  \end{cases}
+\] 
+
+Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, in dem die für die Transformation verwendete Aktualisierung entfernt wird. Wurde keine Aktualisierung verwendet, so sind alle Aktualisierungen invalide:
+
+\[ 
+  \Delta' = 
+  \begin{cases}
+    \Delta\setminus \{ (a, w' )\} & (a,w')\text{ wurde in der Transformation verwendet} \\
+    \{\} & andernfalls
+  \end{cases}
+\] 
+
+
+\subsubsection*{Validierung der Aktualisierung}
+Um die Validität einer Transformation zu verifizieren, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem vorgeschlagenem Wort $w'$ betrachtet. Die Transformation ist valide, falls eines der folgenden Fälle zutrifft:
 
 \subsubsection*{Optionsmengen}
 Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange die erzeugte Kandidatenmenge durch $\phi^{-1}(w')$ valide bleibt, sowie die Bewertungen der Kandidaten $\phi^{-1}(w)$ nicht verändert werden. Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten, sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
@@ -525,7 +566,7 @@ valide Substitution: \\
 \[ w' = w_{0..i-1}\ \alpha[o r\oplus []][d]\ w_{j+1..n}  \] 
 
 $r$ muss dabei Delegations- und Stimmfrei sein sowie neu:
-\[ \phi^{-1}(w) \cap \phi^{-1}(w_{0..i-1}\ \alpha[r\oplus []][d]\ w_{j+1..n}) = \varnothing \] 
+\[ \phi^{-1}(w) \cap \phi^{-1}(w_{0..i-1}\ \alpha[r\oplus []][d]\ w_{j+1..n}) = \emptyset \] 
 
 
 \subsubsection*{Hinzufügen einer Stimme}
