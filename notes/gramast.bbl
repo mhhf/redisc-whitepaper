@@ -6,6 +6,11 @@ V~Butterin.
   platform}.
 \newblock (January):1--36, 2014.
 
+\bibitem[Knu68]{Knuth1968}
+Donald~E. Knuth.
+\newblock {Semantics of context-free languages}.
+\newblock {\em Mathematical Systems Theory}, 2(2):127--145, June 1968.
+
 \bibitem[Nak08]{Nakamoto2008}
 Satoshi Nakamoto.
 \newblock {Bitcoin: A peer-to-peer electronic cash system}.

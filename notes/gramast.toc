@@ -3,15 +3,12 @@
 \contentsline {section}{Digital Geteiltes Objekt}{4}{section*.4}
 \contentsline {subsection}{Definition}{4}{section*.5}
 \contentsline {subsection}{Erl\IeC {\"a}uterung}{4}{section*.6}
-\contentsline {section}{Anwendung auf regul\IeC {\"a}re Grammatiken}{6}{section*.12}
-\contentsline {subsection}{Optimierung der Kandidatenmenge}{6}{section*.13}
-\contentsline {subsection}{Optimierung der Kandidatenbewertung}{7}{section*.23}
-\contentsline {subsection}{Konsens}{8}{section*.34}
-\contentsline {subsection}{Transitionssystem}{8}{section*.36}
-\contentsline {subsection}{Delegationsprogrammierung}{10}{section*.46}
-\contentsline {paragraph}{Context Delegation}{10}{section*.47}
-\contentsline {paragraph}{Validator}{10}{section*.48}
-\contentsline {paragraph}{A/B Tester}{10}{section*.49}
-\contentsline {section}{Umfang der Arbeit}{10}{section*.50}
-\contentsline {section}{Aussicht}{12}{section*.55}
-\contentsline {section}{Quellen}{13}{section*.61}
+\contentsline {section}{Anwendung auf regul\IeC {\"a}re Grammatiken}{5}{section*.11}
+\contentsline {subsection}{Optimierung der Kandidatenmenge}{5}{section*.12}
+\contentsline {subsection}{Optimierung der Kandidatenbewertung}{7}{section*.22}
+\contentsline {subsection}{Konsens}{8}{section*.30}
+\contentsline {subsection}{Transitionssystem}{8}{section*.32}
+\contentsline {subsection}{Delegationsprogrammierung}{11}{section*.42}
+\contentsline {section}{Umfang der Arbeit}{12}{section*.44}
+\contentsline {section}{Aussicht}{13}{section*.49}
+\contentsline {section}{Quellen}{14}{section*.55}

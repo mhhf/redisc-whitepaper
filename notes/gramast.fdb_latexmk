@@ -1,7 +1,7 @@
 # Fdb version 3
-["bibtex gramast"] 1419946512 "gramast.aux" "gramast.bbl" "gramast" 1419946987
+["bibtex gramast"] 1420394046 "gramast.aux" "gramast.bbl" "gramast" 1420394351
   "/usr/local/texlive/2012/texmf-dist/bibtex/bst/base/alpha.bst" 1292289607 23907 a5f93555796fb564b924339521f10a7c ""
-  "gramast.aux" 1419946986 4365 775fece011a6040d8a0e1e0d8e8f82a1 ""
+  "gramast.aux" 1420394349 3501 ecd6806465f8614c58a0a6effece6bea ""
   "gramast.bcf" 0 -1 0 ""
   "library.bib" 1419868012 37249 a32903bc7134ad87b5f9948c7a25c8de ""
   (generated)
@@ -130,7 +130,7 @@
   (generated)
   "gramast.dvi"
   "gramast.log"
-["pdflatex"] 1419946983 "gramast.tex" "gramast.pdf" "gramast" 1419946987
+["pdflatex"] 1420394347 "gramast.tex" "gramast.pdf" "gramast" 1420394351
   "/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -342,12 +342,12 @@
   "/usr/local/texlive/2012/texmf-var/web2c/pdftex/pdflatex.fmt" 1362315308 3691571 bdd256a43527390f6cedbdda7266ad11 ""
   "/usr/local/texlive/2012/texmf.cnf" 1341108668 572 7ea7194897937febeb63145e1c3a1f03 ""
   "/usr/local/texlive/2012/texmf/web2c/texmf.cnf" 1419084182 31299 7fd2427f2450ea5345193dfb4fd7db98 ""
-  "gramast.aux" 1419946986 4365 775fece011a6040d8a0e1e0d8e8f82a1 ""
-  "gramast.bbl" 1419946513 611 6feaa37a776a04dc291405020b7aae2f "bibtex gramast"
-  "gramast.out" 1419946986 2047 b1740236e65002fc54e780abd070bf5e ""
-  "gramast.tdo" 1419946986 1520 10e45ca7f21297192173ef4f83ecbff7 ""
-  "gramast.tex" 1419946982 27338 1a37e82d9cbff09204025fd808fd8ee6 ""
-  "gramast.toc" 1419946986 1058 adc48e2bc59f4afc119e1237531a69c1 ""
+  "gramast.aux" 1420394349 3501 ecd6806465f8614c58a0a6effece6bea ""
+  "gramast.bbl" 1420394048 776 c225b15b26b5ac23a1d1d9e99415dcc4 "bibtex gramast"
+  "gramast.out" 1420394349 2047 9349fd609a8f7ec0d9a65d31663f57d5 ""
+  "gramast.tdo" 1420394349 1027 f12edea4ecb57a2c2c62ee9f8eab3561 ""
+  "gramast.tex" 1420394346 30275 7396a724306134e2011b35a6591a37a6 ""
+  "gramast.toc" 1420394349 886 6137475dcc86e433e26fe6a5c6df0f77 ""
   "graphvizzz.sty" 1419082395 1961 1424ee96043e5ec92ecab899e604d877 ""
   (generated)
   "gramast.out"
