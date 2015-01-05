@@ -343,7 +343,7 @@ Durch die lineare Struktur der Worte und somit auch der Delegationsmengen ergibt
 
 \subsubsection*{Besitzverteilung}
 
-Schließlich wird die Besitzverteilung ebenfalls als Teil der erweiterten Sprache angesehen. Dies erlaubt nun den Konsens des Objektes als Interpretation eines Wortes der $L(S(G))$ Sprache zu definieren. Transitionen werden als valide Manipulationen eines Wortes definiert. Transitionsbedingungen geben dabei Anforderungen an die Ableitungsstruktur des bisherigen Wortes sowie an das Manipulierte Wort. Dieses determiniert die Validität einer Transaktion.
+Schließlich wird die Besitzverteilung ebenfalls als Teil der erweiterten Sprache angesehen. Dies erlaubt nun den Konsens des Objektes als Interpretation eines Wortes der $L(S(G))$ Sprache zu definieren. Transformationen werden als valide Manipulationen eines Wortes definiert. Transformationsbedingungen geben dabei Anforderungen an die Ableitungsstruktur des bisherigen Wortes sowie an das Manipulierte Wort. Dieses determiniert die Validität einer Transaktion.
 
 % Akteure werden durch einen 20 byte hex String codiert.
 
@@ -357,9 +357,9 @@ Schließlich wird die Besitzverteilung ebenfalls als Teil der erweiterten Sprach
 
 
 \textbf{number} stellt eine ganzzahlige Nummer dar. \textbf{float}
-stellt eine Fließkommazahl dar, so dass $0\leq float \leq 1$. \textbf{hash} identifiziert einen Akteur, hier ist $hash$ ein 20 Bytes HEX-String.
-$
-\begin{array}{rl}
+stellt eine Fließkommazahl dar, so dass $0\leq float \leq 1$. \textbf{hash} identifiziert einen Akteur, hier ist $hash$ ein 20 Bytes HEX-String. \\
+
+\begin{align}
   S(G) :=& (N', T', S', P') \\
   N' :=& N \cup \{ O_R | (R\rightarrow r)\in P\land O_R \notin N\}\cup\{D, A\}\\
   T' :=& T \cup \{[ , ], \oplus, number, float, hash\ |\ [,],\oplus \notin T \}\\
@@ -371,13 +371,12 @@ $
   \cup P_{Acteurs}
   \\
   P_{Acteurs} :=& \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\} \\
-  P_{Options} :=& \{R \rightarrow [O_R][D], O_R \rightarrow r\oplus [V] O_R, O_R \rightarrow \varepsilon \ \vert\ R\rightarrow r\in P
-  \land r\in (N\cup T)^*\} \\
+  P_{Options} :=& \{R \rightarrow [O_R][D], O_R \rightarrow r\oplus [V] O_R, O_R \rightarrow \varepsilon \ \nonumber\\
+  &\vert\ R\rightarrow r\in P \land r\in (N\cup T)^*\} \\
   P_{Start} :=& \{S'\rightarrow [A][O_S][D]\} \\
   P_{Delegations} :=& \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\} \\
   P_{Voting} :=& \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}
-\end{array}
-$
+\end{align}
 
 
 \subsubsection*{zeige S(G) ist eindeutig}
@@ -483,6 +482,18 @@ $M$ ist die Zustandsmenge. $I\subseteq M$ ist die Anfangszustandsmenge und $\tau
 %   \item Die Verifikation der Transaktion durch das Netzwerk soll möglichst effizient sein.
 % \end{enumerate}
 
+\subsubsection*{Wortteil}
+
+Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann definieren wir ein Wortteil: 
+\[ 
+w_{i..j} := 
+\begin{cases}
+  (t_k)_{i\leq k \leq j}\text{ mit }t_k\in T &|\ i\leq j \\
+  \varepsilon &|\ i>j
+\end{cases}
+\] 
+
+
 \subsubsection*{Ablauf}
 Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gilt:
 
@@ -505,7 +516,7 @@ $w\in U$ ist das derzeitige Wort
 \subsubsection*{Aktualisierung}
 Sei $A$ die Menge der Akteure, $L(S(G))$ eine Sprache zur gegebenen Grammatik $G$. Dann ist das Tupel $\delta = (a,w')$ mit $a\in A,\ w'\in L(S(G))$ eine Aktualisierung. Sei $\Delta \subseteq A\times L(S(G))$ die Menge aller aktueller Aktualisierungen.
 
-Akteure können jederzeit die Aktualisierungsmenge erweitertn: 
+Akteure können jederzeit die Aktualisierungsmenge erweitern: 
 \[ \Delta' := \Delta \cup \{(a,w')\} \] 
 
 
@@ -515,7 +526,7 @@ Sei $\Delta \neq \emptyset$
 \[
   \tau( w ) = 
   \begin{cases}
-    w'  & \exists (a,w') \in \Delta \land \beta(a,w,w') = 1 \\
+    w'  & \exists (a,w') \in \Delta \land \beta(a,w,w') = true \\
     w   & andernfalls 
   \end{cases}
 \] 
@@ -532,38 +543,53 @@ Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, 
 
 
 \subsubsection*{Validierung der Aktualisierung}
-Um die Validität einer Transformation zu verifizieren, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem vorgeschlagenem Wort $w'$ betrachtet. Die Transformation ist valide, falls eines der folgenden Fälle zutrifft:
+Um die Validität einer Transformation zu verifizieren, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem vorgeschlagenem Wort $w'$ betrachtet. Die Transformation ist valide, falls eines der folgenden Fälle zutrifft.
+Es gilt also: $\beta(a,w,w') = true$ genau dann wenn:
 
 \subsubsection*{Optionsmengen}
 Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange die erzeugte Kandidatenmenge durch $\phi^{-1}(w')$ valide bleibt, sowie die Bewertungen der Kandidaten $\phi^{-1}(w)$ nicht verändert werden. Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten, sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
 
 \subsubsection*{Erzeugen einer Optionsmenge}
 
-Sei $w=w_{0..n}=w_0w_1...w_n$ das derzeitige Wort. Dann besitzt $w$ ein Wortteil der Form $w_{i..j}=\alpha o_1 \oplus [v]$. Die Option besitzt im Ableitungsbaum folgende Struktur:
+Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$
 
+\begin{eqnarray}
+  w &=& w_{0..n} \\
+  w_{i..j} &=& \alpha o_1 \oplus [v] \\
+  S' &\rightarrow^*& w_{0 .. (i-1)}\ O\ w_{(j+1) .. n}\\
+  O &\rightarrow^*& w_{i..j} \\
+  R &\rightarrow^*& o_1 \\
+  R &\rightarrow^*& o_2 \\
+  w' &=& w_{0..i-1}\ \alpha [o_1\oplus [v] o_2\oplus []][]\ w_{j+1 .. n}
+\end{eqnarray}
+
+
+Für $w$ hat $O$ folgende Struktur:
 \begin{center}
 \Tree [.O $\alpha$ [.R $o_1$ ] $\oplus$ $\lbrack$ [.V v ] $\rbrack$ [.O ... ] ]
 \end{center}
 
-mit $\alpha \in T'^+$ und $o_1, o_2 \in T'^*$ mit $R\rightarrow_p^* o_1$ und $V \rightarrow_P^* v$.
 
-Sei weiter $R\rightarrow_p^* o_2$ so, dass $o_2$ frei von Delegationen und Stimmen ist. Dann ist $\alpha [o_1\oplus [v] o_2\oplus []][]$ eine valide Substitution für die ursprüngliche Option mit der Struktur:
-
+Für $w'$ besitzt O folgende Struktur:
 \begin{center}
 \Tree [.O $\alpha$ [.R $\lbrack$ [.O $o_1$ $\oplus$ $\lbrack$ [.V v ]  $\rbrack$ [.O $o_2$ $\oplus$ $\lbrack$ [.V $\epsilon$ ] $\rbrack$ ] ] $\rbrack$ $\lbrack$ [.D $\epsilon$ ] $\rbrack$ ] $\oplus$ $\lbrack$ $\rbrack$ [.O ... ] ]
 \end{center}
 
-\[ w' = w_{0..i-1}\ \alpha [o_1\oplus [v] o_2\oplus []][]\ w_{j+1 .. n} \] 
+Dabei muss $o_2$ frei von Delegationen und Stimmen sein, sowie $o_2$ muss relativ zu $o_1$ neu sein.
 
 
 \subsubsection*{Erweitern einer Optionsmenge}
+ 
+Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$
 
-
-Sei $w_{i..j} = \alpha[o][d]$ ein Wortteil in $w$ mit
-$O_R\rightarrow_P^* o, D \rightarrow^* d$ mit $o,d\in T'^* $ \\
-Dann ist $\alpha[o r\oplus []][d]$ mit $R \rightarrow_P^* r, r\in T'^*$ eine
-valide Substitution: \\
-\[ w' = w_{0..i-1}\ \alpha[o r\oplus []][d]\ w_{j+1..n}  \] 
+\begin{eqnarray}
+  w &=& w_{0..n} \\
+  w_{i..j} &=& \alpha[o][d] \\
+  R   & \rightarrow ^*& w_{i..j}\\
+  O_R & \rightarrow_P^*& o\\
+  O_R & \rightarrow ^* & r\\
+  w' & = & w_{0..(i-1)}\ \alpha[o r\oplus []][d]\ w_{(j+1)..n} 
+\end{eqnarray}
 
 $r$ muss dabei Delegations- und Stimmfrei sein sowie neu:
 \[ \phi^{-1}(w) \cap \phi^{-1}(w_{0..i-1}\ \alpha[r\oplus []][d]\ w_{j+1..n}) = \emptyset \] 
@@ -577,26 +603,38 @@ Dann ist $w' = w_{0 .. i-1}\ r \oplus [v[h n]]\ w_{j+1 .. n}$ mit $0\leq n\leq 1
 
 \subsubsection*{Löschen einer Stimme}
 
-Sei $w_{i..j}= r\oplus [v [hn] v']$
+Sei $a\in A, v,v'\in T'^*$
 
-Dann ist $w' = w_{0..i-1} r\oplus [v] w_{j+1..n}$ eine valide Substitution.
+\begin{eqnarray}
+  w &=& w_{0..n} \\
+  w_{i..j}&=& r\oplus [v [an] v'] \\
+  w' &=& w_{0..(i-1)} r\oplus [vv'] w_{(j+1)..n}
+\end{eqnarray}
+
 
 \subsubsection*{Hinzufügen einer Delegation}
-Da die Reihenfolge der Delegationen wichtig ist, für die Auflösung konkurierender Delegationen, ist das Hinzufügen einer Delegation an jeder Stelle in einer Delegationsmenge möglich.
+Da die Reihenfolge der Delegationen wichtig ist, für die Auflösung konkurierender Delegationen, daher ist das Hinzufügen einer Delegation an jeder Stelle in einer Delegationsmenge möglich.
 
-Sei $w_{i..j} = [o][d_1 .. d_n]$ mit $d_k = [hash1_k\ hash2_k]$ und $k,n\in \mathbb{N} \land k\leq n$
+Sei $o,d_i \in T'^*$ sowie $a'\in A$ und $a'\neq a$
 
-Dann ist w' eine valide Substitution:
-\[ w' = w_{0 .. i-1}\ [o][d_1 .. d_{k-1} [hash_a\ hash_d] d_k .. d_n ]\ w_{j+1 .. n} \]  
-Dabei ist $hash_a$ der Hash des ausführenden Akteurs sowie $hash_d$ der Hash des Deleganten.
+\begin{eqnarray}
+  w &=& w_{0..n} \\
+  w_{i..j} &=& [o][d_1 .. d_n] \\
+  &&k,n\in \mathbb{N} \land k\leq n \\
+  d_k &=& [hash1_k\ hash2_k] \\ 
+  w' &=& w_{0 .. (i-1)}\ [o][d_1 .. d_{k-1} [a\ a'] d_k .. d_n ]\ w_{(j+1) .. n}
+\end{eqnarray}
 
 \subsubsection*{Löschen einer Delegation}
 
-Sei $hash_a$ der Hash des ausführenden Akteurs sowie $hash_d$ der Hash des Deleganten.
-\[ w_{i..j} = [o][d_1 .. d_{k} .. d_n ] \text{ mit } d_k = [hash_a\ hash_d] \]  
+Sei $o,d_i \in T'^*$ sowie $a'\in A$ und $a'\neq a$
 
-Dann ist $w'$ eine valide Substitution.
-\[ w' = w_{0 .. i-1}\ [o][d_1 .. d_{k-1} d_{k+1} .. d_n ]\ w_{j+1 .. n} \]  
+\begin{eqnarray}
+  w &=& w_{0..n} \\
+  d_k &=& [a\ a'] \\
+  w_{i..j} &=& [o][d_1 .. d_{k} .. d_n ] \\
+  w' &=& w_{0 .. (i-1)}\ [o][d_1 .. d_{k-1} d_{k+1} .. d_n ]\ w_{(j+1) .. n}
+\end{eqnarray}
 
 \subsection{Delegationsprogrammierung}
 Akteure können ihre Stimme nicht nur an externe Akteure delegieren, sondern auch an Contracts, welche in einer autonomen Weise abstimmen und so die Interessen der Akteure automatisch verfolgen. 
