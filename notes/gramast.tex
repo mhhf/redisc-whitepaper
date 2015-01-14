@@ -64,6 +64,9 @@
 
 \usepackage{xargs}                      % Use more than one optional parameter in a new commands
 
+% TODO: add improve and question
+\newcommandx{\IMPROVE}[2][1=]{\todo[linecolor=none,backgroundcolor=orange!25,bordercolor=none,#1]{\textbf{IMPROVE: }#2}}
+\newcommandx{\QUESTION}[2][1=]{\todo[linecolor=none,backgroundcolor=blue!15,bordercolor=none,#1]{\textbf{QUESTION: }#2}}
 \newcommandx{\TODO}[2][1=]{\todo[linecolor=none,backgroundcolor=gray!25,bordercolor=none,#1]{\textbf{TODO: }#2}}
 
 \def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
@@ -96,19 +99,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Einleitung}
+% überblick
+% problembeschreibung, literaturüberblick, related work, 
 
 % Es geht um Akteure, Besitz, Bewertung
 Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
 Dabei entsteht ein Inhalt durch Beiträge einzelner \textbf{Akteure}.
 Zentral ist die Frage nach dem \textbf{Besitz} des Inhaltes sowie die \textbf{Bewertung} der einzelnen Beiträge durch die Besitzer und damit ihren Anteil am \textbf{Gesamtergebnis}. 
 
+% Eine besitzbare Einheit kann als eine bestimmte Struktur von Teilen angesehen werden. Die Teile sind wiederum besitzbare Einheiten, deren Besitz vorerst unabhängig vom Besitz des Ganzen ist. Intuitiev sollte der Besitz des Ganzen proportional zu der komposition der Teile sein. Dabei entstehen folgende Fragem:
+% - wie berechnet sich die gewichtung eines Teiles.
+
+% Intuitiev sollte der initialle Besitzer eines Inhalts sein Schöpfer sein. Dieser kann sein Besitz bei einer einigung an dritte abgeben, oder der Allgemeinheit überlassen. Bei einem Kollaborativ entstandenem Inhalt, bewerten die Besitzer die Beiträge
+
 
 % Problem: der Verwaltung( Manipulation ) und der besitzallokation
 In dieser Arbeit wird dieses Problem für Inhalte einer regulären Sprache untersucht. Dafür wird ein dezentral validiertes Transitionssystem vorgestellt welches die Manipulation eines öffentlichen Ihnaltes durch Akteure steuert. Dafür wird eine Grammatik-Erweiterung vorgestellt, dessen Wörter Informationen über die Besitzallokation der Akteure, alternative Inhalte sowie deren Bewertung durch die Akteure beinhalten. Der Konsens der Akteure über den Inhalt wird als Interpretation des Wortes berechnet und ist durch die verfügbaren Informationen determiniert. 
 
+% Outline - kurze konkrete zusammenfassung was kommt
+
 \newpage
 
-
+% vorstellung
+% modellierung
+% implementation
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,7 +208,6 @@ Eine Konsensfunktion entscheidet über die Ausführung der Kontrolle.
 % Dabei kann eine Zustimmung von $\frac{1}{2}|O|$ eine Ausführung bedingen. Man spricht von einer \textbf{majorität}. Eine Zustimmung von $\frac{2}{3}|O|$ heißt \textbf{super majorität}.
 
 
-% Intuitiev sollte der initialle Besitzer eines Inhalts sein Schöpfer sein. Dieser kann sein Besitz bei einer einigung an dritte abgeben, oder der Allgemeinheit überlassen. Bei einem Kollaborativ entstandenem Inhalt, bewerten die Besitzer die Beiträge
 
 
 % Die Funktion $w_O: A \rightarrow \mathbb{N}$ gibt den Anteil von O an, der im Besitz von einem Akteur ist. 
@@ -303,11 +316,79 @@ $
 
 \subsubsection*{Definition $\phi$}
 
-\TODO[inline]{Definition $\phi$}
+
+
+Sei $S(\alpha,K)$ die Funktion, die den Größten gemeinsamen Präfix aller Kandidaten liefert, die den Präfix $\alpha$ enthalten:
+
+\[ E(\alpha, K) : \exists w\in K: w=\alpha\beta \] 
+
+\[ 
+  A(\alpha, K): 
+    \exists ! \beta \forall x, y\in K\exists t, t' \in T\cup\{\varepsilon\}: \\
+    ( x = \alpha \beta t \gamma_1 \land y = \alpha \beta t' \gamma_2 ) \Rightarrow 
+    ( t = \gamma_1 = \varepsilon \lor t' = \gamma_2 = \varepsilon \lor t \neq t' )
+\] 
+
+\[
+  S( \alpha, K ) := 
+  \begin{cases}
+    \beta & E(\alpha,K) \land A(\alpha,K) \\
+    \varepsilon & otherwise
+  \end{cases}
+\] 
+    
+% 1. Was ist wenn K leer ist, 
+%   s ist epsilon
+% was ist wenn K ein elementig ist, 
+%   
+% was ist wenn kein element den präfix alpha besitzt
+% was ist wenn alpha epsilon ist
+
+Sei $U$ die Funktion, die einem Präfix und einer Kandidatenmenge die Wörter zuordnet, die nach diesem Präfix kommen.
+\[ U( \alpha, K ) := \{t S(\alpha t, K) |\ \alpha t \beta \in K \land ( t\in (T \lor t=\beta=\varepsilon )) \} \] 
+
+Sei $Q$ die Funktion, die bei der übergabe einer Wortmenge K und einem präfix $\alpha$ eine Menge aller Wörter zurückliefert, die den Präfix $\alpha$ enthalten.
+
+\[ Q(\alpha, K):= \{x |x\in K\land x=\alpha\beta\text{ mit } \beta \in T^*\} \] 
+
+\[ 
+  O(\alpha, \beta, M):=
+  \begin{cases}
+    \beta & | |M| = 1 \\
+    \beta [E(\alpha, U( \alpha, M ), M)] &|otherwise
+    % [\bigcirc_{\beta \in U( \alpha, M )} (\beta O(\alpha \beta, Q(\alpha\beta, M))'\ ')] 
+  \end{cases}
+\] 
+
+\[ 
+  E( \alpha, B, M ) := 
+  \begin{cases}
+    \varepsilon & |B =  \{ \varepsilon \}\\
+    \beta & |B =  \{ \beta \}\\
+    (O(\alpha, \beta, Q(\alpha\beta, M))'\ ' E(\alpha, B\setminus \{\beta\}, M))\text{ mit }\beta\in B &| otherwise
+  \end{cases}
+\] 
+
+Dann ist $\phi := O( \varepsilon, S(\varepsilon, K), K)$ die gesuchte Funktion.
+
 
 \subsubsection*{Definition $\phi^{-1}$}
 
-\TODO[inline]{Definition $\phi^{-1}$}
+\[ 
+  \phi^{-1}(w) := 
+  \begin{cases}
+    U(\alpha, \beta) &| \alpha [ \beta ] = w \\
+    \{ w \}   &| otherwise
+  \end{cases}
+\] 
+
+\[ 
+  U( \alpha, w ):= 
+  \begin{cases}
+    \phi^{-1}(\alpha x) \cup U(\alpha,s) &| w = x '\ ' s \\
+    \phi^{-1}(\alpha w) &|otherwise
+  \end{cases}
+\] 
 
 \subsubsection*{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
   
@@ -689,9 +770,13 @@ Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%       Aussicht
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Aussicht}
+\section{Zusammenfassung und Ausblick}
+% outline nochmal
+% Auswertung - bewertende zusammenfassung
 
-\subsection*{Anwendung auf kontextfreie Grammatiken}
+\subsection*{Aussicht}
+
+\subsubsection*{Anwendung auf kontextfreie Grammatiken}
 
 % Die validität einer Sprache ist jedoch meist nicht nur aus der kontextfreien syntax zu schließen. So werden namensresolutionen und typisierung beim compilieren in späteren schritten auf eine kontext sensitive weise überprüft. Dies
 % Syntax von Programmiersprachen sind nicht kontextfrei, sondern Kontextsensitiv \cite{Otto}
@@ -699,12 +784,12 @@ Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandi
 % Validitätskritärien: Objekt hängt von keiner Grammatik ab, sondern von einer Mänge von Validitätskritärien von denen die Grammatik eine sein kann. Die validitätskritärien schränken den Raum der Kandidaten automatisch ein. Die ausgewählten Kandidaten der Kandidatenmenge sind somit alle valide. Ihre bewertung sind präferrenzen der akteure.
 % \[ K \subseteq VK \subseteq \bigcap_{v\in V} v \] 
 
-\subsection*{Dezentralisierung}
+\subsubsection*{Dezentralisierung}
 
-\subsection*{Anonymisierung}
+\subsubsection*{Anonymisierung}
 
-\subsection*{Manipulation der Besitzverteilung}
-\subsection*{Manipulation der Grammatik}
+\subsubsection*{Manipulation der Besitzverteilung}
+\subsubsection*{Manipulation der Grammatik}
 
 
 % \begin{itemize}

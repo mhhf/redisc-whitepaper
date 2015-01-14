@@ -5,10 +5,10 @@
 \contentsline {subsection}{Erl\IeC {\"a}uterung}{4}{section*.6}
 \contentsline {section}{Anwendung auf regul\IeC {\"a}re Grammatiken}{5}{section*.11}
 \contentsline {subsection}{Optimierung der Kandidatenmenge}{5}{section*.12}
-\contentsline {subsection}{Optimierung der Kandidatenbewertung}{7}{section*.22}
-\contentsline {subsection}{Konsens}{8}{section*.30}
-\contentsline {subsection}{Transitionssystem}{8}{section*.32}
-\contentsline {subsection}{Delegationsprogrammierung}{13}{section*.46}
-\contentsline {section}{Umfang der Arbeit}{13}{section*.48}
-\contentsline {section}{Aussicht}{15}{section*.53}
-\contentsline {section}{Quellen}{16}{section*.59}
+\contentsline {subsection}{Optimierung der Kandidatenbewertung}{8}{section*.20}
+\contentsline {subsection}{Konsens}{9}{section*.28}
+\contentsline {subsection}{Transitionssystem}{9}{section*.30}
+\contentsline {subsection}{Delegationsprogrammierung}{13}{section*.44}
+\contentsline {section}{Umfang der Arbeit}{14}{section*.46}
+\contentsline {section}{Zusammenfassung und Ausblick}{15}{section*.51}
+\contentsline {section}{Quellen}{16}{section*.58}

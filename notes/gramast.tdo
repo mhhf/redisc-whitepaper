@@ -1,7 +1,5 @@
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Definition $\phi $}{6}{section*.15}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Definition $\phi ^{-1}$}{6}{section*.17}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $\phi \circ \phi ^{-1} = id_{P(K_G)}$}{6}{section*.19}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $|\phi (K_G)| \lesssim \DOTSB \sum@ \slimits@ _{k\in K_G}$}{7}{section*.21}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }konkurierende Delegationen}{7}{section*.25}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige S(G) ist eindeutig}{8}{section*.29}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }definiere $consens: L(S(G)) \rightarrow L(G)$}{8}{section*.31}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $\phi \circ \phi ^{-1} = id_{P(K_G)}$}{7}{section*.17}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $|\phi (K_G)| \lesssim \DOTSB \sum@ \slimits@ _{k\in K_G}$}{7}{section*.19}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }konkurierende Delegationen}{8}{section*.23}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige S(G) ist eindeutig}{9}{section*.27}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }definiere $consens: L(S(G)) \rightarrow L(G)$}{9}{section*.29}
