@@ -166,6 +166,37 @@ Ein Beispiel für ein Programm ist eine dezentrale Währung, wie sie derzeit vom
 Eine neue interessante Anwendung ist ein \textbf{geteilter} manipulierbar Inhalt, im folgenden Objekt genannt. 
 
 
+\subsection*{ Verschlüsselnung }
+
+\subsubsection*{asymetrische Verschlüsselung}
+Bei einem asymmetrischem verschlüsselungs verfahren generiert der Benutzer ein schlüsselpaar bestehend aus einem privatem und einem öffentlichem schlüssel. Der öffentliche Schlüssel wird aus dem Privatem erzeugt und wir veröffentlicht. Wir werden im folgenden für den öffentlichen Schlüssel ebenfalls Addresse nennen, die einen Akteur identifiziert. Agiert der Akteur im Netzwert, beweist dieser durch die Signierung der Aktionen, dass dieser tatsächlich im Besitz des Privatem schlüssel ist und beweist dadurch seine Identität.
+
+\subsubsection*{Signierung}
+
+Eine Aktion( oder auch Nachricht (msg) genannt) eines Akteurs kann mit dem privatem schlüssel signiert werden.
+\[ signMsg: priv \times msg \rightarrow sign \] 
+Mithilfe einer weiteren Funktion kann nun durch die öffentliche Addresse des Akteurs, der nachricht und deren Signatur verifiziert werden, ob die Nachricht auch tatsächlich vom angegebenem Akteur ausgelöst wurde.
+\[ verifyMsg: msg \times sign \times addr \rightarrow \{ True, False \} \] 
+Dadurch besteht nun eine Aktion eines Akteurs aus der nachricht, seiner Addresse sowie der signatur der nachricht.
+
+\[ (msg, sign, addr) \] 
+
+
+\section{Grundlangen}
+\TODO[inline]{Grundlagen ausformulieren}
+\subsection*{Reguläre Grammatiken}
+\subsection*{Kontextfreie Grammatiken}
+\subsection*{Greibach-Normalform}
+Da eine reguläre Grammatik ein Spezalfall einer Kontextfreien Grammatik ist und jede Kontextfreie Grammatik in der Greibach-Normalform darstellbar ist ist jede reguläre Grammatik ebenfalls in der Greibach-Normalform darstellbar.
+
+Warum muss die reguläre Grammatik in der Greibach-Normalform sein?
+Durch die Grammatikerweiterung werden die Regeln der Regulären Grammatik mit Optionsmengen erweitert. Gibt es eine Regel $A->B$, kommt es du einer mehrdeutung der Ableitung da eine Optionsmenge bei $A$ und $B$ erzeugt wird.
+
+
+
+% section  (end)
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   GETEILTES OBJEKT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -298,7 +329,7 @@ In Bedingung (2) werden Edge-Cases ausgeschlossen, die nur bei kleinen diversen 
 
 \subsubsection*{Grammatik-Erweiterung S1}
 
-Sei $G = (N,T,S,P)$ eine reguläre Grammatik.
+Sei $G = (N,T,S,P)$ eine reguläre Grammatik in der Greibach-Normalform.
 
 
 $
@@ -627,6 +658,19 @@ Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, 
 Um die Validität einer Transformation zu verifizieren, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem vorgeschlagenem Wort $w'$ betrachtet. Die Transformation ist valide, falls eines der folgenden Fälle zutrifft.
 Es gilt also: $\beta(a,w,w') = true$ genau dann wenn:
 
+% \subsubsection*{ACID Eigenschaft der Transaktionen}
+% 
+% Atomicity - Daten-Operationen entweder ganz oder gar nicht ausgeführt wird
+% 
+% Consistency - Sequenz von Daten-Operationen nach Beendigung einen konsistenten Datenzustand hinterlässt
+% 
+% Isolation - nebenläufig in Ausführung befindliche Daten-Operationen gegenseitig beeinflussen
+% 
+% Durability - erfolgreichen Abschluss einer Transaktion garantiert dauerhaft in der Datenbank gespeichert sind
+
+
+
+
 \subsubsection*{Optionsmengen}
 Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange die erzeugte Kandidatenmenge durch $\phi^{-1}(w')$ valide bleibt, sowie die Bewertungen der Kandidaten $\phi^{-1}(w)$ nicht verändert werden. Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten, sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
 
@@ -759,6 +803,9 @@ Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandi
   \end{itemize}
   \item Einige anschauliche Beispiele regulärer Sprachen mit beispielhaften Delegationsprogrammen werden implementiert und demonstriert.
 \end{itemize}
+
+
+
 
 \subsection*{Todos}
 
