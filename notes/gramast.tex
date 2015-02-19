@@ -64,6 +64,14 @@
 
 \usepackage{xargs}                      % Use more than one optional parameter in a new commands
 
+
+\usepackage{url}
+
+
+
+
+
+
 % TODO: add improve and question
 \newcommandx{\IMPROVE}[2][1=]{\todo[linecolor=none,backgroundcolor=orange!25,bordercolor=none,#1]{\textbf{IMPROVE: }#2}}
 \newcommandx{\QUESTION}[2][1=]{\todo[linecolor=none,backgroundcolor=blue!15,bordercolor=none,#1]{\textbf{QUESTION: }#2}}
@@ -84,7 +92,7 @@
 
 \author{Denis Erfurt}
 \date{\now}
-\title{Ein dezentrales Transitionssystem zur verteilten Steuerung von Inhalten einer regulären Sprache}
+\title{Ein dezentrales Transitionssystem zur manipulation von Wörtern einer regulären Sprache}
 
 
 \begin{document}
@@ -98,14 +106,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      EINLEITUNG
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Einleitung}
+\section*{Abstract}
 % überblick
 % problembeschreibung, literaturüberblick, related work, 
 
 % Es geht um Akteure, Besitz, Bewertung
-Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
-Dabei entsteht ein Inhalt durch Beiträge einzelner \textbf{Akteure}.
-Zentral ist die Frage nach dem \textbf{Besitz} des Inhaltes sowie die \textbf{Bewertung} der einzelnen Beiträge durch die Besitzer und damit ihren Anteil am \textbf{Gesamtergebnis}. 
+
+% sowie die Bewertung konkurierender Beitragskandidaten, deren Komposition 
+% 
+% sowie der repräsentation des Inhaltes aus einer Kandidatenmenge. 
+% 
+% sowie nach den \textbf{Bewertungen} der einzelnen Beiträge durch die Besitzer, deren Komposition als Gesamtergebnis den eigendlichen Inhalt biltet.
+% 
+% sowie der eigendlichen Form des Inhaltes, welches eine Komposition einzelner Beiträge ist
+
+
 
 % Eine besitzbare Einheit kann als eine bestimmte Struktur von Teilen angesehen werden. Die Teile sind wiederum besitzbare Einheiten, deren Besitz vorerst unabhängig vom Besitz des Ganzen ist. Intuitiev sollte der Besitz des Ganzen proportional zu der komposition der Teile sein. Dabei entstehen folgende Fragem:
 % - wie berechnet sich die gewichtung eines Teiles.
@@ -114,22 +129,189 @@ Zentral ist die Frage nach dem \textbf{Besitz} des Inhaltes sowie die \textbf{Be
 
 
 % Problem: der Verwaltung( Manipulation ) und der besitzallokation
-In dieser Arbeit wird dieses Problem für Inhalte einer regulären Sprache untersucht. Dafür wird ein dezentral validiertes Transitionssystem vorgestellt welches die Manipulation eines öffentlichen Ihnaltes durch Akteure steuert. Dafür wird eine Grammatik-Erweiterung vorgestellt, dessen Wörter Informationen über die Besitzallokation der Akteure, alternative Inhalte sowie deren Bewertung durch die Akteure beinhalten. Der Konsens der Akteure über den Inhalt wird als Interpretation des Wortes berechnet und ist durch die verfügbaren Informationen determiniert. 
+
+Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
+Dabei entsteht ein Inhalt durch Beiträge einzelner Akteure, die räumlich und zeitlich getrennt sein können.
+Zentral ist dabei die Frage wie der Konsens über einen Inhalt auf eine dezentrale Weise gebildet werden kann.
+In dieser Arbeit untersuchen wir den Prozess der verteilten Zusammenarbeit für Inhalte die als Wörter einer regulären Sprache beschrieben werden können. Dafür wird ein Modell mit einer Implementation einer Blockchain-Technologie vorgestellt: Ein öffentliches Transitionssysthem mit dezentral validierter Ausführung. 
+Ebenfalls wird eine Grammatik-Erweiterung mit einer Konsens-Funktion für eine beliebige reguläre Grammatik beschrieben. Die Wörter der erweiterten Grammatik beinhalten Informationen über die Besitzallokation der Akteure, alternative Beiträge und deren Bewertung. 
+Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wort der erweiterten Grammatik in ein Wort der ursprünglichen Grammatik.
+
 
 % Outline - kurze konkrete zusammenfassung was kommt
 
+
+
+% 
+
+
 \newpage
 
-% vorstellung
-% modellierung
-% implementation
+\section{Einleitung}
 
+Nehmen wir z.B. an, es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen gerecht, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse wie ein geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
+
+Wikipedia folgt einem streng hierarchischem Modell, in welchem Vertrauenspersonen die Inhalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
+Effizienter sind jedoch selbstregulierende Systeme, bei denen die Benutzer die Inhalte der Anderen bewerten. Beispiele wären die auf Voting und Reputation basierenden Plattformen Reddit und StackOverflow.
+Ein weiteres Beispiel für die Bewertung von Inhalten ist das Konzept 
+Liquid Democracy\cite{Lindenberg2010}, ein Vorschlag der Piratenpartei für eine moderne politische Konsensbildung.
+Ein solches Prinzip könnte man auf das Verwalten aller digital geteilter Inhalte verallgemeinern.
+
+Jedoch eignen sich diese Konzepte nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da Abstimmungen auf eine informale Weise vorgenommen werden. Es fehlt einer formalen Syntax, welche die Implikationen einer potentiellen Entscheidung vor der Wahl durch Simulation klarer zeigt, sowie nach der Wahl automatisch ausführt.
+Außerdem bedarf es bei den Ansätzen eines zentralisierten Servers, welcher als Angriffspunkt die Glaubwürdigkeit des Prozesses gefährdet, da die Akteure auf die Korrektheit des Servers vertrauen müssen. 
+
+Das 2009 eingeführte Konzept des Bitcoins und der Blockchain\cite{Nakamoto2008} bietet eine Alternative zur zentralen Server-Architektur. Dieses beschreibt ein Protokoll in einem Netzwerk, welches Inhalte aus einem gebildeten Konsens bereitstellt. Es besitzt eine einfache, nicht turing vollständige Skriptsprache, sowie durch ein asymmetrisches Kryptosystem, Rechte und Rollen. Neue Inhalte werden nach einer Validierung ebenfalls in den Konsens aufgenommen. Die einfachste Interpretation von Bitcoin ist die eines Werteträgers, wobei die Beschränkung der Skriptsprache wenig Spielraum für weitere Interpretationen lässt.
+Allgemeiner ist das auf dem Bitcoin-Protokoll aufbauende Ethereum\cite{Wood2014} , welches eine turing vollständige Skriptsprache besitzt.
+Es entsteht eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, autonome Verträge zwischen mehreren Parteien, dezentrale autonome Organisationen (DAO) oder profitorientierte Kooperationen (DAC), die allesamt Werte- und Informationsflüsse ermöglichen.
+Ein Beispiel einer solchen DAO ist das namecoin\footnote{http://namecoin.info/} Konzept, welches als Alternative zur ICANN\footnote{Internet Corporation for Assigned Names and Numbers} Organisation die TLD ".bit" verwaltet und in naher Zukunft die ICANN ablösen könnte.\cite{Corporation2014} Die Regeln unter denen DACs und DAOs funktionieren, wie das Bewilligen einer neuen TLD, werden auf der Ethereum VM programmiert.
+Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine zentrale Vertrauensinstanz, z.b. bestimmten Schlüsselpersonen.
+
+
+
+\section{Theoretisches}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      VERIFIZIERUNG 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Dezentrale Verifizierung}
+
+
+\subsection{Reguläre Grammatiken}
+Eine reguläre Grammatik definiert nach Noam Chomsky ist ein vier Tupel 
+$G = (N,T,S,P)$ bestehend aus 
+
+\begin{enumerate}
+\item $N$ - einer Menge nichtterminaler Symbole 
+\item $T$ - einer Menge terminaler Symbole, disjunkt zur nichtterminalen Menge $T\cap N = \emptyset$
+\item $S\in N$ - einem Startsymbol
+\item $P \subseteq N\times \{\epsilon\}\cup T \cup TN$ - einer Menge von Produktionen
+\end{enumerate}
+
+Eine Produktion $(R,r)\in P$ kann auch als $R\rightarrow r$ geschrieben werden.
+Sie sagt aus das das das Nichtterminal R in einem Schritt überführt werden kann zum Teilwort r:
+\[ \alpha R \rightarrow \alpha r \]. Sind hierfür n Schritte notwendig schreibt man
+$R \rightarrow^n r$. Um auszudrücken, dass $r$ generell aus $R$ ableitbar ist, kann man sich der reflexiv-transitiven Hülle der Produktionsregeln bedienen: $R \rightarrow ^* r$.
+
+Die Sprache, die von der regulären Grammatik erzeugt wird ist die Menge aller Wörter, die vom Startsymbol ableitbar sind: 
+\[ L(G) := \{w | S \rightarrow^* w \land w\in T^* \} \]
+Existiert eine reguläre Grammatik, die eine Sprache erzeugt, so heißt die Sprache ebenfalls regulär.
+
+Die Klasse der regulären Sprachen heißt $REG$.
+
+Ein Beispiel für eine reguläre Grammatik mit der dazugehörigen Sprache ist: 
+
+\begin{center}
+ $
+\begin{array}{rcl}
+  G &=& (N,T,S,P) \\
+  N &=& \{ S, A, B, C \} \\
+  T &=& \{ a, b, c \} \\
+  P &=& \{ \\ 
+  &&  S \rightarrow a A,
+    S \rightarrow b B,
+    S \rightarrow c C,
+    S \rightarrow \varepsilon,\\
+  &&  A \rightarrow a A,
+    A \rightarrow b B,
+    A \rightarrow c C,
+    A \rightarrow \varepsilon,\\
+  &&  B \rightarrow b B,
+    B \rightarrow c C,
+    B \rightarrow \varepsilon, \\
+  &&  C \rightarrow c C,
+    C \rightarrow \varepsilon,\\
+  &&\}
+\end{array}
+$ 
+\end{center}
+
+\[ L(G) = \{ a^xb^yc^z | x,y,z\in \mathbb{N} \} \] 
+
+\subsection{Kontextfreie Grammatiken}
+
+Kontextfreie Sprachen unterscheiden sich nur in den Produktionsregeln von den regulären. Anders als bei regulären, wird für die rechte Seite einer Produktionsregel keine Einschränkung gemacht: $P \subseteq N\times (N\cup T)^*$
+
+% \subsection*{Greibach-Normalform}
+% Da eine reguläre Grammatik ein Spezalfall einer Kontextfreien Grammatik ist und jede Kontextfreie Grammatik in der Greibach-Normalform darstellbar ist ist jede reguläre Grammatik ebenfalls in der Greibach-Normalform darstellbar.
+% 
+% Warum muss die reguläre Grammatik in der Greibach-Normalform sein?
+% Durch die Grammatikerweiterung werden die Regeln der Regulären Grammatik mit Optionsmengen erweitert. Gibt es eine Regel $A->B$, kommt es du einer mehrdeutung der Ableitung da eine Optionsmenge bei $A$ und $B$ erzeugt wird.
+
+\subsection{Trie}
+
+Ein Trie oder Prefixbaum ist eine Baum-Datenstruktur, die es erlaubt eine Menge von Worten über einem Alphabet effizient zu Speichern. Dabei werden gemeinsame Präfixe von wörtern in Knoten zusammengefasst.
+Eine Trie verwandte Datenstruktur, die Patricia-Trie reduziert den Speicherverbrauch indem sie alle Knoten mit nur einem Nachfolger zu einem Knoten zusammenfasst.
+Alle im Trie und Patricia-Trie gespeicherten Wörter können durch ein Tiefenscan wiederhergestellt werden. \cite{Morrison1968}
+Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aac, aacc, aaccc, aabbb, aabb \}$ ist:
+
+\begin{center}
+\Tree [.aa aaa c [.c c cc ] [.b bb b ] ]
+\end{center}
+
+
+\subsection{Transitionsystem}
+Ein initialisiertes Transitionssystem ($T$) \cite{Glausch} gibt einen formalismus vor um ein zustandbasiertes System zu beschreiben. Die Beschreibung zerteilt sich in die des Zustandraumes, beschrieben durch eine Menge $M$, die der Dynamik, beschrieben durch eine Übergangsfunktion $\tau: M \rightarrow M$ und einer Anfangszustandsmenge $I\subset M$.
+\[ T = (M,I,\tau) \] 
+
+
+% section  (end)
+
+\subsection{Kryptografie}
+
+\TODO[inline]{ecdsa}
+\TODO[inline]{hash}
+
+\subsubsection*{asymetrische Verschlüsselung}
+Bei einem asymmetrischem verschlüsselungs verfahren generiert der Benutzer ein schlüsselpaar bestehend aus einem privatem und einem öffentlichem schlüssel. Der öffentliche Schlüssel wird aus dem Privatem erzeugt und wir veröffentlicht. Wir werden im folgenden für den öffentlichen Schlüssel ebenfalls Addresse nennen, die einen Akteur identifiziert. Agiert der Akteur im Netzwert, beweist dieser durch die Signierung der Aktionen, dass dieser tatsächlich im Besitz des Privatem schlüssel ist und beweist dadurch seine Identität.
+
+\subsubsection*{Signierung}
+
+Eine Aktion( oder auch Nachricht (msg) genannt) eines Akteurs kann mit dem privatem schlüssel signiert werden.
+\[ signMsg: priv \times msg \rightarrow sign \] 
+Mithilfe einer weiteren Funktion kann nun durch die öffentliche Addresse des Akteurs, der nachricht und deren Signatur verifiziert werden, ob die Nachricht auch tatsächlich vom angegebenem Akteur ausgelöst wurde.
+\[ verifyMsg: msg \times sign \times addr \rightarrow \{ True, False \} \] 
+Dadurch besteht nun eine Aktion eines Akteurs aus der nachricht, seiner Addresse sowie der signatur der nachricht.
+
+\[ (msg, sign, addr) \]
+
+\subsection{Decentralized Autonomous Organization (DAO)}
+Eine DAO ist ein relativ neues Konzept, welches durch das populärwerden Technologien wie Bitcoin und Ethereum erstmals aufgetaucht ist. Die Fachwelt ist sich noch über die genaue Definition und die abgrenzung zu verwanten Konzepten größtenteils uneinig. Zwar exestieren Versuche "Decentralized Applications" (DAs,Dapps) wie BitTorrent oder den "Decentralized Autonomous Corporations" (DACs) von dem der DAOs Abzugrenzen, jedoch gibt es hier keine Garantie auf Persistenz der Begriffe sowie ihrer Definitionen, desshalb werden im folgenden die Begriffe DA, Dapp, DAC, DAO synonym verwendet.
+
+Intuitiv kann eine DAO als eine Gesellschaft verstanden werden, die ohne menschliche Einwirkung existiert und agiert. Sie kann ebenfalls als eine erweiterung des Open-Source Konzeptes betrachtet werden. Dabei ist nicht nur der \textbf{Programmcode öffentlich}, sondern auch ihre internen Berechnungen sowie wesentliche Teile ihrer Interkationen. Diese sind durch einen gemeinsamen \textbf{Konsens} von der Erzeugung bis zum aktuellen Zustand determiniert und nachvollziehbar. Dieser Konsens wird auf eine dezentrale Weise gebildet, um zu verhindern, dass eine zentrale Instanz den Konsens manipuliert sowie um Robustheit und Beständigkeit zu sichern.
+
+In ihren Aktionen kann die DAO interne, deterministische Berechnungen anstellen, mit anderen DAOs komunizieren und so auf Services zugreifen oder nicht selbst ausführbare Aufgaben, wie beispielsweise das Erweitern und Verbessern des Programmcodes, an Menschen deligieren. Ihr besitz kann durch Anteile determiniert werden, die unter anderen DAOs oder Menschen aufgeteilt sind. Diese berechtigen beteiligte Akteure zu verschiedenen Aktionen innerhalb ihrer Regeln wie z.B. einen Zugriff auf Dividenden oder anderen Ressourcen der DAO, partizipation bei internen Abstimmungen oder anderen spezifischen Aktionen. 
+
+Ethereum, Bitcoin und Namecoin sind allesamt Beispiele für unterschiedliche DAOs. Ethereum ist dabei gleichzeitig eine Plattform für andere DAOs.
+% In der Bitcoin DAO sind die Anteile eines Akteurs ander DAO ebenfalls ihr zweck. Durch die limitierung besitzen sie in Märkten einen Wert sodass die Anteile als Werteträger zu einer dezentralen währung werden.
+
+\TODO[inline]{Kapselung - Teilbereiche - Komponenten}
+
+Im folgenden möchten wir drei Teilberreiche von DAOs näher beleuchten. Als erstes die Funktionsweise des Blockchain Algorithmus, der eigendlichen Neuerung, die zum Entstehen von DAOs führte. Als nächstes dem Teil, der die Interaktionen der DAO steuert. Als letztes der Selbstmanipulation der DAO, also dem Teil, welcher die Manipulation der Regeln der DAO steuert.
+
+
+\subsubsection*{Dezentraler Konsens - Blockchain}
+
+Bitcoin hat mit der einführung der Blockchain eine elegante und Universelle Lösung für das Problem der Byzantinischen Generäle vorgeschlagen. Das Problem steht repräsentativ in den verteilten Systemen für die Schwierigkeit, einen Konsens zwischen Akteuren herzustellen, wenn einige, für Andere unbestimmte Akteure eigennützig sowie manipulativ agieren. 
+Bitcoin hat hier eine statistische Lösung presentiert: Es führt die dezentralität des Konsens auf die natürliche Knapheit einer Ressource zurück. Für Bitcoin ist es die Anzahl der Berechnungen, die ein Akteur in einer bestimmten Zeit machen kann. Ein General versucht dabei ein Mathematisches Rätsel zu lösen, welches statistisch gesehen 10 Minuten dauern müsste, wenn alle beteiligten Generäle an dem Problem arbeiten würden. Hat ein General eine Lösung gefunden, teilt er dieses an alle Ihm bekannten Generäle mit. Eine solche Lösung wird auch als "Block" bezeichnet. Jeder General arbeitet darauf hin mit dieser Lösung weiter und versucht sie zu erweitern, was wieder statistisch 10 Minuten der Kraft aller Generäle kosten müsste. Jeder General arbeitet mit der von ihm zuerst gesehenen längsten kette von Blöcken. Mit der Anzahl der Erweiterungnen konvergiert nun die beteiligung loyaler Generäle am Konsens zur majorität, falls diese tatsächlich in Besitz einer Mehrheit der Begrenzten Rechenressourcen besitzen.
+In einem Block befindet sich neben der vorhergehenden Lösung ebenfalls der aktuelle Konsenses solange er auf den vorergehenden aufbaut und valide ist.
+
+Das Lösen eines Rätsels für das Recht einen neuen Block bestimmen zu können, wird als "proof of work" oder kurz POW bezeichnet, da ein General eine Arbeitsleistung beweisen müssen, um den nächsten Block vorschlagen zu dürfen. Bitcoin und viele andere DAOs benutzen partielle hash invertierung als tatsächlichen POW Algorithmus. Dieser baut auf der Eigenschaft einer Hash-Funktion, dass es sehr einfach ist einen Hash einer Nachricht zu berechnen, jedoch sehr schwehr aus einem Hash eine Nachricht zu rekonstruieren, die diesen hash erzeugt. Der eigendliche Block besteht dabei aus einer referenz des vorherigen Blocks $(ref)$ zusammen mit dem neuen Konsens ($kons$) und einer $nonce$, die frei wählbar ist. Zudem existiert durch die vorherigen Blöcke bestimmte Schwierigkeit ($\varepsilon$), so dass die Rechenzeit für den neuen Block bei 10 Minuten bleibt. Akteure, die im Wettbewerb um einen neuen Block stehen (auch "Miner" genannt) müssen nun eine nonce finden so, dass einen Hashwert des Blockes unter der schwierigkeit liegt:
+\[ sha256(\ ref\ kons\ nonce\ ) < \varepsilon \] 
+
+POW ist jedoch umstritten, da das verbrauchen von Rechenressourcen nicht ökonomisch und umweltfreundlich ist. Um die Rechenpower des Bitcoinnetzwerkes in Relation zu setzen hatten die Top 500 Weltbesten Supercomputer der Welt im November 2014 gemeinsam eine Rechenleistung von 309 Pflop/s.\footnote{http://www.top500.org/lists/2014/11/ 18.02.2015} Das Bitcoinnetzwerk besitzt derzeit (18.02.2015) eine Rechenleistung von 4172436 Pflop/s.\footnote{http://bitcoinwatch.com/ 18.02.2015}.
+
+
+Neben POW gibt es jedoch auch andere Mechanismen für die Berechtigung einen Block erstellen zu dürfen. Hier gilt "Proof of Stake" (POS) und seine erweiterung "Deligated Proof of Stake"(DPOS) als interessant. Bei POS beweist ein Akteur, dass ihm ein bestimmter Anteil an der Blockchain zugehörigen DAO gehört. Bei  DPOS kann ein Anteilseigener zusätzlich sein Anteil an einen Miner deligieren und muss nicht selbst an der erstellung eines Blocks teilnehmen. Jedoch sind hier theoretische Attaken möglich (siehe dazu \cite{EthereumBlogPOS} \cite{Vasant2015}), weshalb diese POW noch nicht abgelöst haben. Bitshares \footnote{https://bitshares.org/blog/delegated-proof-of-stake/ 18.02.2015} - ein Bitcoin fork mit einem DPOS oder Peercoin\footnote{http://peercoin.net/ 18.02.2015} ein fork mit reinem POS sind realwirtschaftliche Beispiele für DAOs mit einem Alternativen Konsensmechanismus die zumindest zeigen, dass diese Mechanismen es schaffen ebenfalls in der Praxis zu bestehen.
+
+\TODO[inline]{coins einführen}
+
+Das erstellen von Blocks durch Miner ist zumindest bei Bitcoin ökonomisch motiviert. Die Bitcoin DAO schüttet eine Belohnung an den Miner aus, der einen neuen Block findet. Bei Bitcoin werden derzeit (18.02.2015) 25 Bitcoins ausgeschüttet, was zum derzeitigen Marktpreis (240\$/Btc) einem Wert von 6000\$/Block entspricht.  
+Zum Zeitpunt der ersten Blocks exestieren noch keine Coin-Bestände, diese werden von dem ersten Block an an konkurierende Miner für die Blockerstellung ausgeschüttet. Die größe der Belohnung wird mit der Zeit kleiner, bis irgendwann eine Menge von 21 Millionen coins ereicht ist. Eine andere Motivation der Miner ist eine Transaktionsgebühr, die ein Akteur seiner Transaktion anhängt. Diese Gebühr bekommt ein Miner, wenn er diese in seinem Block berücksichtigt.
+
+
+\subsubsection*{Interaktion}
+
+\subsubsection*{Turing Vollständigkeit}
 
 Das auf dem Bitcoin-Protokoll\cite{Nakamoto2008} aufbauende Ethereum \cite{Wood2014}, beschreibt ein P2P Protokoll zur dezentralen Verifizierung von Turing-Vollständigen Programmausführungen. 
 Es stellt einen gebildeten Konsens von Programmen mit aktuellen Zuständen bereit. 
@@ -162,47 +344,22 @@ Ein Beispiel für ein Programm ist eine dezentrale Währung, wie sie derzeit vom
   self.storage[to] = self.storage[to] + value
 \end{lstlisting}
 
+% NAMECOIN
+% if !contract.storage[msg.data[0]]:
+%     contract.storage[msg.data[0]] = msg.data[1]
+%     return(1)
+% else:
+%     return(0)
 
 Eine neue interessante Anwendung ist ein \textbf{geteilter} manipulierbar Inhalt, im folgenden Objekt genannt. 
 
-
-\subsection*{ Verschlüsselnung }
-
-\subsubsection*{asymetrische Verschlüsselung}
-Bei einem asymmetrischem verschlüsselungs verfahren generiert der Benutzer ein schlüsselpaar bestehend aus einem privatem und einem öffentlichem schlüssel. Der öffentliche Schlüssel wird aus dem Privatem erzeugt und wir veröffentlicht. Wir werden im folgenden für den öffentlichen Schlüssel ebenfalls Addresse nennen, die einen Akteur identifiziert. Agiert der Akteur im Netzwert, beweist dieser durch die Signierung der Aktionen, dass dieser tatsächlich im Besitz des Privatem schlüssel ist und beweist dadurch seine Identität.
-
-\subsubsection*{Signierung}
-
-Eine Aktion( oder auch Nachricht (msg) genannt) eines Akteurs kann mit dem privatem schlüssel signiert werden.
-\[ signMsg: priv \times msg \rightarrow sign \] 
-Mithilfe einer weiteren Funktion kann nun durch die öffentliche Addresse des Akteurs, der nachricht und deren Signatur verifiziert werden, ob die Nachricht auch tatsächlich vom angegebenem Akteur ausgelöst wurde.
-\[ verifyMsg: msg \times sign \times addr \rightarrow \{ True, False \} \] 
-Dadurch besteht nun eine Aktion eines Akteurs aus der nachricht, seiner Addresse sowie der signatur der nachricht.
-
-\[ (msg, sign, addr) \] 
-
-
-\section{Grundlangen}
-\TODO[inline]{Grundlagen ausformulieren}
-\subsection*{Reguläre Grammatiken}
-\subsection*{Kontextfreie Grammatiken}
-\subsection*{Greibach-Normalform}
-Da eine reguläre Grammatik ein Spezalfall einer Kontextfreien Grammatik ist und jede Kontextfreie Grammatik in der Greibach-Normalform darstellbar ist ist jede reguläre Grammatik ebenfalls in der Greibach-Normalform darstellbar.
-
-Warum muss die reguläre Grammatik in der Greibach-Normalform sein?
-Durch die Grammatikerweiterung werden die Regeln der Regulären Grammatik mit Optionsmengen erweitert. Gibt es eine Regel $A->B$, kommt es du einer mehrdeutung der Ableitung da eine Optionsmenge bei $A$ und $B$ erzeugt wird.
-
-
-
-% section  (end)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   GETEILTES OBJEKT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newpage
-\section{Digital Geteiltes Objekt}
+\section{(selbst) Modifikationsschicht einer DAO}
 \subsection{Definition}
 
 Ein \textbf{geteiltes digitales Objekt} ist ein Tupel $O_G=(A, K, w, rate, consens)$ bestehend aus:
@@ -222,7 +379,7 @@ Ein \textbf{geteiltes digitales Objekt} ist ein Tupel $O_G=(A, K, w, rate, conse
 Sei $\mathbf{SOBJ_G}$ die Menge aller geteilten Objekte in der Grammatik $G$ sowie 
  $\mathbf{P_G}:= \{ K_G | K_G \subseteq L(G) \}$ die Menge aller möglichen Kandidatenmengen.
 
-\subsection {Erläuterung}
+\subsection{Erläuterung}
 
 
 \subsubsection*{Besitzverteilung}
@@ -298,14 +455,18 @@ Für die Implementation ist auf folgende Qualitätskriterien zu achten:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     IMPLEMENTATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\TODO[inline]{Metasprache einführen}
+\TODO[inline]{Transitionsysthem einführen: problem der codierung}
 
 \section{Anwendung auf reguläre Grammatiken}
 
 \subsection{Optimierung der Kandidatenmenge}
-Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. Redundant auftauchende Präfixe der Kandidaten werden zusammengefasst. Dafür wird an jedem Ableitungsschritt eine Mehrdeutigkeit zugelassen die zu einer \textbf{Optionsmenge} zusammengefasst wird. Die Kandidatenmenge ergibt sich durch die Kombinationen der Präfixe mit den Optionen einer Optionsmenge.
+Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. Dieses kann einfach durch eine Trie-Datenstruktur realisiert werden die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist eben ein Wort, welcher von der gesuchten Grammatikerweiterung dargestellt werden soll. 
+
+Dafür wird an jedem Ableitungsschritt eine Mehrdeutigkeit zugelassen die zu einer \textbf{Optionsmenge} zusammengefasst wird. Die Kandidatenmenge ergibt sich durch die Kombinationen der Präfixe mit den Optionen einer Optionsmenge.
 
 Dazu muss es eine Grammatik-Erweiterung $S: REG\rightarrow CFG$ gefunden werden.
-Um zu zeigen, dass es sich bei $S$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi: P(K_G) \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow P(K_G)$ gezeigt werden, für die folgende Bedingungen erfüllt sein müssen:
+Um zu zeigen, dass es sich bei $S$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi: P(L(G)) \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow P(L(G))$ gezeigt werden, für die folgende Bedingungen erfüllt sein müssen:
 
 \begin{align}
   \phi\circ\phi^{-1} &= id_{P(K_G)} \\
@@ -328,6 +489,7 @@ In Bedingung (2) werden Edge-Cases ausgeschlossen, die nur bei kleinen diversen 
 % \end{enumerate}
 
 \subsubsection*{Grammatik-Erweiterung S1}
+
 
 Sei $G = (N,T,S,P)$ eine reguläre Grammatik in der Greibach-Normalform.
 
@@ -422,6 +584,9 @@ Dann ist $\phi := O( \varepsilon, S(\varepsilon, K), K)$ die gesuchte Funktion.
 \] 
 
 \subsubsection*{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
+
+Sei $T(K_G)$ die Trie Datenstruktur, die die Kandidatenmenge $K_G$ codiert.
+Wir wissen, dass es eine Funktion $\phi(K_G)=T(K_G)$ exestiert, sowie $\phi\circ\phi^{-1} = id_{P(L(G))}$. Zu finden ist demnach eine Funktion die ein Tire codiert zum Wort der Metasprache sowie wieder encodiert zur Tire.
   
 \TODO[inline]{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
 
@@ -473,7 +638,7 @@ stellt eine Fließkommazahl dar, so dass $0\leq float \leq 1$. \textbf{hash} ide
 
 \begin{align}
   S(G) :=& (N', T', S', P') \\
-  N' :=& N \cup \{ O_R | (R\rightarrow r)\in P\land O_R \notin N\}\cup\{D, A\}\\
+  N' :=& N \cup \{ O_R | (R\rightarrow r)\in P\land O_R \notin N\}\cup\{D, A, S'\}\\
   T' :=& T \cup \{[ , ], \oplus, number, float, hash\ |\ [,],\oplus \notin T \}\\
   P' :=& P
   \cup P_{Options} 
@@ -771,6 +936,16 @@ Sei $G=(T,N,P,S)$ eine rechtsreguläre Grammatik mit:
 
 Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandidaten der kontextsensitiven Sprache $L = \{ a^nb^nc^n\ |\ n\in N\}$ zu stimmen so, dass falls die Mehrheit der Akteure ihm seine Stimme delegieren, der Konsens-Kandidat ebenfalls ein Element der Sprache $L$ sein wird. Auf diese weise lassen sich von den Akteuren komplexe Programme erstellen um die Kandidatenmenge agil und autonom zu bewerten.
 
+\section{ Beispiele }
+
+\subsection*{ abc - Grammatik }
+\subsection*{ reddit - Grammatik }
+\subsection*{ memGenerator - Grammatik }
+
+
+
+% section  (end)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      IMPLEMENTATIONSPLAN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -858,4 +1033,3 @@ Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandi
 \bibliographystyle{alpha}
 
 \end{document}
-

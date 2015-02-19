@@ -1,14 +1,21 @@
-\contentsline {section}{Einleitung}{2}{section*.2}
-\contentsline {section}{Dezentrale Verifizierung}{3}{section*.3}
-\contentsline {section}{Digital Geteiltes Objekt}{4}{section*.4}
-\contentsline {subsection}{Definition}{4}{section*.5}
-\contentsline {subsection}{Erl\IeC {\"a}uterung}{4}{section*.6}
-\contentsline {section}{Anwendung auf regul\IeC {\"a}re Grammatiken}{5}{section*.11}
-\contentsline {subsection}{Optimierung der Kandidatenmenge}{5}{section*.12}
-\contentsline {subsection}{Optimierung der Kandidatenbewertung}{8}{section*.20}
-\contentsline {subsection}{Konsens}{9}{section*.28}
-\contentsline {subsection}{Transitionssystem}{9}{section*.30}
-\contentsline {subsection}{Delegationsprogrammierung}{13}{section*.44}
-\contentsline {section}{Umfang der Arbeit}{14}{section*.46}
-\contentsline {section}{Zusammenfassung und Ausblick}{15}{section*.51}
-\contentsline {section}{Quellen}{16}{section*.58}
+\contentsline {section}{Einleitung}{3}{section*.3}
+\contentsline {section}{Theoretisches}{4}{section*.4}
+\contentsline {subsection}{Regul\IeC {\"a}re Grammatiken}{4}{section*.5}
+\contentsline {subsection}{Kontextfreie Grammatiken}{5}{section*.6}
+\contentsline {subsection}{Trie}{5}{section*.7}
+\contentsline {subsection}{Transitionsystem}{5}{section*.8}
+\contentsline {subsection}{Kryptografie}{6}{section*.9}
+\contentsline {subsection}{Decentralized Autonomous Organization (DAO)}{6}{section*.14}
+\contentsline {section}{(selbst) Modifikationsschicht einer DAO}{10}{section*.20}
+\contentsline {subsection}{Definition}{10}{section*.21}
+\contentsline {subsection}{Erl\IeC {\"a}uterung}{11}{section*.22}
+\contentsline {section}{Anwendung auf regul\IeC {\"a}re Grammatiken}{12}{section*.29}
+\contentsline {subsection}{Optimierung der Kandidatenmenge}{12}{section*.30}
+\contentsline {subsection}{Optimierung der Kandidatenbewertung}{14}{section*.38}
+\contentsline {subsection}{Konsens}{16}{section*.46}
+\contentsline {subsection}{Transitionssystem}{16}{section*.48}
+\contentsline {subsection}{Delegationsprogrammierung}{20}{section*.62}
+\contentsline {section}{ Beispiele }{21}{section*.64}
+\contentsline {section}{Umfang der Arbeit}{21}{section*.68}
+\contentsline {section}{Zusammenfassung und Ausblick}{23}{section*.73}
+\contentsline {section}{Quellen}{24}{section*.80}

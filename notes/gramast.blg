@@ -3,51 +3,55 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: gramast.aux
 The style file: alpha.bst
 Database file #1: library.bib
+Warning--to sort, need author or key in EthereumBlogPOS
 Warning--empty journal in Butterin2014
 Warning--there's a number but no volume in Butterin2014
+Warning--empty journal in Corporation2014
 Warning--empty journal in Glausch
 Warning--empty year in Glausch
+Warning--empty journal in Lindenberg2010
+Warning--empty institution in Vasant2015
 Warning--empty journal in Waldron2004
 Warning--empty journal in Wood2014
-You've used 6 entries,
+You've used 11 entries,
             2543 wiz_defined-function locations,
-            592 strings with 5027 characters,
-and the built_in function-call counts, 1991 in all, are:
-= -- 201
-> -- 48
-< -- 8
-+ -- 12
-- -- 12
-* -- 127
-:= -- 321
-add.period$ -- 18
-call.type$ -- 6
-change.case$ -- 30
-chr.to.int$ -- 6
-cite$ -- 12
-duplicate$ -- 98
-empty$ -- 157
-format.name$ -- 24
-if$ -- 403
+            617 strings with 5594 characters,
+and the built_in function-call counts, 3378 in all, are:
+= -- 339
+> -- 92
+< -- 11
++ -- 24
+- -- 24
+* -- 207
+:= -- 544
+add.period$ -- 31
+call.type$ -- 11
+change.case$ -- 56
+chr.to.int$ -- 11
+cite$ -- 22
+duplicate$ -- 162
+empty$ -- 271
+format.name$ -- 43
+if$ -- 683
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 6
-newline$ -- 33
-num.names$ -- 18
-pop$ -- 39
+missing$ -- 9
+newline$ -- 56
+num.names$ -- 30
+pop$ -- 71
 preamble$ -- 1
-purify$ -- 36
+purify$ -- 66
 quote$ -- 0
-skip$ -- 74
+skip$ -- 130
 stack$ -- 0
-substring$ -- 118
-swap$ -- 12
-text.length$ -- 8
-text.prefix$ -- 6
+substring$ -- 179
+swap$ -- 14
+text.length$ -- 11
+text.prefix$ -- 9
 top$ -- 0
-type$ -- 48
-warning$ -- 6
-while$ -- 22
-width$ -- 7
-write$ -- 73
-(There were 6 warnings)
+type$ -- 88
+warning$ -- 10
+while$ -- 33
+width$ -- 12
+write$ -- 127
+(There were 10 warnings)
