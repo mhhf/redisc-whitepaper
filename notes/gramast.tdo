@@ -1,11 +1,16 @@
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ecdsa}{6}{section*.10}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }hash}{6}{section*.11}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Kapselung - Teilbereiche - Komponenten}{7}{section*.15}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }coins einf\IeC {\"u}hren}{8}{section*.17}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Metasprache einf\IeC {\"u}hren}{12}{section*.27}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Transitionsysthem einf\IeC {\"u}hren: problem der codierung}{12}{section*.28}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $\phi \circ \phi ^{-1} = id_{P(K_G)}$}{14}{section*.35}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $|\phi (K_G)| \lesssim \DOTSB \sum@ \slimits@ _{k\in K_G}$}{14}{section*.37}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }konkurierende Delegationen}{15}{section*.41}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige S(G) ist eindeutig}{15}{section*.45}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }definiere $consens: L(S(G)) \rightarrow L(G)$}{16}{section*.47}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }BNF}{5}{section*.7}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ecdsa}{6}{section*.11}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }hash}{6}{section*.12}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Kapselung - Teilbereiche - Komponenten}{7}{section*.16}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ethereum gmbh und bitcoin foundation verlinken}{11}{section*.20}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Grammatik}{13}{section*.25}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }muss diese strickte Totalordnung auch ein element von O sein?}{14}{section*.28}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }hier ist der delimiter \& notwendig}{15}{section*.33}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }reduziere Tire serialisierung auf Baumserialisierung von Paper xy}{17}{section*.37}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ist hier ein formaler Beweis notwendig?}{17}{section*.38}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $\phi \circ \phi ^{-1} = id_{P(K_G)}$}{17}{section*.39}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }wichtig ist das jede m\IeC {\"o}gliche bewertung $vote$ in der codierung m\IeC {\"o}glich ist.}{17}{section*.42}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }konkurierende Delegationen}{18}{section*.44}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }number, float etc als elemente einer menge beschreibennumber, float etc als elemente einer menge beschreiben}{18}{section*.47}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }AUF JEDEN FALL \IeC {\"U}BERARBEITEN - wie eindeutigkeit zeigen?}{19}{section*.49}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }definiere $consens: L(S(G)) \rightarrow L(G)$}{19}{section*.51}
