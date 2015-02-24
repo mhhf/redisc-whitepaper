@@ -503,7 +503,7 @@ Da die Wörter der codierten DAOs ebenfalls valide und invalide Teile der Wörte
 
 Formaler gesagt muss eine Funktion $S: REG\rightarrow CFG$ gefunden werden, zusammen mit den Funktionen Funktionen $\phi: DAO_G \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow DAO_G$ für die die Eigenschaft $\phi\circ\phi^{-1} = id_{DAO_G}$ gilt.
 
-Da die Funktion $S$, $\phi$ sowie $\phi^{-1}$ viele Komponenten haben, werden sie inkrementell eingeführt: Zuerst wird $S_1, \phi_1, \phi^{-1}_1$ definiert, diese codieren und decodieren nur die Kandidatenmenge einer DAO in ein Wort. Anschließend wird die Besitzverteilung sowie die Kandidatenbewertung ebenfalls eingearbeitet, sodass wird die gesuchten Funktionen erhalten.
+Da die Funktion $S$, $\phi$ sowie $\phi^{-1}$ viele Komponenten haben, werden sie inkrementell eingeführt: Zuerst wird $S_1, \phi_1, \phi^{-1}_1$ definiert, diese codieren und decodieren die Kandidatenmenge einer DAO in ein Wort. Anschließend wird die Besitzverteilung sowie die Kandidatenbewertung ebenfalls eingearbeitet, sodass wird die gesuchten Funktionen erhalten.
 
 \subsection{codierung der Kandidatenmenge}
 Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. Dieses kann einfach durch eine Trie-Datenstruktur realisiert werden die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist eben ein Wort der erweiterten Grammatik.
@@ -513,10 +513,28 @@ Um zu zeigen, dass es sich bei $S_1$ um die gesuchte Erweiterung handelt, muss d
 
 Für die grammatikerweiternde Funktion $S_1$ wird an jedem Ableitungsschritt in der Grammatik $G$ eine Mehrdeutigkeit zugelassen. Dafür werden die Produktionsregeln folgendermaßen erweitert:
 \[ 
-  P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\oplus O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
+  P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r\&\ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
 \] 
 
-Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge}.
+Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge} sowie die darin enthaltetnen Elemente ($r\&$) \textbf{Option}. 
+
+Als Beispiel wollen wir für die Sprache $L(G) = \{ a^xb^yc^z\ |\ x,y,z\in \mathbb{N} \}$ die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc, aabbb, aabb\}$ codieren mit dem dazugehörige Patricia-Trie:
+
+\begin{center}
+\Tree [.aa aaa c [.c c cc ] [.b bb b ] ]
+\end{center}
+
+Mit der dazugehörigen preorder Notation:
+\[ aa\ aaa\ c\ c\ c\ cc\ b\ bb\ b \]
+
+
+
+
+\begin{center}
+\Tree [.aa $\lbrack$ aaa \& c \& [.c $\lbrack$ c \& cc \& $\rbrack$ ] \& [.b $\lbrack$ bb \& b \& $\rbrack$ ] \& $\rbrack$ ]
+\end{center}
+
+
 
 % Die Kandidatenmenge ergibt sich durch die Kombinationen der Präfixe mit den Optionen einer Optionsmenge.
 
@@ -546,14 +564,12 @@ Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge}.
 
 Sei $G = (N,T,S,P)$ eine reguläre Grammatik.
 
-
-\TODO[inline]{hier ist der delimiter \& notwendig}
 $
 \begin{array}{rl}
   S_1(G) :=& (N', T', S, P') \\
   N' :=& N \cup \{ O_R\ |\ (R\rightarrow r)\in P\land O_R \notin \Sigma\}\\
-  T' :=& T \cup \{[ , ], \oplus\ |\ [,],\oplus\notin \Sigma \}\\
-  P_{Options} :=& \{R \rightarrow [O_R], O_R \rightarrow r\oplus O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
+  T' :=& T \cup \{[ , ], \&\ |\ [,],\&\notin \Sigma \}\\
+  P_{Options} :=& \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
   P' :=& P \cup P_{Options} 
 \end{array}
 $
@@ -639,6 +655,7 @@ Dann ist $\phi := O( \varepsilon, S(\varepsilon, K), K)$ die gesuchte Funktion.
 Sei $T(K_G)$ die Trie Datenstruktur, die die Kandidatenmenge $K_G$ codiert.
 Wir wissen, dass es eine Funktion $c(K_G)\mapsto T(K_G)$ sowie $c^{-1}(T(K_G)) \mapsto K_G$ exestiert, sowie $c\circ c^{-1} = id_{P(L(G))}$. Zu finden ist demnach die ein Isomorphismus $s: T(K_G) \mapsto L(S_1(G))$ sowie $s^{-1}: L(S_1(G)) \mapsto T(K_G)$ die ein Tire serialisieren und deserialisieren. Die serialisierte Trie ist ein Wort der Metasprache, das durch die Grammatikerweiterung $S_1$ konstruiert wird. Damit haben wir die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$ gefunden. 
   
+\TODO[inline]{Preorder notation des Tries ist die das wort}
 \TODO[inline]{reduziere Tire serialisierung auf Baumserialisierung von Paper xy}
 \TODO[inline]{ist hier ein formaler Beweis notwendig?}
 \TODO[inline]{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
@@ -646,8 +663,12 @@ Wir wissen, dass es eine Funktion $c(K_G)\mapsto T(K_G)$ sowie $c^{-1}(T(K_G)) \
 \subsection{Optimierung der Kandidatenbewertung}
 
 \subsubsection*{Komprimierung}
-\TODO[inline]{wichtig ist das jede mögliche bewertung $vote$ in der codierung möglich ist.}
-Die Idee hinter der Komprimierung ist, die Bewertung der Kandidaten an Optionen zu binden. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes. Somit werden alle Kandidaten, die sich mit dem Präfix und der Option erzeugen lassen von der Stimme beeinflusst. Diese wird als ein Attribut der Ableitung vererbt\cite{Knuth1968} und jeweils von einer Bewertung einer tieferen Ebene ersetzt. Eine wichtige Bedingung ist, dass jede mögliche Bewertungsverteilung in der Optimierung codierbar ist. Dieses ist leicht zu zeigen, da die Bewertung aller Blätter des Ableitungsbaumes ebenfalls die Bewertung der Kandidaten repräsentiert.
+Um jede $DAO$ ohne Verlust von Inforamtionen codieren zu können, muss jede mögliche Bewertungsverteilung von Akteuren und Kandidaten im Metawort enthalten sein können. 
+Dieses kann erreich werden, wenn die Bewertung der Kandidaten an Optionen gebunden sind. Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten codieren, wenn sie dieser Option zugeordnet sind. Zusätzlich möchten wir Bewertungen einer Option zulassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. 
+Die Bewertung dieser Option wird als ein Attribut in der Ableitung vererbt\cite{Knuth1968} und jeweils von einer Bewertung einer tieferen Ebene ersetzt.
+
+Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes. Somit werden alle Kandidaten, die sich mit dem Präfix und der Option erzeugen lassen von der Stimme beeinflusst. Eine solche Bewertun kann als beste Antwort auf den bisherigen Präfix interpretiert werden.
+
 
 % \subsubsection*{zeige: eine beliebige Kandidatenbewertung ist in S2 codierbar.}
 % \TODO[inline]{zeige: eine beliebige Kandidatenbewertung ist in S2 codierbar.}
@@ -689,7 +710,7 @@ stellt eine Fließkommazahl dar, so dass $0\leq float \leq 1$. \textbf{hash} ide
 \begin{align}
   S(G) :=& (N', T', S', P') \\
   N' :=& N \cup \{ O_R | (R\rightarrow r)\in P\land O_R \notin N\}\cup\{D, A, S'\}\\
-  T' :=& T \cup \{[ , ], \oplus, number, float, hash\ |\ [,],\oplus \notin T \}\\
+  T' :=& T \cup \{[ , ], \&, number, float, hash\ |\ [,],\& \notin T \}\\
   P' :=& P
   \cup P_{Options} 
   \cup P_{Start} 
@@ -698,7 +719,7 @@ stellt eine Fließkommazahl dar, so dass $0\leq float \leq 1$. \textbf{hash} ide
   \cup P_{Acteurs}
   \\
   P_{Acteurs} :=& \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\} \\
-  P_{Options} :=& \{R \rightarrow [O_R][D], O_R \rightarrow r\oplus [V] O_R, O_R \rightarrow \varepsilon \ \nonumber\\
+  P_{Options} :=& \{R \rightarrow [O_R][D], O_R \rightarrow r\& [V] O_R, O_R \rightarrow \varepsilon \ \nonumber\\
   &\vert\ R\rightarrow r\in P \land r\in (N\cup T)^*\} \\
   P_{Start} :=& \{S'\rightarrow [A][O_S][D]\} \\
   P_{Delegations} :=& \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\} \\
@@ -897,24 +918,24 @@ Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$
 
 \begin{eqnarray}
   w &=& w_{0..n} \\
-  w_{i..j} &=& \alpha o_1 \oplus [v] \\
+  w_{i..j} &=& \alpha o_1 \& [v] \\
   S' &\rightarrow^*& w_{0 .. (i-1)}\ O\ w_{(j+1) .. n}\\
   O &\rightarrow^*& w_{i..j} \\
   R &\rightarrow^*& o_1 \\
   R &\rightarrow^*& o_2 \\
-  w' &=& w_{0..i-1}\ \alpha [o_1\oplus [v] o_2\oplus []][]\ w_{j+1 .. n}
+  w' &=& w_{0..i-1}\ \alpha [o_1\& [v] o_2\& []][]\ w_{j+1 .. n}
 \end{eqnarray}
 
 
 Für $w$ hat $O$ folgende Struktur:
 \begin{center}
-\Tree [.O $\alpha$ [.R $o_1$ ] $\oplus$ $\lbrack$ [.V v ] $\rbrack$ [.O ... ] ]
+\Tree [.O $\alpha$ [.R $o_1$ ] $\&$ $\lbrack$ [.V v ] $\rbrack$ [.O ... ] ]
 \end{center}
 
 
 Für $w'$ besitzt O folgende Struktur:
 \begin{center}
-\Tree [.O $\alpha$ [.R $\lbrack$ [.O $o_1$ $\oplus$ $\lbrack$ [.V v ]  $\rbrack$ [.O $o_2$ $\oplus$ $\lbrack$ [.V $\epsilon$ ] $\rbrack$ ] ] $\rbrack$ $\lbrack$ [.D $\epsilon$ ] $\rbrack$ ] $\oplus$ $\lbrack$ $\rbrack$ [.O ... ] ]
+\Tree [.O $\alpha$ [.R $\lbrack$ [.O $o_1$ $\&$ $\lbrack$ [.V v ]  $\rbrack$ [.O $o_2$ $\&$ $\lbrack$ [.V $\epsilon$ ] $\rbrack$ ] ] $\rbrack$ $\lbrack$ [.D $\epsilon$ ] $\rbrack$ ] $\&$ $\lbrack$ $\rbrack$ [.O ... ] ]
 \end{center}
 
 Dabei muss $o_2$ frei von Delegationen und Stimmen sein, sowie $o_2$ muss relativ zu $o_1$ neu sein.
@@ -930,18 +951,18 @@ Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$
   R   & \rightarrow ^*& w_{i..j}\\
   O_R & \rightarrow_P^*& o\\
   O_R & \rightarrow ^* & r\\
-  w' & = & w_{0..(i-1)}\ \alpha[o r\oplus []][d]\ w_{(j+1)..n} 
+  w' & = & w_{0..(i-1)}\ \alpha[o r\& []][d]\ w_{(j+1)..n} 
 \end{eqnarray}
 
 $r$ muss dabei Delegations- und Stimmfrei sein sowie neu:
-\[ \phi^{-1}(w) \cap \phi^{-1}(w_{0..i-1}\ \alpha[r\oplus []][d]\ w_{j+1..n}) = \emptyset \] 
+\[ \phi^{-1}(w) \cap \phi^{-1}(w_{0..i-1}\ \alpha[r\& []][d]\ w_{j+1..n}) = \emptyset \] 
 
 
 \subsubsection*{Hinzufügen einer Stimme}
 
-Sei $w_{i..j} = r\oplus [v]$
+Sei $w_{i..j} = r\& [v]$
 
-Dann ist $w' = w_{0 .. i-1}\ r \oplus [v[h n]]\ w_{j+1 .. n}$ mit $0\leq n\leq 1$ eine valide Substitution.
+Dann ist $w' = w_{0 .. i-1}\ r \& [v[h n]]\ w_{j+1 .. n}$ mit $0\leq n\leq 1$ eine valide Substitution.
 
 \subsubsection*{Löschen einer Stimme}
 
@@ -949,8 +970,8 @@ Sei $a\in A, v,v'\in T'^*$
 
 \begin{eqnarray}
   w &=& w_{0..n} \\
-  w_{i..j}&=& r\oplus [v [an] v'] \\
-  w' &=& w_{0..(i-1)} r\oplus [vv'] w_{(j+1)..n}
+  w_{i..j}&=& r\& [v [an] v'] \\
+  w' &=& w_{0..(i-1)} r\& [vv'] w_{(j+1)..n}
 \end{eqnarray}
 
 
