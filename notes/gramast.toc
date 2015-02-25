@@ -8,12 +8,12 @@
 \contentsline {subsection}{Decentralized Autonomous Organization (DAO)}{7}{section*.16}
 \contentsline {section}{(selbst) Modifikationsschicht einer DAO}{11}{section*.19}
 \contentsline {subsection}{Definition}{12}{section*.21}
-\contentsline {subsection}{Erl\IeC {\"a}uterung}{13}{section*.22}
+\contentsline {subsection}{Erl\IeC {\"a}uterung}{13}{section*.23}
 \contentsline {subsection}{codierung der Kandidatenmenge}{15}{section*.30}
 \contentsline {subsection}{Delegationsprogrammierung}{18}{section*.37}
 \contentsline {subsection}{Konsens}{19}{section*.43}
 \contentsline {subsection}{Transitionssystem}{20}{section*.45}
-\contentsline {section}{ Beispiele }{25}{section*.60}
-\contentsline {section}{Umfang der Arbeit}{25}{section*.64}
-\contentsline {section}{Zusammenfassung und Ausblick}{26}{section*.69}
-\contentsline {section}{Quellen}{27}{section*.76}
+\contentsline {section}{Implementation}{25}{section*.60}
+\contentsline {section}{Umfang der Arbeit}{25}{section*.66}
+\contentsline {section}{Zusammenfassung und Ausblick}{26}{section*.70}
+\contentsline {section}{Quellen}{27}{section*.77}

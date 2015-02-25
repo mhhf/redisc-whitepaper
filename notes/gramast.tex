@@ -40,6 +40,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
+% \renewcommand{\baselinestretch}{1.2} 
 \setcounter{secnumdepth}{0}
 
 % Treeview
@@ -431,6 +432,8 @@ Eine DAO in einer Grammatik $G$ ist ein Tupel $O_G=(A, K, share, vote)$ bestehen
   \[vote: A\times K \rightarrow [0,1]\]
 \end{enumerate}
 
+\TODO[inline]{strickte Totalordnung der Kandidaten mit in die DAO definition einbauen}
+
 Sei $\mathbf{DAO_G} = \{ O_G\ |$ $O_G$ ist DAO in der einer Grammatik $G$ $\}$ die Menge aller DAOs in der Grammatik $G$.
 % sowie $\mathbf{P_G}:= \{ K_G | K_G \subseteq L(G) \}$ die Menge aller möglichen Kandidatenmengen.
 
@@ -480,7 +483,6 @@ Dabei sucht die Funktion nach dem Kandidaten aus der Kandidatenmenge mit der max
 
 Hier entsteht das Problem, dass es mehrere Kandidaten mit der selben, maximalen Bewertung exestieren. In diesem Fall muss ein mechanismus existieren, der ein k determiniert. Dieser wird in der Implementation nähr betrachtet. Für diese kommt eine strickte Totalordnung für die Kandidatenmenge hinzu, die die Reihenfolge bestimmt, in der diese der Kandidatenmenge hinzugefügt wurden. der Mechanismus entscheidet sich hier immer für den ersten Kandidaten der Ordnung.
 
-\TODO[inline]{muss diese strickte Totalordnung auch ein element von O sein?}
 
 
 % \subsubsection*{Bewertung}
@@ -945,12 +947,42 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
 
 
 
-\section{ Beispiele }
+\section{Implementation}
+\subsection*{Einleitung}
+% Zentralisierte Implementation
+% Ignorierung der Dezentralisierungsschicht
+% durch die Turing vollständigkeit kann diese auf die ethereum chain portiert werden
+\subsection*{Architektur}
+\subsubsection*{Client/Server Architektur/ Interaktion}
+% Grafik der interaktion
+% Implementiert ist der in DAO - Interaktion
+% Akteur kann
+%   DAO erstellen
+%     initialfunktion
+%   DAO valide Manipulieren
+%   sign -> send to server
+%   server sign check + valide manipulation -> new consens
+%   send consens to client
+\subsubsection*{BitcoinJS}
+% ECDSA
+%   private key from string
+%   sign
+%   verify
+\subsubsection*{Grammatikerweiterung}
+% JISON - http://zaach.github.io/jison/docs/
+%   LALR(1) 
+%     Subset of CFG
+%     S(G) is in LALR(1)
+%   BISON - Parser Generator - http://de.wikipedia.org/wiki/GNU_Bison
+% Architecture
+%   Extention - Pseudocode
+%   Metaword to Parse Tree (PT)
+%   PT - functions
 
-\subsection*{ abc - Grammatik }
-\subsection*{ reddit - Grammatik }
-\subsection*{ memGenerator - Grammatik }
 
+% \subsection*{ abc - Grammatik }
+% \subsection*{ reddit - Grammatik }
+% \subsection*{ memGenerator - Grammatik }
 
 
 % section  (end)
@@ -959,14 +991,6 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      IMPLEMENTATIONSPLAN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Umfang der Arbeit}
-
-\subsection*{Konzeptuell}
-\begin{itemize}
-  \item Die Punkte unter Aufgaben (TODO's) werden ausformuliert.
-  \item Dieses Papier wird überarbeitet und strukturiert. Es wird mit anschaulichen Beispielen, Erklärungen, Beweisen,  Quellen sowie Verweisen grundlegender Konzepte ergänzt. Solche Konzepte sind: 
-  \item Die Punkte unter Aussicht werden diskutiert, jedoch weder implementiert, noch im Umfang der Anwendung auf die regulären Grammatiken konzipiert.
-\end{itemize}
-
 
 \subsection*{Implementation}
 \begin{itemize}
