@@ -1,15 +1,10 @@
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }BNF}{5}{section*.7}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ecdsa}{6}{section*.11}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }hash}{6}{section*.12}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Kapselung - Teilbereiche - Komponenten}{7}{section*.16}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ethereum gmbh und bitcoin foundation verlinken}{11}{section*.20}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Grammatik}{13}{section*.25}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }muss diese strickte Totalordnung auch ein element von O sein?}{14}{section*.28}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Preorder notation des Tries ist die das wort}{17}{section*.36}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }reduziere Tire serialisierung auf Baumserialisierung von Paper xy}{17}{section*.37}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ist hier ein formaler Beweis notwendig?}{17}{section*.38}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }zeige $\phi \circ \phi ^{-1} = id_{P(K_G)}$}{17}{section*.39}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }konkurierende Delegationen}{18}{section*.43}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }number, float etc als elemente einer menge beschreibennumber, float etc als elemente einer menge beschreiben}{19}{section*.46}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }AUF JEDEN FALL \IeC {\"U}BERARBEITEN - wie eindeutigkeit zeigen?}{19}{section*.48}
-\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }definiere $consens: L(S(G)) \rightarrow L(G)$}{19}{section*.50}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ecdsa}{6}{section*.12}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }hash}{6}{section*.13}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }Grammatik}{13}{section*.24}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }muss diese strickte Totalordnung auch ein element von O sein?}{14}{section*.27}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ist hier ein formaler Beweis notwendig?}{16}{section*.32}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }roter faden}{18}{section*.36}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }NUBER, HASH, FLOAT teil der Terminale}{18}{section*.40}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }AUF JEDEN FALL \IeC {\"U}BERARBEITEN - wie eindeutigkeit zeigen?}{19}{section*.42}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }ist hier ein beweis das die krit\IeC {\"a}rien nicht verletzt werden notwendig?}{22}{section*.51}
+\contentsline {todo}{\color@box {}{gray!25}{\leavevmode {\color {gray!25}o}}\ \textbf {TODO: }hier ist zum ersten mal nicht die symbolkonkatination gemeint sondern die interpretation der werte(+,-)}{24}{section*.59}

@@ -191,7 +191,9 @@ Sei weiter $\Sigma := N \cup T$ das Alphabet der Grammatik.
 
 Eine Produktion $(R,r)\in P$ kann auch als $R\rightarrow r$ geschrieben werden.
 Sie sagt aus das das das Nichtterminal R in einem Schritt überführt werden kann zum Teilwort r:
-\[ \alpha R \rightarrow \alpha r \]. Sind hierfür n Schritte notwendig schreibt man
+\[ \alpha R \rightarrow \alpha r \]
+
+Sind hierfür n Schritte notwendig schreibt man
 $R \rightarrow^n r$. Um auszudrücken, dass $r$ generell aus $R$ ableitbar ist, kann man sich der reflexiv-transitiven Hülle der Produktionsregeln bedienen: $R \rightarrow ^* r$.
 
 Die Sprache, die von der regulären Grammatik erzeugt wird ist die Menge aller Wörter, die vom Startsymbol ableitbar sind: 
@@ -229,6 +231,20 @@ $
 
 \[ L(G) = \{ a^xb^yc^z | x,y,z\in \mathbb{N} \} \] 
 
+
+
+
+\subsubsection*{Wortteil}
+
+Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann definieren wir ein Wortteil: 
+\[ 
+w_{i..j} := 
+\begin{cases}
+  (t_k)_{i\leq k \leq j}\text{ mit }t_k\in T &|\ i\leq j \\
+  \varepsilon &|\ i>j
+\end{cases}
+\] 
+
 \subsection{Kontextfreie Grammatiken}
 
 Kontextfreie Sprachen unterscheiden sich nur in den Produktionsregeln von den regulären. Anders als bei regulären, wird für die rechte Seite einer Produktionsregel keine Einschränkung gemacht: $P \subseteq N\times (N\cup T)^*$
@@ -238,8 +254,6 @@ Kontextfreie Sprachen unterscheiden sich nur in den Produktionsregeln von den re
 % 
 % Warum muss die reguläre Grammatik in der Greibach-Normalform sein?
 % Durch die Grammatikerweiterung werden die Regeln der Regulären Grammatik mit Optionsmengen erweitert. Gibt es eine Regel $A->B$, kommt es du einer mehrdeutung der Ableitung da eine Optionsmenge bei $A$ und $B$ erzeugt wird.
-
-\TODO[inline]{BNF}
 
 \subsection{Trie}
 
@@ -257,6 +271,11 @@ Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aac, aacc, aaccc, aab
 Ein initialisiertes Transitionssystem ($T$) \cite{Glausch} gibt einen formalismus vor um ein zustandbasiertes System zu beschreiben. Die Beschreibung zerteilt sich in die des Zustandraumes, beschrieben durch eine Menge $M$, die der Dynamik, beschrieben durch eine Übergangsfunktion $\tau: M \rightarrow M$ und einer Anfangszustandsmenge $I\subset M$.
 \[ T = (M,I,\tau) \] 
 
+\subsubsection*{Ablauf}
+Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gilt:
+
+\[ s_0 \in I \] 
+\[ s_{i+1} = \tau(s_i) \] 
 
 % section  (end)
 
@@ -287,8 +306,6 @@ In ihren Aktionen kann die DAO interne, deterministische Berechnungen anstellen,
 
 Ethereum, Bitcoin und Namecoin sind allesamt Beispiele für unterschiedliche DAOs. Ethereum ist dabei gleichzeitig eine Plattform für andere DAOs.
 % In der Bitcoin DAO sind die Anteile eines Akteurs ander DAO ebenfalls ihr zweck. Durch die limitierung besitzen sie in Märkten einen Wert sodass die Anteile als Werteträger zu einer dezentralen währung werden.
-
-\TODO[inline]{Kapselung - Teilbereiche - Komponenten}
 
 Im folgenden möchten wir drei Teilberreiche von DAOs näher beleuchten. Als erstes die Funktionsweise des Blockchain Algorithmus, der eigendlichen Neuerung, die zum Entstehen von DAOs führte. Als nächstes dem Teil, der die Interaktionen der DAO steuert. Als letztes der Selbstmanipulation der DAO, also dem Teil, welcher die Manipulation der Regeln der DAO steuert.
 
@@ -376,10 +393,9 @@ Diese beiden Beispiele illustrieren wie vergleichsweise einfach es ist eine DAO 
 Durch eine Plattform wie Ethereum wird nun das Erstellen von DAOs um ein vielfaches leichter gemacht, jedoch gibt es noch keine einheitliche Lösungsansätze um die DAOs oder generell dezentrale Inhalte ebenfalls auf eine dezentrale Weise zu erstellen oder diese zu modifizieren. Es Fehlt einer Entkopplung der DAO von den Regeln, wie diese von den Inhabern gerecht, also proportional zu ihrem Besitz, Manipuliert werden können.
 
 % Derzeit - Linux/ Bitcoin/ Ethereum
-Derzeit werden DAOs, entweder von einer einzelnen Schlüsselperson, einer Organisation (wie bei Bitcoin die "Bitcoin-Foundation") oder einem Unternehmen (wie bei Ethereum "Ethereum Switzerland GmbH") entwickelt und manipuliert. Trotz der dezentralen natur der DAOs ist die Kontrolle über diese noch Zentralisiert. 
+Derzeit werden DAOs, entweder von einer einzelnen Schlüsselperson, einer Organisation (wie bei Bitcoin die "Bitcoin-Foundation"\footnote{https://bitcoinfoundation.org/ 25.02.2015}) oder einem Unternehmen (wie bei Ethereum "Ethereum Switzerland GmbH"\footnote{https://www.ethereum.org/ 25.02.2015}) entwickelt und manipuliert. Trotz der dezentralen natur der DAOs ist die Kontrolle über diese noch Zentralisiert. 
 % Die Zentralisierte Kontrolle ist eine notwendige Folge zweier Probleme:
 Einerseits lässt sich der Besitz von Bitcoin und Ethereum nicht determinieren. Falls man die interen Tokens aus der Blockchain Schicht ebenfalls als Besitzanteil an den DAOs interpretatiert, so können die Besitzer noch nicht über die Manipulationen der Regeln der DAO mitentscheiden.
-\TODO[inline]{ethereum gmbh und bitcoin foundation verlinken}
 
 % Bitcoin - 100k ausschreibung
 Das Problem ist in der Community jedoch bekannt. Im Juni 2014 hat Oliver Janssens, einer der Early Adopter von Bitcoin ein Preisausschreiben von 100 000 USD in BTC an denjenigen ausgeschrieben, der ein Konzept vorschlägt, wie die Bitcoin Foundation auf dezentale weise abgelöst werden kann.
@@ -501,66 +517,44 @@ Als Zustandsmenge für das Transitionssystem können wir nun die Menge aller mö
 
 Da die Wörter der codierten DAOs ebenfalls valide und invalide Teile der Wörter der ursprünglichen Sprache ($L(G)$) erkennen müssen und somit die Metasprache konstruierende Grammatik, ebenfalls die ursprüngliche Grammatik beinhalten muss, wird eine Funktion $S$ angegeben, die die ursprüngliche Grammatik $G$ so erweitert, dass diese zur gesuchten Metasprache wird $L(S(G))$.
 
-Formaler gesagt muss eine Funktion $S: REG\rightarrow CFG$ gefunden werden, zusammen mit den Funktionen Funktionen $\phi: DAO_G \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow DAO_G$ für die die Eigenschaft $\phi\circ\phi^{-1} = id_{DAO_G}$ gilt.
+Formaler gesagt muss eine Funktion $S: REG\rightarrow CFG$ gefunden werden, zusammen mit den Funktionen $\phi: DAO_G \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow DAO_G$ für die die Eigenschaft $\phi\circ\phi^{-1} = id_{DAO_G}$ gilt.
 
 Da die Funktion $S$, $\phi$ sowie $\phi^{-1}$ viele Komponenten haben, werden sie inkrementell eingeführt: Zuerst wird $S_1, \phi_1, \phi^{-1}_1$ definiert, diese codieren und decodieren die Kandidatenmenge einer DAO in ein Wort. Anschließend wird die Besitzverteilung sowie die Kandidatenbewertung ebenfalls eingearbeitet, sodass wird die gesuchten Funktionen erhalten.
 
 \subsection{codierung der Kandidatenmenge}
-Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. Dieses kann einfach durch eine Trie-Datenstruktur realisiert werden die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist eben ein Wort der erweiterten Grammatik.
+Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. 
 
 Dazu muss es eine Grammatik-Erweiterung $S_1: REG\rightarrow CFG$ gefunden werden.
-Um zu zeigen, dass es sich bei $S_1$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi_1: P(L(G)) \rightarrow L(S(G))$ und $\phi_1^{-1}: L(S(G)) \rightarrow P(L(G))$ gezeigt werden, für die die Bedingungen $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ erfüllt sein muss.
+Um zu zeigen, dass es sich bei $S_1$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi_1: P(L(G)) \rightarrow L(S(G))$ und $\phi_1^{-1}: L(S(G)) \rightarrow P(L(G))$ gezeigt werden, für die die Bedingungen $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ erfüllt ist.
+
+Dieses kann mit hilfe eine Trie-Datenstruktur realisiert werden, die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die preorder Serialisierung der Tries ist eben ein Wort der Metasprache, die durch die Grammatikerweiterung $S_1$ konstruiert wird:
+
+Wir wissen, dass es eine Funktion $c: K_G \mapsto T(K_G)$ sowie $c^{-1}: T(K_G) \mapsto K_G$ exestiert, für die $c\circ c^{-1} = id_{P(L(G))}$ gild \cite{Morrison1968}. Zu finden ist demnach die ein Isomorphismus $s: T(K_G) \mapsto w \in L(S_1(G))$ sowie $s^{-1}: w \in L(S_1(G)) \mapsto T(K_G)$ die ein Tire serialisieren und deserialisieren. Für die Serialisierung wird einfach die preorder notation verwendet. Damit haben wir die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$ gefunden. 
+
+Dieses möchten wir anhand eines Beispiels für die Sprache $L(G) = \{ a^xb^yc^z\ |\ x,y,z\in \mathbb{N} \}$ und die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc \}$ illustrieren.
+
+Sei $T(K_G)$ die Trie Datenstruktur, die die Kandidatenmenge $K_G$ codiert:
+
+\begin{center}
+\Tree [.aa aaa c [.c c cc ] ]
+\end{center}
+
+Mit der dazugehörigen preorder Serialisierung mit $[,]$ als Klammerzeichen sowie $\&$ als Trennzeichen:
+\[ aa[aaa\&c\&c[c\&cc]]\ \]
+
 
 Für die grammatikerweiternde Funktion $S_1$ wird an jedem Ableitungsschritt in der Grammatik $G$ eine Mehrdeutigkeit zugelassen. Dafür werden die Produktionsregeln folgendermaßen erweitert:
 \[ 
-  P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r\&\ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
+  P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
 \] 
 
-Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge} sowie die darin enthaltetnen Elemente ($r\&$) \textbf{Option}. 
+Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge} sowie die darin enthaltetnen Elemente ($r$) \textbf{Option}. 
 
-Als Beispiel wollen wir für die Sprache $L(G) = \{ a^xb^yc^z\ |\ x,y,z\in \mathbb{N} \}$ die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc, aabbb, aabb\}$ codieren mit dem dazugehörige Patricia-Trie:
+Eine solche Grammatikerweiterung erzeugt eben die Serialisierung einer Trie:
 
-\begin{center}
-\Tree [.aa aaa c [.c c cc ] [.b bb b ] ]
-\end{center}
-
-Mit der dazugehörigen preorder Notation:
-\[ aa\ aaa\ c\ c\ c\ cc\ b\ bb\ b \]
-
-
-
-
-\begin{center}
-\Tree [.aa $\lbrack$ aaa \& c \& [.c $\lbrack$ c \& cc \& $\rbrack$ ] \& [.b $\lbrack$ bb \& b \& $\rbrack$ ] \& $\rbrack$ ]
-\end{center}
-
-
-
-% Die Kandidatenmenge ergibt sich durch die Kombinationen der Präfixe mit den Optionen einer Optionsmenge.
-
-
-% \begin{align}
-%   \phi\circ\phi^{-1} &= id_{P(K_G)} \\
-%   |\phi(K_G)| &\lesssim \sum_{k\in K_G} |k|
-% \end{align}
-% 
-
-% Die Bedingung (1) kann auch abgeschwächt werden zu $K_G\subseteq \phi\circ\phi^{-1}(K_G)$. Dieses würde bedeuten, dass Kandidaten nicht verloren gehen, jedoch hinzukommen können, solange diese valide Kandidaten bilden.
-% 
-% In Bedingung (2) werden Edge-Cases ausgeschlossen, die nur bei kleinen diversen Lösungen auftauchen können. (z.B.: $\{a\ b\}$)
-
-
-% \subsection{Qualitätskritärien}
-% 
-% \begin{enumerate}
-%   \item die wörter der Sprache $L(SCFG)$ sind möglichst klein
-%   \item es ist einfach Optionen zu Bewerten: Die Anzahl der transitionen ist möglichst klein, um auf ein gewünschtes Bewertungsprofil zu kommen.
-%     
-%     Sei $a\in A$ ein Akteur, sei $X_i\subseteq P\times [0,1]$ die derzeitige Bewertung der Programme von $a$ und sei $X_j\subseteq P\times [0,1]$ die gewünschte Bewertung. Sei $t$ eine von $a$ gültige Transformation, so dass $X_k \rightarrow_{t} X_{k+1}$ und sei T die Menge der von a gültigen Transformationen. Die Bewertung ist einfach, wenn für $X_i \rightarrow_{ T }^n X_j$ n möglichst minimal ist.
-% \end{enumerate}
+\[ aa[aaa\&c\&c[c\&cc]]\in L(S_1(G))\]
 
 \subsubsection*{Grammatik-Erweiterung S1}
-
 
 Sei $G = (N,T,S,P)$ eine reguläre Grammatik.
 
@@ -574,156 +568,153 @@ $
 \end{array}
 $
 
-\subsubsection*{Definition $\phi$}
-
-
-
-Sei $S(\alpha,K)$ die Funktion, die den Größten gemeinsamen Präfix aller Kandidaten liefert, die den Präfix $\alpha$ enthalten:
-
-\[ E(\alpha, K) : \exists w\in K: w=\alpha\beta \] 
-
-\[ 
-  A(\alpha, K): 
-    \exists ! \beta \forall x, y\in K\exists t, t' \in T\cup\{\varepsilon\}: \\
-    ( x = \alpha \beta t \gamma_1 \land y = \alpha \beta t' \gamma_2 ) \Rightarrow 
-    ( t = \gamma_1 = \varepsilon \lor t' = \gamma_2 = \varepsilon \lor t \neq t' )
-\] 
-
-\[
-  S( \alpha, K ) := 
-  \begin{cases}
-    \beta & E(\alpha,K) \land A(\alpha,K) \\
-    \varepsilon & otherwise
-  \end{cases}
-\] 
-    
-% 1. Was ist wenn K leer ist, 
-%   s ist epsilon
-% was ist wenn K ein elementig ist, 
-%   
-% was ist wenn kein element den präfix alpha besitzt
-% was ist wenn alpha epsilon ist
-
-Sei $U$ die Funktion, die einem Präfix und einer Kandidatenmenge die Wörter zuordnet, die nach diesem Präfix kommen.
-\[ U( \alpha, K ) := \{t S(\alpha t, K) |\ \alpha t \beta \in K \land ( t\in (T \lor t=\beta=\varepsilon )) \} \] 
-
-Sei $Q$ die Funktion, die bei der übergabe einer Wortmenge K und einem präfix $\alpha$ eine Menge aller Wörter zurückliefert, die den Präfix $\alpha$ enthalten.
-
-\[ Q(\alpha, K):= \{x |x\in K\land x=\alpha\beta\text{ mit } \beta \in T^*\} \] 
-
-\[ 
-  O(\alpha, \beta, M):=
-  \begin{cases}
-    \beta & | |M| = 1 \\
-    \beta [E(\alpha, U( \alpha, M ), M)] &|otherwise
-    % [\bigcirc_{\beta \in U( \alpha, M )} (\beta O(\alpha \beta, Q(\alpha\beta, M))'\ ')] 
-  \end{cases}
-\] 
-
-\[ 
-  E( \alpha, B, M ) := 
-  \begin{cases}
-    \varepsilon & |B =  \{ \varepsilon \}\\
-    \beta & |B =  \{ \beta \}\\
-    (O(\alpha, \beta, Q(\alpha\beta, M))'\ ' E(\alpha, B\setminus \{\beta\}, M))\text{ mit }\beta\in B &| otherwise
-  \end{cases}
-\] 
-
-Dann ist $\phi := O( \varepsilon, S(\varepsilon, K), K)$ die gesuchte Funktion.
-
-
-\subsubsection*{Definition $\phi^{-1}$}
-
-\[ 
-  \phi^{-1}(w) := 
-  \begin{cases}
-    U(\alpha, \beta) &| \alpha [ \beta ] = w \\
-    \{ w \}   &| otherwise
-  \end{cases}
-\] 
-
-\[ 
-  U( \alpha, w ):= 
-  \begin{cases}
-    \phi^{-1}(\alpha x) \cup U(\alpha,s) &| w = x '\ ' s \\
-    \phi^{-1}(\alpha w) &|otherwise
-  \end{cases}
-\] 
-
-\subsubsection*{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
-
-Sei $T(K_G)$ die Trie Datenstruktur, die die Kandidatenmenge $K_G$ codiert.
-Wir wissen, dass es eine Funktion $c(K_G)\mapsto T(K_G)$ sowie $c^{-1}(T(K_G)) \mapsto K_G$ exestiert, sowie $c\circ c^{-1} = id_{P(L(G))}$. Zu finden ist demnach die ein Isomorphismus $s: T(K_G) \mapsto L(S_1(G))$ sowie $s^{-1}: L(S_1(G)) \mapsto T(K_G)$ die ein Tire serialisieren und deserialisieren. Die serialisierte Trie ist ein Wort der Metasprache, das durch die Grammatikerweiterung $S_1$ konstruiert wird. Damit haben wir die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$ gefunden. 
-  
-\TODO[inline]{Preorder notation des Tries ist die das wort}
-\TODO[inline]{reduziere Tire serialisierung auf Baumserialisierung von Paper xy}
+% \subsubsection*{Definition $\phi$}
+% 
+% 
+% 
+% Sei $S(\alpha,K)$ die Funktion, die den Größten gemeinsamen Präfix aller Kandidaten liefert, die den Präfix $\alpha$ enthalten:
+% 
+% \[ E(\alpha, K) : \exists w\in K: w=\alpha\beta \] 
+% 
+% \[ 
+%   A(\alpha, K): 
+%     \exists ! \beta \forall x, y\in K\exists t, t' \in T\cup\{\varepsilon\}: \\
+%     ( x = \alpha \beta t \gamma_1 \land y = \alpha \beta t' \gamma_2 ) \Rightarrow 
+%     ( t = \gamma_1 = \varepsilon \lor t' = \gamma_2 = \varepsilon \lor t \neq t' )
+% \] 
+% 
+% \[
+%   S( \alpha, K ) := 
+%   \begin{cases}
+%     \beta & E(\alpha,K) \land A(\alpha,K) \\
+%     \varepsilon & otherwise
+%   \end{cases}
+% \] 
+%     
+% % 1. Was ist wenn K leer ist, 
+% %   s ist epsilon
+% % was ist wenn K ein elementig ist, 
+% %   
+% % was ist wenn kein element den präfix alpha besitzt
+% % was ist wenn alpha epsilon ist
+% 
+% Sei $U$ die Funktion, die einem Präfix und einer Kandidatenmenge die Wörter zuordnet, die nach diesem Präfix kommen.
+% \[ U( \alpha, K ) := \{t S(\alpha t, K) |\ \alpha t \beta \in K \land ( t\in (T \lor t=\beta=\varepsilon )) \} \] 
+% 
+% Sei $Q$ die Funktion, die bei der übergabe einer Wortmenge K und einem präfix $\alpha$ eine Menge aller Wörter zurückliefert, die den Präfix $\alpha$ enthalten.
+% 
+% \[ Q(\alpha, K):= \{x |x\in K\land x=\alpha\beta\text{ mit } \beta \in T^*\} \] 
+% 
+% \[ 
+%   O(\alpha, \beta, M):=
+%   \begin{cases}
+%     \beta & | |M| = 1 \\
+%     \beta [E(\alpha, U( \alpha, M ), M)] &|otherwise
+%     % [\bigcirc_{\beta \in U( \alpha, M )} (\beta O(\alpha \beta, Q(\alpha\beta, M))'\ ')] 
+%   \end{cases}
+% \] 
+% 
+% \[ 
+%   E( \alpha, B, M ) := 
+%   \begin{cases}
+%     \varepsilon & |B =  \{ \varepsilon \}\\
+%     \beta & |B =  \{ \beta \}\\
+%     (O(\alpha, \beta, Q(\alpha\beta, M))'\ ' E(\alpha, B\setminus \{\beta\}, M))\text{ mit }\beta\in B &| otherwise
+%   \end{cases}
+% \] 
+% 
+% Dann ist $\phi := O( \varepsilon, S(\varepsilon, K), K)$ die gesuchte Funktion.
+% 
+% 
+% \subsubsection*{Definition $\phi^{-1}$}
+% 
+% \[ 
+%   \phi^{-1}(w) := 
+%   \begin{cases}
+%     U(\alpha, \beta) &| \alpha [ \beta ] = w \\
+%     \{ w \}   &| otherwise
+%   \end{cases}
+% \] 
+% 
+% \[ 
+%   U( \alpha, w ):= 
+%   \begin{cases}
+%     \phi^{-1}(\alpha x) \cup U(\alpha,s) &| w = x '\ ' s \\
+%     \phi^{-1}(\alpha w) &|otherwise
+%   \end{cases}
+% \] 
+% 
+% \subsubsection*{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
+% 
 \TODO[inline]{ist hier ein formaler Beweis notwendig?}
-\TODO[inline]{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
 
-\subsection{Optimierung der Kandidatenbewertung}
 
-\subsubsection*{Komprimierung}
+\subsubsection*{Besitzverteilung}
+Die Akteure lassen sich durch ein 20-Byte String genau identifizieren. Sei $HASH$ die Menge aller 20-Byte Strings. Die Besitzverteilung ist eine Auflistung aller beteiligter Akteure sowie deren Anteile ander DAO.
+Sei $hash\in HASH$ sowie $number\in\mathbb{N}$.
+
+\[ P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\} \] 
+
+% \subsection{Optimierung der Kandidatenbewertung}
+
+\subsubsection*{Kandidatenbewertung}
 Um jede $DAO$ ohne Verlust von Inforamtionen codieren zu können, muss jede mögliche Bewertungsverteilung von Akteuren und Kandidaten im Metawort enthalten sein können. 
-Dieses kann erreich werden, wenn die Bewertung der Kandidaten an Optionen gebunden sind. Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten codieren, wenn sie dieser Option zugeordnet sind. Zusätzlich möchten wir Bewertungen einer Option zulassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. 
-Die Bewertung dieser Option wird als ein Attribut in der Ableitung vererbt\cite{Knuth1968} und jeweils von einer Bewertung einer tieferen Ebene ersetzt.
+Dieses kann erreicht werden, wenn die Bewertung der Kandidaten an Optionen gebunden sind. Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten codieren, wenn sie dieser Option zugeordnet sind. Zusätzlich möchten wir Bewertungen einer Option zulassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
+Die Bewertung dieser Option wird als ein Attribut in der Ableitung Synthetisiert\cite{Knuth1968} und jeweils von einer Bewertung einer tieferen Ebene ersetzt.
 
-Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes. Somit werden alle Kandidaten, die sich mit dem Präfix und der Option erzeugen lassen von der Stimme beeinflusst. Eine solche Bewertun kann als beste Antwort auf den bisherigen Präfix interpretiert werden.
+Sei $FLOAT = [0,1]$ die Menge der maschinell darstellbaren Fließkommazahlen zwischen 0 und 1: $float\in FLOAT$
 
-
-% \subsubsection*{zeige: eine beliebige Kandidatenbewertung ist in S2 codierbar.}
-% \TODO[inline]{zeige: eine beliebige Kandidatenbewertung ist in S2 codierbar.}
-
-% Sei \phi_w die funktion, die jedem kandidaten einen wert zuordnet.
-% idee hinter dem beweis ist, das die letzte geschachtelte option und somit die Bewertung nirgendwo mehr auftaucht. wenn diese -1 <= w <= 1 sein kann, die bewertung des pfades vorher ebenfalls 0 <= p <= 1 ist, so ist  p_i = min( max( p + w, 0 ), 1) so, dass 0 <= p_i <= 1 
+\[ P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\} \] 
+  
 
 
 \subsubsection*{Delegationen}
 
-Für die Minimierung der Interaktion wird transitives Abstimmen zugelassen. Akteure können nicht nur für die Option selbst abstimmen, sondern auch ihre Stimme für Optionsmengen an andere Akteure so delegieren, dass diese im Kontext der delegierten Option für den Akteur mitbestimmen.
+Für die Minimierung der Interaktion(INTMIN) wird transitives Abstimmen zugelassen. Akteure können nicht nur für die Option selbst abstimmen, sondern auch ihre Stimme für Optionsmengen an andere Akteure delegieren. Diese können im Kontext der delegierten Option für den Akteur mitbestimmen.
 
-Durch die lineare Struktur der Worte und somit auch der Delegationsmengen ergibt sich nicht nur eine Menge der Delegationen für eine Optionsmenge, sondern auch eine totale Ordnung der Delegationen, womit bei konkurierenden Delegationen immer die Delegation höherer Ordnung genommen wird. 
+Ein solcher Akteur kann wiederrum entweder eine Person, ein Zusammenschluss von Personen wie eine Interessensgemeinschaft oder eine Partei in Form einer DAO oder eine DAO ohne Fremdeinwirkung sein, die bestimmte Werte zu optimieren versucht.
 
-\TODO[inline]{konkurierende Delegationen}
+Delegationen werden für Optionsmengen verärbt. Durch die lineare Struktur der Worte ergibt sich eine strickte Totalordnung der Delegationen, womit bei konkurierenden Delegationen immer die Delegation höherer Ordnung genommen wird. Eine Stimme des Akteurs selbst, wird einer Stimme eines Deleganten vorgezogen.
 
-% Meine erste Idee war es. Abstimmungen an Optionen zu binden. Dadurch würde sich ein Präferenzprofiel für einen Akteur ergeben, bei dem der Akteur die Kandidaten am besten Bewertet, bei denen die meisten Optionen enthalten sind, für die er sich ausgesprochen hat. Ein solchens vorgehen ist zwar bei kontextfreien inhalten sinvoll, da jedoch durch Programme ein kontextsensitiver Inhalt dargestellt ist, muss ein beliebiges Präferenzprofiel über der Kanddatenmenge möglich sein, dieses ist jedoch nicht möglich, wenn die Abstimmungen an Optionen gebungen werdnen.
-
-
-\subsubsection*{Besitzverteilung}
-
-Schließlich wird die Besitzverteilung ebenfalls als Teil der erweiterten Sprache angesehen. Dies erlaubt nun den Konsens des Objektes als Interpretation eines Wortes der $L(S(G))$ Sprache zu definieren. Transformationen werden als valide Manipulationen eines Wortes definiert. Transformationsbedingungen geben dabei Anforderungen an die Ableitungsstruktur des bisherigen Wortes sowie an das Manipulierte Wort. Dieses determiniert die Validität einer Transaktion.
-
-% Akteure werden durch einen 20 byte hex String codiert.
+\[ P_{Delegations} := \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\} \] 
 
 
+\TODO[inline]{roter faden}
+\subsection{Delegationsprogrammierung}
+Akteure können ihre Stimme nicht nur an externe Akteure delegieren, sondern auch an Contracts, welche in einer autonomen Weise abstimmen und so die Interessen der Akteure automatisch verfolgen. 
 
+\subsubsection*{Beispiele}
+
+Sei $G=(T,N,P,S)$ eine rechtsreguläre Grammatik mit:
+\[ T:=\{ a, b, c \}, N:=\{S\}, P:= \{S\rightarrow aS\ |\ bS\ |\ cS\ |\ \varepsilon \} \] 
+
+Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandidaten der kontextsensitiven Sprache $L = \{ a^nb^nc^n\ |\ n\in N\}$ zu stimmen so, dass falls die Mehrheit der Akteure ihm seine Stimme delegieren, der Konsens-Kandidat ebenfalls ein Element der Sprache $L$ sein wird. Auf diese weise lassen sich von den Akteuren komplexe Programme erstellen um die Kandidatenmenge agil und autonom zu bewerten.
 
 
 
 
 \subsubsection*{Grammatik-Erweiterung S}
+\TODO[inline]{NUBER, HASH, FLOAT teil der Terminale}
 
-
-\TODO[inline]{number, float etc als elemente einer menge beschreibennumber, float etc als elemente einer menge beschreiben}
 \textbf{number} stellt eine ganzzahlige Nummer dar. \textbf{float}
 stellt eine Fließkommazahl dar, so dass $0\leq float \leq 1$. \textbf{hash} identifiziert einen Akteur, hier ist $hash$ ein 20 Bytes HEX-String. \\
 
 \begin{align}
   S(G) :=& (N', T', S', P') \\
   N' :=& N \cup \{ O_R | (R\rightarrow r)\in P\land O_R \notin N\}\cup\{D, A, S'\}\\
-  T' :=& T \cup \{[ , ], \&, number, float, hash\ |\ [,],\& \notin T \}\\
+  T' :=& T \cup \{[ , ], \&, number, float, hash\ |\ [,],\& \notin \Sigma \}\\
+  P_{Acteurs} :=& \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\} \\
+  P_{Options} :=& \{R \rightarrow [O_R][D], O_R \rightarrow r\& [V] O_R, O_R \rightarrow \varepsilon \ \nonumber\\
+  &\vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
+  P_{Start} :=& \{S'\rightarrow [A][O_S][D]\} \\
+  P_{Delegations} :=& \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\} \\
+  P_{Voting} :=& \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\} \\
   P' :=& P
   \cup P_{Options} 
   \cup P_{Start} 
   \cup P_{Delegations} 
   \cup P_{Voting} 
   \cup P_{Acteurs}
-  \\
-  P_{Acteurs} :=& \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\} \\
-  P_{Options} :=& \{R \rightarrow [O_R][D], O_R \rightarrow r\& [V] O_R, O_R \rightarrow \varepsilon \ \nonumber\\
-  &\vert\ R\rightarrow r\in P \land r\in (N\cup T)^*\} \\
-  P_{Start} :=& \{S'\rightarrow [A][O_S][D]\} \\
-  P_{Delegations} :=& \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\} \\
-  P_{Voting} :=& \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}
 \end{align}
 
 
@@ -733,78 +724,17 @@ Leider gibt es kein Algorithmus, der beweist, dass S(G) eindeutig ist. Die einde
 
 \subsection{Konsens}
 
-\TODO[inline]{definiere $consens: L(S(G)) \rightarrow L(G)$}
+
+\subsubsection*{Konsens}
+
+Nach dem die Kandidaten, die Akteure sowie ihre Anteile und die Bewertung der Kandidaten durch die Akteure in der Metasprache enthalten sind erlaubt dies den Konsens der DAO als Interpretation des Wortes der $L(S(G))$ Sprache zu definieren. 
+
+\[ consens: L(S(G)) \rightarrow L(G) \] 
 
 Die Idee hier ist, dass die transitive Hülle der Delegationen als
-Attribut während der Ableitung vererbt(inherited) wird. Die Votemenge
+Attribut während der Ableitung vererbt(inherited) wird. Die Stimmenge 
 wird hingegen als Attribut synthetisiert.\cite{Knuth1968} Delegationen zusammen mit den Stimmen quantifizieren jede Option aus einer Optionsmenge und wählen
-eine Konsens-Option.
-
-
-% Sei $\alpha,\beta$ und $o$ Wörter über dem Terminalalphabet. 
-% 
-% \[ \alpha, \beta, o \in T^* \] 
-% 
-% Sei $W_\alpha^\beta\subseteq K_G$ die Menge der Wörter, die $\alpha$ als Prefix und $\beta$ als Suffix besitzen. 
-% 
-% \[W_\alpha^\beta:=\{w|w=\alpha o\beta\land w\in K_G\}\]
-% 
-% 
-% Falls $|W_\alpha^\beta|>1$ sowie $|\alpha| + |\beta| > 0$ gilt, folgt aus der Eindeutigkeit der Ableitung von $G$, dass es eine Regel $(R\rightarrow r)\in P$ exestieren muss, so dass $S \rightarrow^*_P \alpha R \beta$, sowie $\forall \alpha o \beta \in W_\alpha^\beta: R \rightarrow_P^* o$.
-% 
-% Sei $O_\alpha^\beta := \{o\in T^* | \alpha o \beta \in W_\alpha^\beta \}$, so reicht es $\alpha, \beta$ sowie jedes Element von $O_\alpha^\beta$ anzugeben, um die Menge zu beschreiben. 
-
-% \subsubsection*{Algorithmus}
-
-% Sei $O^R:=\{w| R \rightarrow^* w \}$. Wir definieren $O_r \subseteq O^R$ als die Teilmenge der Wörter von $O^R$, die durch die Regelausführung $(R\rightarrow r)\in P$ gebildet wurden.  \\
-% 
-% 
-% \begin{algorithm}
-%   
-% \caption{$\phi: P(K_G) \rightarrow L(S(G))$}\label{euclid}
-% \begin{algorithmic}[1]
-% \Function{$\phi$}{$K_G$}
-% \State\Return \Call{combine}{$K_G, S$}
-% \EndFunction
-% \\
-% 
-% \Function{combine}{$O^R, R$} 
-% \If {$|O^R| = 1$}
-%     \Return $o\in O^R$
-% \Else
-%   \State $W \gets \{\}$
-%   \For{ $(R\rightarrow r)\in P$ }
-%     \State $O_{r} \subseteq O^R$
-%     \State $W\gets W\cup$ \Call{parse}{$O_r, r$}
-%   \EndFor
-%   \If {$|W|=1$}
-%   \State\Return $w\in W$
-%   \Else
-%   \State\Return $[w_0 w_1 ... w_{|W|}]$
-%   \EndIf
-% \EndIf
-% \EndFunction  
-% \\
-% 
-% \Function{parse}{$O_r, r=s_0s_1...s_n$} 
-%   \State $o\gets \epsilon$
-%   \For{ $i\gets 0...n$ }
-%     \If{$s_i\in T$}
-%       \State$o \gets o \circ s_i$
-%     \Else
-%       \State$o \gets o \circ $ \Call{combine}{$O^s_i, s$}
-%     \EndIf
-%   \EndFor
-% \EndFunction
-% 
-% \end{algorithmic}
-% \end{algorithm}
-
-% In Zeile (27) steht $O^s$ für die Menge der teilweörter von O, die an der Stelle von s, durch die regel R erzeugt werden.
-
-% \TODO[inline]{Definition und Algorithmus für $O^s_i$ angeben.}
-
-
+eine Konsens-Option mit den Maximalsten Stimmen höhster Priorität.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -813,60 +743,39 @@ eine Konsens-Option.
 
 \subsection{Transitionssystem}
 
-Wir betrachten vorerst nur die Manipulation der Kandidatenmenge $K$ sowie der Kandidatenbewertung $vote$. 
+Zur Wiederholung besteht ein Transitionssystem $T=(M,I,\tau)$ aus einer Zustandsmenge $M$, einem Initialzustand $I$ und einer Übergangsfunktion $\tau$.
+Nach dem wir nun die Zustandsmenge als Metasprache $M=L(S(G))$ sowie die codierung und decodierung einer DAO in ein Wort der Metasprache gefunden haben, widmen wir uns der Übergangsfunktion $\tau$.
 
-% so dass alle Transaktionen des Objektes als Transaktionen eines contextfreien Wortes angesehen werden können. Die Transaktionsbedingungen können als Struktur des Wortes aufgefasst werden.
-% Die Idee hinter der manipulation ist des es sich bei den Wörter um eine Persistente Datenstruktur handelt. Demnach können Optionen nur hinzu kommen, jedoch nicht gelöscht werden. Jeder Akteur kann Delegationen und Stimmen abgeben sowie
-% die eigenen löschen, hat jedoch keine Macht über die Stimmen und
-% Delegationen der Anderen.
+Als Initialzustand wird ein beliebiges Wort aus der Metasprache verwendet, welches weder Stimmen, noch Deligationen beinhaltet.
 
-% Die Manipulation wird durch ein \textbf{initialisiertes Transitionssysthem $T=(M,I,\tau)$} beschrieben nach \cite{Glausch}.
+\[ I = \{s_0\in L(S(G))\} \] 
+
+Wir werden uns auf die Manipulation der Kandidatenmenge sowie der Kandidatenbewertung beschränken. Weitere Manipulationen werden in Aussicht gestellt. Valide Manipulationen der Kandidatenmenge soll das Erstellen und das Erweitern von Optionsmengen sein. Für die Kandidatenbewertung sollen das Hinzufügen und Entfernen der eigenen Optionsstimmen sowie der eigenen Delegationen für Optionsmengen valide sein. 
+
+Falls die Besitzverteilung von der Blockchain-Schickt übernommen wird, greift die dynamik dieser Schickt ebenfalls auf den derzeitigen Zustand. Wir möchten uns jedoch auf solche DAOs beschränken, bei denen die Besitzverteilung ausschließlich in der Selbstmanipulations-Schicht manipuliert wird. Hier möchten wir das Überweisen eines Akteurs von eigenen Anteilen an einen anderen Akteur zulassen.
+
+
 % 
-% $M$ ist die Zustandsmenge. $I\subseteq M$ ist die Anfangszustandsmenge und $\tau$ ist die Transformation von M sowie $\tau: M \rightarrow M$. Wir machen weiter die Einschränkung $|I|=1$.
-
-
-% \subsection{Qualitätskritärien}
+% \subsubsection*{Zustände}
 % 
-% \begin{enumerate}
-%   \item operationen wie $vote, delegate, addOption$ sind effizient in bezug auf Laufzeit und Speicherverbrauch.
-%   \item Die Verifikation der Transaktion durch das Netzwerk soll möglichst effizient sein.
-% \end{enumerate}
-
-\subsubsection*{Wortteil}
-
-Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann definieren wir ein Wortteil: 
-\[ 
-w_{i..j} := 
-\begin{cases}
-  (t_k)_{i\leq k \leq j}\text{ mit }t_k\in T &|\ i\leq j \\
-  \varepsilon &|\ i>j
-\end{cases}
-\] 
-
-
-\subsubsection*{Ablauf}
-Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gilt:
-
-\[ s_0 \in I \] 
-\[ s_{i+1} = \tau(s_i) \] 
-
-\subsubsection*{Zustände}
-
-Sei $G = (N,T,S,P)$ eine rechtsreguläre Grammatik sowie
-$S(G)=(N',T',S',P')$ die dazugehörige erweiterte Grammatik.
-
-Ein Zustand ist eine Struktur der Form $(U, w) \in M$
-
-U ist die Trägermenge der Struktur und besteht aus den Wörtern der Sprache $L(S(G))$:
-\[U := L(S(G))\]
-
-% $consens$ ist die für $L(S(G))$ definierte konsens Funktion:
-$w\in U$ ist das derzeitige Wort
+% Sei $G = (N,T,S,P)$ eine rechtsreguläre Grammatik sowie
+% $S(G)=(N',T',S',P')$ die dazugehörige erweiterte Grammatik.
+% 
+% Ein Zustand ist eine Struktur der Form $(L(S(G)), w) \in M$
+% 
+% % U ist die Trägermenge der Struktur und besteht aus den Wörtern der Sprache $L(S(G))$:
+% % \[U := L(S(G))\]
+% 
+% % $consens$ ist die für $L(S(G))$ definierte konsens Funktion:
+% $w\in L(S(G))$ ist das derzeitige Wort
 
 \subsubsection*{Aktualisierung}
-Sei $A$ die Menge der Akteure, $L(S(G))$ eine Sprache zur gegebenen Grammatik $G$. Dann ist das Tupel $\delta = (a,w')$ mit $a\in A,\ w'\in L(S(G))$ eine Aktualisierung. Sei $\Delta \subseteq A\times L(S(G))$ die Menge aller aktueller Aktualisierungen.
+Durch die Blockchain-Schicht ist jede Interaktion mit einer DAO eindeutig und nachweislich einem Akteur zugeordnet. Demnach ist jede Aktualisierung des derzeitigen Zustandes $w := s_i$ ein Tupel $\delta = (a,w')$ mit $hash=a\in A=HASH,\ w'\in L(S(G))$.
 
-Akteure können jederzeit die Aktualisierungsmenge erweitern: 
+Sei $\Delta \subseteq A\times L(S(G))$ die Menge aller vom Miner gesehenen Aktualisierungen, die noch nicht auf validität beprüft wurden und somit nicht Teil seines Konsenses sind.
+
+
+Akteure können jederzeit die Aktualisierungsmenge erweitern in dem sie eine Aktualisierung an einen Miner schicken: 
 \[ \Delta' := \Delta \cup \{(a,w')\} \] 
 
 
@@ -894,7 +803,6 @@ Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, 
 
 \subsubsection*{Validierung der Aktualisierung}
 Um die Validität einer Transformation zu verifizieren, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem vorgeschlagenem Wort $w'$ betrachtet. Die Transformation ist valide, falls eines der folgenden Fälle zutrifft.
-Es gilt also: $\beta(a,w,w') = true$ genau dann wenn:
 
 % \subsubsection*{ACID Eigenschaft der Transaktionen}
 % 
@@ -909,19 +817,24 @@ Es gilt also: $\beta(a,w,w') = true$ genau dann wenn:
 
 
 
-\subsubsection*{Optionsmengen}
-Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange die erzeugte Kandidatenmenge durch $\phi^{-1}(w')$ valide bleibt, sowie die Bewertungen der Kandidaten $\phi^{-1}(w)$ nicht verändert werden. Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten, sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
+\subsubsection*{Manipulation der Kandidaten}
+Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange das neu vorgeschlagene Wort, ein Wort der Metasprache ist, sowie die Bewertungen der Kandidaten nicht verändert werden.
+\begin{eqnarray}
+(A,K',share',vote') = \phi^{-1}(w') \land (A,K,share,vote) = \phi^{-1}(w) \Rightarrow vote = vote' \\
+  w'\in L(S(G))
+\end{eqnarray}
+Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten, sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
 
 \subsubsection*{Erzeugen einer Optionsmenge}
 
-Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$
+Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$
 
 \begin{eqnarray}
-  w &=& w_{0..n} \\
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
   w_{i..j} &=& \alpha o_1 \& [v] \\
-  S' &\rightarrow^*& w_{0 .. (i-1)}\ O\ w_{(j+1) .. n}\\
-  O &\rightarrow^*& w_{i..j} \\
+  O &\rightarrow^*& \alpha R \& [v] \\
   R &\rightarrow^*& o_1 \\
+  S' &\rightarrow^*& w_{0 .. (i-1)}\ O\ w_{(j+1) .. n}\\
   R &\rightarrow^*& o_2 \\
   w' &=& w_{0..i-1}\ \alpha [o_1\& [v] o_2\& []][]\ w_{j+1 .. n}
 \end{eqnarray}
@@ -938,15 +851,16 @@ Für $w'$ besitzt O folgende Struktur:
 \Tree [.O $\alpha$ [.R $\lbrack$ [.O $o_1$ $\&$ $\lbrack$ [.V v ]  $\rbrack$ [.O $o_2$ $\&$ $\lbrack$ [.V $\epsilon$ ] $\rbrack$ ] ] $\rbrack$ $\lbrack$ [.D $\epsilon$ ] $\rbrack$ ] $\&$ $\lbrack$ $\rbrack$ [.O ... ] ]
 \end{center}
 
-Dabei muss $o_2$ frei von Delegationen und Stimmen sein, sowie $o_2$ muss relativ zu $o_1$ neu sein.
+Dabei muss $o_2$ frei von Delegationen und Stimmen sein.
 
+\TODO[inline]{ist hier ein beweis das die kritärien nicht verletzt werden notwendig?}
 
 \subsubsection*{Erweitern einer Optionsmenge}
  
 Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$
 
 \begin{eqnarray}
-  w &=& w_{0..n} \\
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
   w_{i..j} &=& \alpha[o][d] \\
   R   & \rightarrow ^*& w_{i..j}\\
   O_R & \rightarrow_P^*& o\\
@@ -955,59 +869,81 @@ Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$
 \end{eqnarray}
 
 $r$ muss dabei Delegations- und Stimmfrei sein sowie neu:
-\[ \phi^{-1}(w) \cap \phi^{-1}(w_{0..i-1}\ \alpha[r\& []][d]\ w_{j+1..n}) = \emptyset \] 
+\begin{eqnarray}
+(A,K',share',vote') = \phi^{-1}(w_{0..i-1}\ \alpha[r\& []][d]\ w_{j+1..n}) \\\land (A,K,share,vote) = \phi^{-1}(w) \\\Rightarrow K'\cap K = \emptyset
+\end{eqnarray}
 
+
+\subsubsection*{Manipulation der Kandidatenbeertung}
+Sei für alle Manipulationen $a\in HASH$ der auslösende Akteur.
 
 \subsubsection*{Hinzufügen einer Stimme}
+Sei $b_1,b_2,v,r \in T'^*$
 
-Sei $w_{i..j} = r\& [v]$
-
-Dann ist $w' = w_{0 .. i-1}\ r \& [v[h n]]\ w_{j+1 .. n}$ mit $0\leq n\leq 1$ eine valide Substitution.
+\begin{eqnarray}
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
+  v &\neq& b_1 a b_2 \\
+  w_{i..j} &=& r\& [v] \\
+  w' &=& w_{0 .. i-1}\ r \& [v[a\ n]]\ w_{j+1 .. n}
+\end{eqnarray}
 
 \subsubsection*{Löschen einer Stimme}
 
-Sei $a\in A, v,v'\in T'^*$
+Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$
 
 \begin{eqnarray}
-  w &=& w_{0..n} \\
-  w_{i..j}&=& r\& [v [an] v'] \\
-  w' &=& w_{0..(i-1)} r\& [vv'] w_{(j+1)..n}
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
+  w_{i..j}&=& r\& [v_1 [a\ n] v_2] \\
+  w' &=& w_{0..(i-1)} r\& [v_1\ v_2] w_{(j+1)..n}
 \end{eqnarray}
 
 
 \subsubsection*{Hinzufügen einer Delegation}
 Da die Reihenfolge der Delegationen wichtig ist, für die Auflösung konkurierender Delegationen, daher ist das Hinzufügen einer Delegation an jeder Stelle in einer Delegationsmenge möglich.
 
-Sei $o,d_i \in T'^*$ sowie $a'\in A$ und $a'\neq a$
+Sei $o,d_i \in T'^*$ sowie $h'\in HASH$ und $h\neq a$
 
 \begin{eqnarray}
-  w &=& w_{0..n} \\
-  w_{i..j} &=& [o][d_1 .. d_n] \\
-  &&k,n\in \mathbb{N} \land k\leq n \\
-  d_k &=& [hash1_k\ hash2_k] \\ 
-  w' &=& w_{0 .. (i-1)}\ [o][d_1 .. d_{k-1} [a\ a'] d_k .. d_n ]\ w_{(j+1) .. n}
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
+  u,v &\in& \{ w | w = ([h_1\ h_2])^*\text{ mit } h_1,h_2 \in HASH \} \\
+  w_{i..j} &=& [o][uv] \\
+  w' &=& w_{0 .. (i-1)}\ [o][u[a\ h']v]\ w_{(j+1) .. n}
 \end{eqnarray}
 
 \subsubsection*{Löschen einer Delegation}
 
-Sei $o,d_i \in T'^*$ sowie $a'\in A$ und $a'\neq a$
+Sei $o,d_i \in T'^*$ sowie $h'\in HASH$
 
 \begin{eqnarray}
-  w &=& w_{0..n} \\
-  d_k &=& [a\ a'] \\
-  w_{i..j} &=& [o][d_1 .. d_{k} .. d_n ] \\
-  w' &=& w_{0 .. (i-1)}\ [o][d_1 .. d_{k-1} d_{k+1} .. d_n ]\ w_{(j+1) .. n}
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
+  u,v &\in& \{ w | w = ([h_1\ h_2])^*\text{ mit } h_1,h_2 \in HASH \} \\
+  w_{i..j} &=& [o][u[a\ h']v] \\
+  w' &=& w_{0 .. (i-1)}\ [o][uv]\ w_{(j+1) .. n}
 \end{eqnarray}
 
-\subsection{Delegationsprogrammierung}
-Akteure können ihre Stimme nicht nur an externe Akteure delegieren, sondern auch an Contracts, welche in einer autonomen Weise abstimmen und so die Interessen der Akteure automatisch verfolgen. 
+\subsubsection*{Überweisung}
 
-\subsubsection*{Beispiele}
+Ein Akteur kann seine Anteile an einen anderen überweisen. Dabei müssen die Fälle unterschieden werden, ob der Empfänger bereits anteile hällt, bei dem Fall wird die Überweisungssumme seinen Beständen addiert, oder ob es sich um einen neuen Akteur handelt. Dieser wird mit der Überweisungssumme neu hinzugefügt. 
 
-Sei $G=(T,N,P,S)$ eine rechtsreguläre Grammatik mit:
-\[ T:=\{ a, b, c \}, N:=\{S\}, P:= \{S\rightarrow aS\ |\ bS\ |\ cS\ |\ \varepsilon \} \] 
+Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
+\TODO[inline]{hier ist zum ersten mal nicht die symbolkonkatination gemeint sondern die interpretation der werte(+,-)}
 
-Ein Delegationsprogramm kann mit dem Interesse entwickelt werden, nur für Kandidaten der kontextsensitiven Sprache $L = \{ a^nb^nc^n\ |\ n\in N\}$ zu stimmen so, dass falls die Mehrheit der Akteure ihm seine Stimme delegieren, der Konsens-Kandidat ebenfalls ein Element der Sprache $L$ sein wird. Auf diese weise lassen sich von den Akteuren komplexe Programme erstellen um die Kandidatenmenge agil und autonom zu bewerten.
+\begin{eqnarray}
+  w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
+  b_1, b_2, b_3, b_4, b_5, b_6 &\in& \{ w | w = ([h\ n])^*\text{ mit } h \in HASH\text{ und }n\in\mathbb{N} \} \\
+  w_{i..j} &=& [ b_1 b_2 b_3 [a\ n] b_4 b_5 b_6 ] \\
+  m' &=& (m+l) \\
+  n' &=& (n-l) \\
+  n - l &\geq& 0\\
+  \text{Fall 1: } &&b_2 = [h' m]\\
+  w' &=& w_{0 .. (i-1)}\ [ b_1 [h' m'] b_3 [a\ n'] b_4 b_5 b_6 ]\ w_{(j+1) .. n} \\
+  \text{Fall 2: } &&b_5 = [h' m]\\
+  w' &=& w_{0 .. (i-1)}\ [ b_1 b_2 b_3 [a\ n'] b_4 [h' m'] b_6 ]\ w_{(j+1) .. n}\\
+  \text{Fall 3: } && \\
+  w' &=& w_{0 .. (i-1)}\ [ b_1 b_2 b_3 [a\ n'] b_4 b_5 b_6 [h' l]]\ w_{(j+1) .. n}
+\end{eqnarray}
+
+
 
 \section{ Beispiele }
 
