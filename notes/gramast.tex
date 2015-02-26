@@ -1,7 +1,7 @@
 % todo: refactor S(G) to gamma
 
 
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt]{report}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -54,7 +54,25 @@
 \usepackage{graphvizzz}
 
 % Source Code so found here: http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+\usepackage{color}
 \usepackage{listings}
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
 
 % Definitionen
 \usepackage{amsthm}
@@ -73,6 +91,7 @@
 
 
 
+\setcounter{secnumdepth}{5}
 
 
 
@@ -286,6 +305,12 @@ Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gi
 
 \subsection{Kryptografie}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.50\textwidth]{bilder/Secp256k1.png}
+    \caption{ECDSA - secp256k1 Kurve https://en.bitcoin.it/wiki/File:Secp256k1.png 25.02.2015}
+\end{figure}
+
 \TODO[inline]{ecdsa}
 \TODO[inline]{hash}
 
@@ -333,9 +358,16 @@ Das erstellen von Blocks durch Miner ist bei den Blockchain mechanismen der hier
 Zum Zeitpunt der ersten Blocks exestieren noch keine Coin-Bestände, diese werden von dem ersten Block an an konkurierende Miner für die Blockerstellung ausgeschüttet. Die größe der Belohnung wird mit der Zeit kleiner, bis irgendwann eine Menge von 21 Millionen coins ereicht ist. Eine andere Motivation der Miner ist eine Transaktionsgebühr, die ein Akteur seiner Transaktion anhängt. Diese Gebühr bekommt ein Miner, wenn er diese in seinem Block berücksichtigt.
 
 \subsubsection*{Interaktion}
+\label{interaction}
 Die Art der Interaktion mit einer DAO hängt von Ihrer Programmierung ab. Handelt es sich um eine Blockchain basierte DAO so ist das bereits beschriebene Erstellen von Blöcken eine Iteraktion sowie das Überweisen von eigenen Coins an einen anderen Akteur. Bitcoin bietet zudem eine einfache Skriptsprache mit der die Akteure kleine Skripte erstellen können wie "Multisignature" bei dem ein Tokenbestand erst freigegeben wird, wenn die mehrheit der angegebenen Adressen ihn freigeben. Diese Skriptsprache ist jedoch nicht Turing-Vollständig. Die Ethereum DAO hingegen besitzt eine turing-vollständige Skriptsprache und wird aufgrund dessen als eine DAO Plattform referenziert. Das ermöglicht das einfache Erstellen von Nicht Blockchain basierter DAOs, da der Berreich der dezentralisierung von der Ethereum Plattform abgenommen wird. Aktionen in Ethereum währen uneranderem das hinzufügen eines neuen Programms oder die Übermittlung der Interaktionen an interne DAOs. Akteure können in Ethereum sich einerseits außerhalb der Ethereum DAO befinden, andererseits sind alle DAOs inerhalb von Ethereum ebenfalls Akteure.
 
 Die Interaktion eines Akteurs mit einer Blockchain basierten DAO besitzt folgende Struktur:
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{bilder/interaktion.png}
+    \caption{Interaktion eines Akteurs mit einer dao.}
+\end{figure}
 
 Der Akteur:
 \begin{enumerate}
@@ -528,6 +560,7 @@ Formaler gesagt muss eine Funktion $S: REG\rightarrow CFG$ gefunden werden, zusa
 Da die Funktion $S$, $\phi$ sowie $\phi^{-1}$ viele Komponenten haben, werden sie inkrementell eingeführt: Zuerst wird $S_1, \phi_1, \phi^{-1}_1$ definiert, diese codieren und decodieren die Kandidatenmenge einer DAO in ein Wort. Anschließend wird die Besitzverteilung sowie die Kandidatenbewertung ebenfalls eingearbeitet, sodass wird die gesuchten Funktionen erhalten.
 
 \subsection{codierung der Kandidatenmenge}
+\label{codekand}
 Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. 
 
 Dazu muss es eine Grammatik-Erweiterung $S_1: REG\rightarrow CFG$ gefunden werden.
@@ -953,35 +986,112 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
 
 \section{Implementation}
 \subsection*{Einleitung}
-% Zentralisierte Implementation
-% Ignorierung der Dezentralisierungsschicht
-% durch die Turing vollständigkeit kann diese auf die ethereum chain portiert werden
+Implementiert wurde im Rahmen dieser Arbeit eine zentralisierte Version einer selbst-Manipulationsschicht einer DAO, welche eine regulären Grammatik besitzt. Die dezentralität wurde erst einmal ignoriert, da die Funktionsweise der Selbst-Modifikation im Vordergrund steht. Jedoch sind alle Grundlangen dafür gelegt die hier erarbeitete Lösung auf Ethereum oder eine andere Turing-Vollständige DAO Platform zu portieren.
 \subsection*{Architektur}
-\subsubsection*{Client/Server Architektur/ Interaktion}
-% Grafik der interaktion
-% Implementiert ist der in DAO - Interaktion
-% Akteur kann
-%   DAO erstellen
-%     initialfunktion
-%   DAO valide Manipulieren
-%   sign -> send to server
-%   server sign check + valide manipulation -> new consens
-%   send consens to client
-\subsubsection*{BitcoinJS}
-% ECDSA
-%   private key from string
-%   sign
-%   verify
-\subsubsection*{Grammatikerweiterung}
-% JISON - http://zaach.github.io/jison/docs/
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{bilder/client-server.png}
+    \caption{Benutzte Technologie}
+    \label{client-server}
+\end{figure}
+
+Ziel der Implementation ist einerseits eine lauffähige Implementierung des Konzeptes. Andererseits einem Benutzer zu ermöglichen mit Anwendungsbeispielen zu experimentieren: reguläre Grammatiken anzulegen sowie diese mit der Angabe der Besitzverteilung und eines Initialwortes zu einer DAO zu machen.
+Implementiert ist die Interaktion mit der DAO Selbst-Manipulationsschicht wie in \ref{interaction} beschrieben. Ein Akteur kann dabei entweder eine vorhandene DAO manipulieren oder eine neue erstellen. Technisch wurde hier eine Klassische Client-Server Architektur benutzt\ref{client-server}. Dafür wurde das MeteorJS\footnote{http://meteor.com 25.02.2015} Web Framework verwendet
+welches auf NodeJS\footnote{http://nodejs.org/ 25.02.2015} basiert - einem serverseitigen JavaScript Compiler. Für die Datenspeicherung wird MongoDB\footnote{http://www.mongodb.org/ 25.02.2015} verwendet - eine NoSQL Datenbank. Der Client komuniziert über HTTP und WebSocket mit dem Server.
+
+%http://yuml.me/diagram/scruffy/class/draw
+%2F%2F Cool Class Diagram, 
+% [DAO| name:String; parentID: ForeignKey; state: Number; actor:String; word:String; sig: String ]-          parentID>[DAO| name: String; parentID: ForeignKey; state: Number; actor: String; word: String; sig: String],
+% [DAOName| name: String; remoteID: ForeignKey; grammarID: ForeignKey] -> [DAO],
+% [DAOName] -> [Grammar| name: String; bnf: JSON; extended: JSON ]
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.60\textwidth]{bilder/dataModel.png}
+    \caption{Datenmodell}
+\end{figure}
+
+Das Datenmodell ist in 2 Berreiche unterteilt: Einerseits die DAOs und andererseits die Grammatiken. 
+
+Ein Akteur hat nun die Möglichkeiten 
+
+\begin{enumerate}
+  \item vorhandene Grammatiken aufzulisten
+  \item eine vorhandene Grammatik zu inspizieren
+  \item eine neue Grammatiken hinzuzufügen
+  \item DAOs aufzulisten
+  \item den Aufbaue und die Historie einer DAO einzusehen
+  \item eine DAO zu manipulieren
+  \item eine neue DAO zu erstellen
+\end{enumerate}
+
+Für die Signierung wird die Bibliothek BitcoinJS-lib\footnote{https://github.com/bitcoinjs/bitcoinjs-lib 26.02.2015} verwendet. Sie stellt die notwendigen ECDSA sowie SHA Funktionen zu verfügung. Für dem Umgang mit Grammatiken und Worten wird JISON\footnote{http://zaach.github.io/jison 26.02.2015} eine JavaScript portierung des Bison/Flex LALR(1) Parser-Generators verwendet.
 %   LALR(1) 
 %     Subset of CFG
 %     S(G) is in LALR(1)
-%   BISON - Parser Generator - http://de.wikipedia.org/wiki/GNU_Bison
-% Architecture
-%   Extention - Pseudocode
-%   Metaword to Parse Tree (PT)
-%   PT - functions
+
+\subsubsection*{BitcoinJS}
+BitcoinJS-lib stellt notwendige kryptografische Funktionen bereit: das erstellen von einem Privatekey auf basis eines Strings, das erstellen eines Public-Key und einer Addresse auf Basis des Private-Keys, das Signieren von Nachrichten mit einem Private-Key sowie das Verifizieren von Nachrichten mit ihrer Signatur und einer Adresse. Dieses deckt alle Funktionen ab, die für die sichere Kommunikation von einem Akteur und der DAO notwendig sind.
+
+\subsubsection*{Grammatik}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.90\textwidth]{bilder/parsergenerator.png}
+    \caption{Grammatikerweiterung und Parser Generator}
+\end{figure}
+
+Für das erzeugen von Parsern wird der Parser-Generator JISON so erweitert, dass dieser bei Eingabe einer regulären Grammatik $G$ einen Parser für die zur Grammatik zugehörigen Metasprache erzeugt. Dieser Parser interpretiert eine Wort der $L(S(G))$ Sprache als ein Parse Baum Objekt (PTO). Eine Grammatik wird als Bison Grammatik (Figure \ref{bisongrammar}) in der EBNF Schreibweise angegeben.
+
+\begin{figure}[ht]
+  \centering
+  \begin{lstlisting}
+  %lex
+  %%
+  \s                           /* IGNORE */
+  (a)                          return 'a'
+  (b)                          return 'b'
+  (c)                          return 'c'
+  .                            return 'INVALID'
+  /lex
+
+  %start SA
+  %% 
+
+  SA: A | ;
+
+  A: 'a' A | 'a'
+   | 'b' B | 'b'
+   | 'c' C | 'c';
+
+  B: 'b' B | 'b'
+   | 'c' C | 'c';
+
+  C: 'c' C | 'c';
+  %%
+  \end{lstlisting}
+  \caption{ Bison Grammatik für die Sprache $L(G) = \{ a^xb^yc^z | x,y,z\in \mathbb{N} \}$ }
+  \label{bisongrammar}
+\end{figure}
+
+Das Parse Baum Objekt besitzt folgende Funktionen:
+
+\paragraph*{toString}
+wandelt das Parse Baum Objekt wieder um zu einem Wort der Metasprache, das dieses Parse Baum Objekt konstruiert.
+
+\paragraph*{getConsensString}
+wählt den Konsenskandidaten aus:
+wendet die Konsensfunktion an und liefert ein Wort der $L(G)$ Sprache zurück.
+% der Kandidat mit der maximalsten Bewertung sowie der 
+
+\paragraph*{validate}
+erhällt ein weiteres (PTO), die eine Manipilation des derzeitigen PTOs beinhaltet, mit einer Akteuradresse und überprüft ob die Manipulation vom Akteur valide ist.
+
+\paragraph*{add}
+erhällt ein Wort $w$ der $L(G)$ Sprache und fügt es dem Derzeitigen PTO hinzu. Diese Operation fügt der DAO einen neuen Kandidaten hinzu.
+
+\paragraph*{getCandidates}
+liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen. Dadurch lässt sich leicht die Funktion $vote$ rekonstruieren.
 
 
 % \subsection*{ abc - Grammatik }
@@ -1030,23 +1140,39 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
 
 \subsubsection*{Anwendung auf kontextfreie Grammatiken}
 
-% Die validität einer Sprache ist jedoch meist nicht nur aus der kontextfreien syntax zu schließen. So werden namensresolutionen und typisierung beim compilieren in späteren schritten auf eine kontext sensitive weise überprüft. Dies
-% Syntax von Programmiersprachen sind nicht kontextfrei, sondern Kontextsensitiv \cite{Otto}
+Eine interessante Anwendung des hier vorgestellten Ansatzes einer elbst-Modifikationsschicht ist die Anwendung auf die kontextfreien Sprachen. Damit können alle Programmiersprachen zumindest Syntaktisch abgebildet werden. Dieses ist jedoch nicht Trivial. Das Problem hierbei ist die Kodierung der Kandidatenmenge. Auf Grund der limitierung der Ableitungsregeln kann ein Ableitungsbaum einer regulären Grammatik keine Knoten haben, die mehrere Kinder Besitzen(Äste). Dieses ermöglicht die Konstruktion eines Präfixbaumes bei dem Äste als Optionen angesehen werden. 
+Zwar lässt sich die zusammenfassung der Kandidaten bei kontextfreien Grammatiken mit der selben Methode anhand des Ableitungsbaumes konstruieren, jedoch multiplizieren sich die Optionen in unterschiedlichen Kindern eines Knotens. Dadurch gilt die in \ref{codekand} geforderte Bedingung $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ nicht, da Optionen hinzu kommen. Ebenfalls lässt sich nicht jede Kandidatenbewertung durch das Anhängen an Optionsknoten codieren.
 
-% Validitätskritärien: Objekt hängt von keiner Grammatik ab, sondern von einer Mänge von Validitätskritärien von denen die Grammatik eine sein kann. Die validitätskritärien schränken den Raum der Kandidaten automatisch ein. Die ausgewählten Kandidaten der Kandidatenmenge sind somit alle valide. Ihre bewertung sind präferrenzen der akteure.
-% \[ K \subseteq VK \subseteq \bigcap_{v\in V} v \] 
+Betrachten wir einmal das Beispiel der CFG Sprache $L(G) = { a^nb^n | n\in\mathbb{N}^+ }$ mit der konstruierenden Grammatik: 
+
+\begin{eqnarray}
+  G &=& (T,N,P,S)\\
+  T &=& \{ a, b \}\\
+  N &=& \{ S, B \} \\
+  P &=& \{ S\rightarrow BB, B\rightarrow a, B\rightarrow b\}
+\end{eqnarray}
+
+Die Kandidatenmenge $K_1={ab, ac, ba}$
+Sowie das anhand des Ableitungbaumes valide Metawort: 
+
+\[ [A][ a\&[v_1]b\&[v_2] ][][ a\&[v_3]b\&[v_4]c\&[v_5] ][] ][] \] 
+
+
+Die sich aus dem Metawort bildenden Kandidaten sind: $K_2=\{ aa, bb, ab, ba, ac, bc \}$
+
+Weiter gibt es kein Mechanismus der jedes mögliche Kandidatenbewertung in der Sprache darstellen kann: Es stehen in diesem Beispiel 5 Bewertungsvariablen für 6 Kandidaten zur Verfügung. 
 
 \subsubsection*{Dezentralisierung}
+Wie bereits erwähnt ist die dezentralisierung der selbst-Manipulationsschicht der DAO z.B. durch eine Portierung auf die Ethereum Plattform der nächste notwendige Schritt.
 
 \subsubsection*{Anonymisierung}
+Durch die Pseudonüme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Dadurch lässt sich der Konsens manipulieren in dem auf strategisch wichtige Akteure druck ausgeübt wird um ihre Stimme zu ändern. Auch würe das Abstimmverhalten der Anteilseigener möglicherweise beeinflussen, da diese fürchten ihre pseudonümen Status verlieren zu können. Die Anonyme Wahl ebenfalls ein kritärium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere ersträbenswerte Erweiterung währe. Diese Anonymisierung könnte durch Homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard}.
 
 \subsubsection*{Manipulation der Besitzverteilung}
-\subsubsection*{Manipulation der Grammatik}
+Derzeit ist die Größe einer DAO fest, sodass die einzige Möglichkeit an Anteile zu gelangen, diese von Anderen überwiesen zu bekommen ist. Eine mögliche erweiterung währe die der erschaffung neuer Anteile. Diese können entweder von der DAO verkauft oder anhand festgelegter Regeln herausgegeben werden. Ein Beispiel Regelsatz währe das binden an Optionsmengen. Derjenige Akteur erhällt die neuen Anteile, dessen vorgeschlagene Option für eine bestimmte Dauer den Platz der Konsensoption einnimmt.
 
-
-% \begin{itemize}
-%   \item änderungen der Grammatik berücksichtigen
-% \end{itemize}
+% \subsubsection*{Manipulation der Grammatik}
+% Ein weiterer, jedoch Spekulativer Schritt währe die manipulation der grammatik
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1055,8 +1181,6 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
 
 
 \newpage
-\section{Quellen}
-
 
 \bibliography{library}
 
