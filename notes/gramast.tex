@@ -1,12 +1,16 @@
 % todo: refactor S(G) to gamma
 
 
-\documentclass[]{article}
+\documentclass[a4paper,12pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
+
+\usepackage{lmodern} \normalfont %to load T1lmr.fd 
+\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
+
 
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -40,7 +44,6 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
-% \renewcommand{\baselinestretch}{1.2} 
 \setcounter{secnumdepth}{0}
 
 % Treeview
@@ -98,6 +101,7 @@
 
 \begin{document}
 
+\include{title}
 
 \tableofcontents
 
@@ -990,20 +994,20 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      IMPLEMENTATIONSPLAN
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Umfang der Arbeit}
-
-\subsection*{Implementation}
-\begin{itemize}
-  \item Eine Zentralisierte Version der $L(S(G))$-Sprache sowie des Transitionssystem wird implementiert.
-  \begin{itemize}
-    \item JISON\footnote{http://jison.org/}, eine javascript Portierung des Bison\footnote{http://www.gnu.org/software/bison/}/Flex\footnote{http://flex.sourceforge.net/} LALR(1) Parser Generators wird so erweitert, dass bei Eingabe einer beliebigen regulären Grammatik $G$ im bison Format\footnote{http://dinosaur.compilertools.net/bison/bison\_6.html} dieser einen Parser erzeugt welcher Wörter aus der $L(S(G))$ Sprache als Eingabe bekommt und ein öffentliches Transitionssystem erzeugt.
-    \item Ein Initialisierungs-Script, welches aus einem Wort der $L(G)$ Sprache und einer Besitzverteilung gegeben als $\{(a,n)| a\in\ 20byteHexString \land n\in \mathbb{N} \}$ ein valides initiales Wort in der $L(S(G))$ Sprache erzeugt.
-    \item Akteure können durch eine Webseite in die Transaktionshistorie einsehen, sowie das Wort valide manipulieren.
-    \item Eine Client-seitige asymmetrische Verschlüsselung validiert die Transaktionen der Akteure.
-    \item Die Konsens-Funktion wird ebenfalls Implementiert und erzeugt zu jedem Stand einen öffentlich verfügbaren Konsens-Kandidaten.
-  \end{itemize}
-  \item Einige anschauliche Beispiele regulärer Sprachen mit beispielhaften Delegationsprogrammen werden implementiert und demonstriert.
-\end{itemize}
+% \section{Umfang der Arbeit}
+% 
+% \subsection*{Implementation}
+% \begin{itemize}
+%   \item Eine Zentralisierte Version der $L(S(G))$-Sprache sowie des Transitionssystem wird implementiert.
+%   \begin{itemize}
+%     \item JISON\footnote{http://jison.org/}, eine javascript Portierung des Bison\footnote{http://www.gnu.org/software/bison/}/Flex\footnote{http://flex.sourceforge.net/} LALR(1) Parser Generators wird so erweitert, dass bei Eingabe einer beliebigen regulären Grammatik $G$ im bison Format\footnote{http://dinosaur.compilertools.net/bison/bison\_6.html} dieser einen Parser erzeugt welcher Wörter aus der $L(S(G))$ Sprache als Eingabe bekommt und ein öffentliches Transitionssystem erzeugt.
+%     \item Ein Initialisierungs-Script, welches aus einem Wort der $L(G)$ Sprache und einer Besitzverteilung gegeben als $\{(a,n)| a\in\ 20byteHexString \land n\in \mathbb{N} \}$ ein valides initiales Wort in der $L(S(G))$ Sprache erzeugt.
+%     \item Akteure können durch eine Webseite in die Transaktionshistorie einsehen, sowie das Wort valide manipulieren.
+%     \item Eine Client-seitige asymmetrische Verschlüsselung validiert die Transaktionen der Akteure.
+%     \item Die Konsens-Funktion wird ebenfalls Implementiert und erzeugt zu jedem Stand einen öffentlich verfügbaren Konsens-Kandidaten.
+%   \end{itemize}
+%   \item Einige anschauliche Beispiele regulärer Sprachen mit beispielhaften Delegationsprogrammen werden implementiert und demonstriert.
+% \end{itemize}
 
 
 
