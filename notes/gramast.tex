@@ -456,7 +456,7 @@ Durch die Dezentralisierungsschicht wird sichergestellt, dass Transitionen \text
 \subsection{Definition}
 In der selbst-Modifikationsschicht können wir davon ausgehen, dass für die dezentralität der DAO bereits gesorgt ist. Es handelt sich entweder selbst um eine Blockchain-Basierte DAO oder eine, die eine Plattform wie Ethereum benutzt. Insofern gilt die dezentralität im folgenden als gegeben.
 
-Eine DAO in einer Grammatik $G$ ist ein Tupel $O_G=(A, K, share, vote)$ bestehend aus:
+Eine DAO in einer Grammatik $G$ ist ein Tupel $O_G=(A, K, <, share, vote)$ bestehend aus:
 
 \begin{enumerate}
 \item eine endliche Menge von Akteuren $A$
@@ -464,11 +464,11 @@ Eine DAO in einer Grammatik $G$ ist ein Tupel $O_G=(A, K, share, vote)$ bestehen
   \[share: A \rightarrow \mathbb{N}\]
 \item eine endliche Menge von validen \textbf{Kandidaten} mit mindestes einem Element 
   \[K_G \subseteq L(G) \land |K_G| \geq 1\] 
+\item eine strickte Totalordnung der Kandidaten 
+  \[ < \subset K\times K \] 
 \item eine Bewertung der Kandidaten durch die Akteure. 
   \[vote: A\times K \rightarrow [0,1]\]
 \end{enumerate}
-
-\TODO[inline]{strickte Totalordnung der Kandidaten mit in die DAO definition einbauen}
 
 Sei $\mathbf{DAO_G} = \{ O_G\ |$ $O_G$ ist DAO in der einer Grammatik $G$ $\}$ die Menge aller DAOs in der Grammatik $G$.
 % sowie $\mathbf{P_G}:= \{ K_G | K_G \subseteq L(G) \}$ die Menge aller möglichen Kandidatenmengen.
@@ -479,8 +479,8 @@ Zudem exestiert eine Konsensfunktion die eine DAO in eie valides Wort überführ
 
 \subsection{Erläuterung}
 
-\subsubsection*{Grammatik}
-\TODO[inline]{Grammatik}
+\subsubsection*{Kandidaten}
+Der Hier verfolgte Ansatz ist nur DAOs in regulären Grammatiken zu Betrachten. Diese Eigenschaft schränkt die Menge der möglichen Kandidaten ein. Zu der Kandidatenmenge existiert eine strickte Ordnungsrelation, die die Reihenfolge angibt, in der die Kandidaten hinzugefügt wurde.
 
 \subsubsection*{Besitzverteilung}
 
@@ -512,13 +512,10 @@ Für die bestimmung der Besitzverteilung können einerseits die Tokens benutzt w
 
 
 Die Konsensfunktion überführt jede DAO in ein Wort der $L(G)$ Sprache.
-Dabei sucht die Funktion nach dem Kandidaten aus der Kandidatenmenge mit der maximalsten Bewertung. Die Bewertung eines Kandidaten ergibt sich dabei durch die Summe der gewichteten Bewertungen der Akteure.
+Dabei sucht die Funktion nach dem Kandidaten aus der Kandidatenmenge mit der maximalsten Bewertung. Die Bewertung eines Kandidaten ergibt sich dabei durch die Summe der gewichteten Bewertungen der Akteure. Falls mehrere Kandidaten die maximale Bewertung besitzen, wird der älteste Kandidat genommen.
 
 \[ value(k) := \sum_{a\in A} share(a) * vote(a,k) \] 
-\[consens (O_G) := k\text{ mit }value(k) = \max_{k'\in K_G} (value(k'))\]
-
-Hier entsteht das Problem, dass es mehrere Kandidaten mit der selben, maximalen Bewertung exestieren. In diesem Fall muss ein mechanismus existieren, der ein k determiniert. Dieser wird in der Implementation nähr betrachtet. Für diese kommt eine strickte Totalordnung für die Kandidatenmenge hinzu, die die Reihenfolge bestimmt, in der diese der Kandidatenmenge hinzugefügt wurden. der Mechanismus entscheidet sich hier immer für den ersten Kandidaten der Ordnung.
-
+\[ consens (O_G) := min_<(\{ k |\ value(k) = \max_{k'\in K_G} (value(k')) \}) \]
 
 
 % \subsubsection*{Bewertung}
