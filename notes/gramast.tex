@@ -606,8 +606,8 @@ Die Konsensfunktion überführt jede DAO in ein Wort der $L(G)$ Sprache.
 Dabei sucht die Funktion nach dem Kandidaten aus der Kandidatenmenge mit der maximalsten Bewertung. Die Bewertung eines Kandidaten ergibt sich dabei durch die Summe der gewichteten Bewertungen der Akteure. Falls mehrere Kandidaten die maximale Bewertung besitzen, wird der älteste Kandidat genommen.
 
 \begin{eqnarray}
-value(k) &:= \sum_{a\in A} share(a) \cdot vote(a,k)
-consens (O_G) &:= min_<(\{ k |\ value(k) = \max_{k'\in K_G} (value(k')) \})
+value(k) &:=& \sum_{a\in A} share(a) \cdot vote(a,k) \\
+consens (O_G) &:=& min_<(\{ k |\ value(k) = \max_{k'\in K_G} (value(k')) \})
 \end{eqnarray}
 
 
@@ -717,7 +717,7 @@ aa[aaa\&c\&c[c\&cc]]
 Für die grammatik-erweiternde Funktion $S_1$ wird an jedem Ableitungsschritt in der Grammatik $G$ eine Mehrdeutigkeit zugelassen. Dafür werden die Produktionsregeln folgendermaßen erweitert:
 
 \begin{eqnarray}
-  P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
+  P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\}
 \end{eqnarray}
 
 Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge} sowie die darin enthaltenen Elemente ($r$) \textbf{Option}. 
