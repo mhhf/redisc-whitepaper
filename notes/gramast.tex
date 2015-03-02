@@ -133,7 +133,7 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \include{selbstst}
 
 
-\section*{Abstract}
+\section*{Zusammenfassung}
 % überblick
 % problembeschreibung, literaturüberblick, related work, 
 
@@ -158,11 +158,11 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 % Problem: der Verwaltung( Manipulation ) und der besitzallokation
 
 Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
-Dabei entsteht ein Inhalt durch Beiträge einzelner Akteure, die räumlich und zeitlich getrennt sein können.
+Dabei entsteht ein Inhalt durch Beiträge einzelner Akteure, die räumlich und zeitlich getrennt agieren können.
 Zentral ist dabei die Frage wie der Konsens über einen Inhalt auf eine dezentrale Weise gebildet werden kann.
 In dieser Arbeit untersuchen wir den Prozess der verteilten Zusammenarbeit für Inhalte die als Wörter einer regulären Sprache beschrieben werden können. Dafür wird ein Modell mit einer Implementation einer Blockchain-Technologie vorgestellt: Ein öffentliches Transitionssysthem mit dezentral validierter Ausführung. 
 Ebenfalls wird eine Grammatik-Erweiterung mit einer Konsens-Funktion für eine beliebige reguläre Grammatik beschrieben. Die Wörter der erweiterten Grammatik beinhalten Informationen über die Besitzallokation der Akteure, alternative Beiträge und deren Bewertung. 
-Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wort der erweiterten Grammatik in ein Wort der ursprünglichen Grammatik.
+Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wort der erweiterten Grammatik in ein Wort der ursprünglichen Grammatik. Schließlich wird eine zentralisierte Implementation vorgestellt.
 
 
 % Outline - kurze konkrete zusammenfassung was kommt
@@ -354,7 +354,7 @@ Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gi
 % \subsection*{asymetrische Verschlüsselung}
 Bei einem asymmetrischem Verschlüsselungsverfahren generiert der Benutzer ein Schlüsselpaar bestehend aus einem privatem und einem öffentlichem Schlüssel. Der öffentliche Schlüssel wird aus dem Privaten erzeugt und veröffentlicht. Wir werden im Folgenden den öffentlichen Schlüssel ebenfalls Adresse nennen. Die identifiziert einen Akteur.
 
-Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256k1 Kurve verwendet. ECDSA ist eine DSA Verfahren basierend auf Eliptic Curve Kryptografie. ECDSA bietet viele Vorteile zu alternativen Verfahren wie RSA oder DH.\cite{Pouillard2014}
+Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256k1 Kurve verwendet. ECDSA ist eine DSA Verfahren basierend auf Eliptic Curve Kryptografie. ECDSA bietet viele Vorteile zu alternativen Verfahren wie RSA oder DH.\cite{Pouillard2014a}
 % 
 % \subsection*{Signierung}
 % 
@@ -392,11 +392,26 @@ Im folgenden möchten wir drei Teilbereiche von DAOs näher beleuchten: Als erst
 \section{Dezentraler Konsens - Blockchain}
 \label{blockchain}
 
-Bitcoin hat mit der Einführung der Blockchain eine elegante und universelle Lösung für das Problem der Byzantinischen Generäle vorgeschlagen. Das Problem steht repräsentativ im Bereich der verteilten Systemen für die Schwierigkeit, einen Konsens zwischen Akteuren herzustellen, wenn einige, für Andere unbestimmte Akteure eigennützig sowie manipulativ agieren. 
+Bitcoin hat mit der Einführung der Blockchain eine elegante und universelle Lösung für das Problem der Byzantinischen Generäle(BG) vorgeschlagen. Das Problem steht repräsentativ im Bereich der verteilten Systemen für die Schwierigkeit, einen Konsens zwischen Akteuren herzustellen, wenn einige, für Andere unbestimmte Akteure eigennützig sowie manipulativ agieren. 
 Bitcoin hat hier eine statistische Lösung präsentiert: \textbf{Es führt die Dezentralität des Konsens auf die natürliche Knappheit einer Ressource zurück.} Für Bitcoin ist es die Anzahl der Berechnungen, die ein Akteur in einer bestimmten Zeit machen kann. Ein General versucht dabei ein Mathematisches Rätsel zu lösen, welches statistisch gesehen 10 Minuten dauern müsste, wenn alle beteiligten Generäle an dem Problem arbeiten würden. 
 
 Hat ein General eine Lösung gefunden, teilt er dieses an alle ihm bekannten Generäle mit. Eine solche Lösung wird auch als ``Block'' bezeichnet. Jeder General arbeitet darauf hin mit dieser Lösung weiter und versucht sie zu erweitern, was wiederum statistisch gesehen 10 Minuten der Kraft aller Generäle kosten müsste. Jeder General arbeitet mit der von ihm zuerst gesehenen längsten Kette von Blöcken. Mit der Anzahl der Erweiterungen konvergiert nun die Beteiligung loyaler Generäle am Konsens zur Majorität, falls diese tatsächlich im Besitz einer Mehrheit der begrenzten Rechenressourcen sind.
 In einem Block befindet sich neben der vorhergehenden Lösung ebenfalls der aktuelle Konsenses, solange er auf den Vorhergehenden aufbaut und valide ist.
+
+\begin{aquote}{Satoshi Nakamoto - 2008 \cite{Nakamoto2008}}
+  The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains.
+\end{aquote}
+
+Jedoch gibt es ebenfalls Argumente dafür, das die Blockchain das Problem der Byzantinischen Generäle nicht vollständig löst:
+
+\begin{aquote}{Garay et. al. 2014 \cite{Garay2014}}
+  This is because in case the adversary finds a solution first, then every honest player will extend the adversary’s solution and switch to the adversarial input hence abandoning the original input. \\
+  \[...\]
+  \\
+Nakamoto’s protocol does not quite solve BA since it does not satisfy Validity with overwhelming probability.
+\end{aquote}
+  
+Die Blockchain bei Bitcoin hat jedoch zumindest nicht den Anspruch das BG Problem zu lösen, da interagierende Akteure durch Kryptografie geschützt sind und nicht-Loyale Akteure wenig spielraum für eine Manipulation besitzen. Vielmehr ist es ein Instrument um einerseits Transaktionen mit einem Zeitstempel zu versehen und andererseits die ``double spending''\cite{Nakamoto2008} Attake zu verhindern.
 
 Das Lösen eines Rätsels für das Recht einen neuen Block bestimmen zu können, wird als ``Proof of Work'' oder kurz POW bezeichnet, da ein General eine Arbeitsleistung beweisen muss, um den nächsten Block vorschlagen zu dürfen. Bitcoin und viele andere DAOs benutzen partielle Hash Invertierung als tatsächlichen POW Algorithmus. Dieser baut auf der Eigenschaft einer Hash-Funktion auf, dass es sehr einfach ist, einen Hash einer Nachricht zu berechnen, jedoch sehr schwer aus einem gegebenem Hash eine Nachricht zu rekonstruieren, die diesen Hash erzeugt. 
 
@@ -634,7 +649,8 @@ Im folgenden ein Beispiel einer DAO $O_{G_{abc}}^1 := ( A, K, <, share, vote)$ f
     0 &: otherwise
   \end{cases} \\
   K &=& \{aaaaa, aac, aacc, aaccc\} \\
-  && aaaaa < aac < aacc < aaccc \\
+  % && aaaaa < aac < aacc < aaccc \\
+  <&:=&\{(aaaaa,aac),(aac,aacc),(aacc,aaccc)\}^+\\
   vote&:& hash,k\mapsto
   \begin{cases}
     1.0 &: hash = h_1, k = aaaaa \\
@@ -820,7 +836,7 @@ $
 % 
 % \subsection*{zeige $\phi\circ\phi^{-1} = id_{P(K_G)}$}
 % 
-\TODO[inline]{ist hier ein formaler Beweis notwendig?}
+% \TODO[inline]{ist hier ein formaler Beweis notwendig?}
 
 
 \subsection{Codierung der Besitzverteilung}
@@ -847,7 +863,9 @@ In diesem Beispiel gehören Akteur $h_1$ - 10 Anteile, $h_2$ - 7 Anteile und $h_
 
 \subsection{Codierung der Kandidatenbewertung}
 Um jede $DAO$ ohne Verlust von Information codieren zu können, muss jede mögliche Bewertungsverteilung von Akteuren und Kandidaten im Metawort enthalten sein können. 
-Dieses kann erreicht werden, wenn die Bewertung der Kandidaten ($V$) an Optionen gebunden sind ($O_R \rightarrow r\& [V] O_R$). Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten codieren, wenn sie dieser Option zugeordnet sind. Zusätzlich möchten wir Bewertungen einer Option zulassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
+Dieses kann erreicht werden, wenn die Bewertung der Kandidaten ($V$) an Optionen gebunden sind ($O_R \rightarrow r\& [V] O_R$). Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten codieren, wenn sie dieser Option zugeordnet sind. 
+
+Zusätzlich möchten wir Bewertungen einer Option zulassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
 Die Bewertung dieser Option wird als ein Attribut in der Ableitung Synthetisiert\cite{Knuth1968} und damit jeweils von einer Bewertung einer tieferen Ebene ersetzt.
 
 Sei $FLOAT = [0,1]$ die Menge der maschinell darstellbaren Fließkommazahlen zwischen 0 und 1: $float\in FLOAT$
@@ -1031,10 +1049,10 @@ Akteure können jederzeit die Aktualisierungsmenge erweitern in dem sie eine Akt
 
 
 \subsection{Transformation}
-Sei $\Delta \neq \emptyset$ 
+Sei $\Delta \neq \emptyset$ dann können wir die Transitionsfunktion $\tau$ folgendermaßen definieren.
 
 \begin{eqnarray}
-  \tau( w ) = 
+  \tau( w ) := 
   \begin{cases}
     w'  &: \exists (a,w') \in \Delta \land \beta(a,w,w') = true \\
     w   &: andernfalls 
@@ -1044,7 +1062,7 @@ Sei $\Delta \neq \emptyset$
 Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, in dem die für die Transformation verwendete Aktualisierung entfernt wird. Wurde keine Aktualisierung verwendet, so sind alle Aktualisierungen invalide:
 
 \begin{eqnarray}
-  \Delta' = 
+  \Delta' := 
   \begin{cases}
     \Delta\setminus \{ (a, w' )\} &: (a,w')\text{ wurde in der Transformation verwendet} \\
     \{\} &: andernfalls
@@ -1083,7 +1101,7 @@ Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalte
 
 \subsubsection{Erzeugen einer Optionsmenge}
 
-Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$
+Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$, dann ist das Erzeugen einee Optionsmenge valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1109,11 +1127,11 @@ Für $w'$ besitzt O folgende Struktur:
 
 Dabei muss $o_2$ frei von Delegationen und Stimmen sein.
 
-\TODO[inline]{ist hier ein Beweis das die Kritärien nicht verletzt werden notwendig?}
+% \TODO[inline]{ist hier ein Beweis das die Kritärien nicht verletzt werden notwendig?}
 
 \subsubsection{Erweitern einer Optionsmenge}
  
-Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$
+Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$, dann ist das Erweitern einer Option valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1136,7 +1154,7 @@ $r$ muss dabei Delegations- und Stimmfrei sein sowie neu:
 Sei für alle Manipulationen $a\in HASH$ der auslösende Akteur.
 
 \subsubsection{Hinzufügen einer Stimme}
-Sei $b_1,b_2,v,r \in T'^*$
+Sei $b_1,b_2,v,r \in T'^*$, dann ist das Hinzufügen einer Stimme valide, wenn folgende Bedingugnen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1147,7 +1165,7 @@ Sei $b_1,b_2,v,r \in T'^*$
 
 \subsubsection{Löschen einer Stimme}
 
-Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$
+Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$, dall lässt sich eine Stimme valide löschen, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1159,7 +1177,7 @@ Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$
 \subsubsection{Hinzufügen einer Delegation}
 Da die Reihenfolge der Delegationen wichtig ist, für die Auflösung konkurierender Delegationen, daher ist das Hinzufügen einer Delegation an jeder Stelle in einer Delegationsmenge möglich.
 
-Sei $o,d_i \in T'^*$ sowie $h'\in HASH$ und $h\neq a$
+Sei $o,d_i \in T'^*$ sowie $h'\in HASH$ und $h\neq a$, dann ist das Hinzufügen einer Delegation valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1170,7 +1188,7 @@ Sei $o,d_i \in T'^*$ sowie $h'\in HASH$ und $h\neq a$
 
 \subsubsection*{Löschen einer Delegation}
 
-Sei $o,d_i \in T'^*$ sowie $h'\in HASH$
+Sei $o,d_i \in T'^*$ sowie $h'\in HASH$, dann ist das Löschen einer Delegation valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1184,8 +1202,10 @@ Sei $o,d_i \in T'^*$ sowie $h'\in HASH$
 
 Ein Akteur kann seine Anteile an einen Anderen überweisen. Dabei müssen die Fälle unterschieden werden, ob der Empfänger bereits Anteile hält, bei dem Fall wird die Überweisungssumme seinen Beständen addiert, oder ob es sich um einen neuen Akteur handelt. Dieser wird mit der Überweisungssumme neu hinzugefügt. 
 
-Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
-\TODO[inline]{hier ist zum ersten mal nicht die Symbolkonkatination gemeint sondern die Interpretation der werte(+,-), muss das als Interpretation geschrieben werden?}
+Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$, dann ist das Überweisen von Anteilen valide, wenn folgende Bedingungen erfüllt sind:
+
+
+% \TODO[inline]{hier ist zum ersten mal nicht die Symbolkonkatination gemeint sondern die Interpretation der werte(+,-), muss das als Interpretation geschrieben werden?}
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1201,6 +1221,8 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$
   \text{Fall 3: } && \\
   w' &=& w_{0 .. (i-1)}\ [ b_1 b_2 b_3 [a\ n'] b_4 b_5 b_6 [h' l]]\ w_{(j+1) .. n}
 \end{eqnarray}
+
+Dabei ist $(m+l),(n-l)\in\mathbb{N}$.
 
 
 
@@ -1363,6 +1385,8 @@ liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen.
 % Auswertung - bewertende zusammenfassung
 
 
+
+
 \section{Anwendung auf kontextfreie Grammatiken}
 
 Eine interessante Anwendung des hier vorgestellten Ansatzes einer Selbst-Modifikation-Schicht ist die Anwendung auf die kontextfreien Sprachen. Damit können alle Programmiersprachen zumindest Syntaktisch abgebildet werden. Dieses ist jedoch nicht Trivial. Das Problem hierbei ist die Kodierung der Kandidatenmenge. Auf Grund der Limitierung der Ableitungsregeln kann ein Ableitungsbaum einer regulären Grammatik keine Knoten haben, die mehrere Kinder mit Nichtterminalen Besitzen(Äste). Somit ist der Ableitungsbaum eine lineare Struktur. Dieses ermöglicht die Konstruktion eines Präfixbaumes bei dem Äste als Optionen angesehen werden. 
@@ -1391,7 +1415,7 @@ Weiter gibt es kein Mechanismus der jedes mögliche Kandidatenbewertung in der S
 Wie bereits erwähnt ist die Dezentralisierung der Selbst-Modifikation-Schicht der DAO z.B. durch eine Portierung auf die Ethereum Plattform der nächste notwendige Schritt.
 
 \section{Anonymisierung}
-Durch die Pseudonyme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Dadurch lässt sich der Konsens manipulieren in dem auf strategisch wichtige Akteure Druck ausgeübt wird um ihre Stimme zu ändern. Auch wird das Abstimmverhalten der Anteilseigener beeinflusst, da diese fürchten könnten ihre Pseudonymen Status verlieren zu können. Die Anonyme Wahl ist ebenfalls ein Kriterium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere erstrebenswerte Erweiterung ist. Diese Anonymisierung könnte durch Homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard}.
+Durch die Pseudonyme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Dadurch lässt sich der Konsens manipulieren in dem auf strategisch wichtige Akteure Druck ausgeübt wird um ihre Stimme zu ändern. Auch wird das Abstimmverhalten der Anteilseigener beeinflusst, da diese fürchten könnten ihre Pseudonymen Status verlieren zu können. Die Anonyme Wahl ist ebenfalls ein Kriterium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere erstrebenswerte Erweiterung ist. Diese Anonymisierung könnte durch Homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard2007}.
 
 \section{Manipulation der Besitzverteilung}
 Derzeit ist die Größe einer DAO fest, sodass die einzige Möglichkeit an Anteile zu gelangen, diese von Anderen überwiesen zu bekommen ist. Eine mögliche Erweiterung währe die der Erschaffung neuer Anteile. Diese können entweder von der DAO verkauft oder anhand festgelegter Regeln herausgegeben werden. Ein Beispiel Regelsatz währe das binden an Optionsmengen. Derjenige Akteur erhält die neuen Anteile, dessen vorgeschlagene Option für eine bestimmte Dauer den Platz der Konsens-Option einnimmt.
