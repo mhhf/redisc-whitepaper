@@ -31,10 +31,19 @@
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
               xetex,
-              linkcolor=black
+              linkcolor=black,
+              colorlinks,
+              citecolor = black, 
+              filecolor = black,
+              urlcolor = blue 
               ]{hyperref}
 \else
-  \usepackage[unicode=true,linkcolor=black]{hyperref}
+  \usepackage[unicode=true,
+  linkcolor=black,
+  colorlinks,
+  citecolor = black,
+  filecolor = black,
+  urlcolor = blue ]{hyperref}
               
 \fi
 \hypersetup{breaklinks=true,
@@ -124,13 +133,18 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 
 \author{Denis Erfurt}
 \date{\now}
-\title{Ein dezentrales Transitionssystem zur manipulation von Wörtern einer regulären Sprache}
+\title{Ein dezentrales Transitionssystem zur Manipulation von Wörtern einer regulären Sprache}
 
 
 \begin{document}
 
 \include{title}
 \include{selbstst}
+
+% \TODO[inline]{schichten früher einführen - dao -def}
+% \TODO[inline]{Schicht nennen? oder einfach nur selbst-modifikation}
+
+
 
 
 \section*{Zusammenfassung}
@@ -159,10 +173,13 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 
 Im Internet werden zunehmend Inhalte kollaborativ erzeugt. 
 Dabei entsteht ein Inhalt durch Beiträge einzelner Akteure, die räumlich und zeitlich getrennt agieren können.
-Zentral ist dabei die Frage wie der Konsens über einen Inhalt auf eine dezentrale Weise gebildet werden kann.
-In dieser Arbeit untersuchen wir den Prozess der verteilten Zusammenarbeit für Inhalte die als Wörter einer regulären Sprache beschrieben werden können. Dafür wird ein Modell mit einer Implementation einer Blockchain-Technologie vorgestellt: Ein öffentliches Transitionssysthem mit dezentral validierter Ausführung. 
-Ebenfalls wird eine Grammatik-Erweiterung mit einer Konsens-Funktion für eine beliebige reguläre Grammatik beschrieben. Die Wörter der erweiterten Grammatik beinhalten Informationen über die Besitzallokation der Akteure, alternative Beiträge und deren Bewertung. 
-Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wort der erweiterten Grammatik in ein Wort der ursprünglichen Grammatik. Schließlich wird eine zentralisierte Implementation vorgestellt.
+Zentral ist dabei die Frage, wie der Konsens über einen Inhalt auf eine dezentrale Weise gebildet werden kann.
+In dieser Arbeit untersuchen wir den Prozess der verteilten Zusammenarbeit für Inhalte, die als Wörter einer regulären Sprache beschrieben werden können. 
+
+Dafür wird ein Modell mit einer Implementation vorgestellt. Dieses Model beinhaltet: 
+(1) Ein öffentliches Transitionssystem mit dezentral validierter Ausführung. 
+(2) Ebenfalls wird eine Grammatik-erweiterung mit einer Konsens-Funktion für eine beliebige reguläre Grammatik beschrieben. Die Wörter der erweiterten Grammatik beinhalten Informationen über die Besitzallokation der Akteure, alternative Beiträge und deren Bewertung. 
+(3) Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wort der erweiterten Grammatik in ein Wort der ursprünglichen Grammatik. (4) Schließlich wird eine zentralisierte Implementation vorgestellt.
 
 
 % Outline - kurze konkrete zusammenfassung was kommt
@@ -176,6 +193,7 @@ Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wor
 \tableofcontents
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      EINLEITUNG
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -185,29 +203,29 @@ Die Konsens-Funktion überführt unter Berücksichtigung der Bewertungen ein Wor
 
 \chapter{Einleitung}
 
-Nehmen wir z.B. an, es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen gerecht, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse wie ein geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand von einer Mehrheit der Besitzer bestimmt.
+Angenommen es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen gerecht, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse, wie ein geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand einer Mehrheit der Besitzer bestimmt.
 
-Wikipedia folgt einem streng hierarchischem Modell, in welchem Vertrauenspersonen die Inhalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
+Wikipedia folgt einem streng hierarchischen Modell, in welchem Vertrauenspersonen die Inhalte der Benutzer filtern. Die Verantwortung liegt bei der Organisation.
 Effizienter sind jedoch selbstregulierende Systeme, bei denen die Benutzer die Inhalte der Anderen bewerten. Beispiele wären die auf Voting und Reputation basierenden Plattformen Reddit und StackOverflow.
 Ein weiteres Beispiel für die Bewertung von Inhalten ist das Konzept 
 Liquid Democracy\cite{Lindenberg2010}, ein Vorschlag der Piratenpartei für eine moderne politische Konsensbildung.
-Ein solches Prinzip könnte man auf das Verwalten aller digital geteilter Inhalte verallgemeinern.
+Ein solches Prinzip könnte auf das Verwalten aller digital geteilter Inhalte verallgemeinert werden.
 
-Jedoch eignen sich diese Konzepte nur bedingt um damit geteiltes Eigentum wie z.B. eine Webseite zu modellieren, da Abstimmungen auf eine informale Weise vorgenommen werden. Es fehlt einer formalen Syntax, welche die Implikationen einer potentiellen Entscheidung vor der Wahl durch Simulation klarer zeigt, sowie nach der Wahl automatisch ausführt.
-Außerdem bedarf es bei den Ansätzen eines zentralisierten Servers, welcher als Angriffspunkt die Glaubwürdigkeit des Prozesses gefährdet, da die Akteure auf die Korrektheit des Servers vertrauen müssen. 
+Jedoch eignen sich diese Konzepte nur bedingt, um damit geteiltes Eigentum, wie z.B. eine Webseite, zu modellieren, da Abstimmungen auf eine informale Weise vorgenommen werden. Es fehlt eine formale Syntax, welche die Implikationen einer potentiellen Entscheidung vor der Wahl durch Simulation klarer zeigt, sowie nach der Wahl automatisch ausführt.
+Außerdem bedarf es bei den Ansätzen eines zentralisierten Servers, welcher als Angriffspunkt die Glaubwürdigkeit des Prozesses gefährdet, da die Akteure dem Servers vertrauen müssen. 
 
-Das 2009 eingeführte Konzept des Bitcoins und der Blockchain\cite{Nakamoto2008} bietet eine Alternative zur zentralen Server-Architektur. Dieses beschreibt ein Protokoll in einem Netzwerk, welches Inhalte aus einem gebildeten Konsens bereitstellt. Es besitzt eine einfache, nicht turing vollständige Skriptsprache, sowie durch ein asymmetrisches Kryptosystem, Rechte und Rollen. Neue Inhalte werden nach einer Validierung ebenfalls in den Konsens aufgenommen. Die einfachste Interpretation von Bitcoin ist die eines Werteträgers, wobei die Beschränkung der Skriptsprache wenig Spielraum für weitere Interpretationen lässt.
-Allgemeiner ist das auf dem Bitcoin-Protokoll aufbauende Ethereum\cite{Wood2014} , welches eine turing vollständige Skriptsprache besitzt.
-Es entsteht eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, autonome Verträge zwischen mehreren Parteien, Dezentrale-Autonome-Organisationen (DAO) oder profitorientierte Kooperationen (DAC), die allesamt Werte- und Informationsflüsse ermöglichen.
+Das 2009 eingeführte Konzept des Bitcoins und der Blockchain\cite{Nakamoto2008} bietet eine Alternative zur zentralen Server-Architektur. Dieses beschreibt ein Protokoll in einem Netzwerk, welches Inhalte aus einem gebildeten Konsens bereitstellt. Es besitzt eine einfache, nicht turing-vollständige Skriptsprache, sowie durch ein asymmetrisches Kryptosystem auch Rechte und Rollen. Neue Inhalte werden nach einer Validierung ebenfalls in den Konsens aufgenommen. Die einfachste Interpretation von Bitcoin ist die eines Werteträgers, wobei die Beschränkung der Skriptsprache wenig Spielraum für weitere Interpretationen lässt.
+Allgemeiner ist das auf dem Bitcoin-Protokoll aufbauende Ethereum\cite{Wood2014} , welches eine turing-vollständige Skriptsprache besitzt.
+Es entsteht eine Vielzahl von neuen Anwendungsmöglichkeiten: verbindliche, autonome Verträge zwischen mehreren Parteien, Decentralized-Autonomous-Organisationen (DAO) oder profitorientierte Kooperationen (DAC), die allesamt Werte- und Informationsflüsse ermöglichen.
 Ein Beispiel einer solchen DAO ist das namecoin\footnote{http://namecoin.info/} Konzept, welches als Alternative zur ICANN\footnote{Internet Corporation for Assigned Names and Numbers} Organisation die TLD ``.bit'' verwaltet und in naher Zukunft die ICANN ablösen könnte.\cite{Corporation2014} Die Regeln unter denen DACs und DAOs funktionieren, wie das Bewilligen einer neuen TLD, werden auf der Ethereum Plattform programmiert.
-Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine zentrale Vertrauensinstanz, z.b. bestimmten Schlüsselpersonen.
+Die Einigung der Akteure auf ein Programmstand geschieht noch durch eine zentrale Vertrauensinstanz, z.B. bestimmten Schlüsselpersonen.
 
 
 \section*{Leistung und Struktur der Arbeit}
-In dieser Arbeit versuchen wir die Frage zu beantworten, wie eine Menge von Akteuren auf eine dezentrale Weise einen Konsens über ein Wort einer regulären Sprache bilden kann.
-Die Arbeit besteht im wesentlichen aus drei Teilen: Sie fasst notwendige Theoretische Grundlagen zusammen. Auf diese Aufbauend wird ein Modell für eine Selbst-Modifikation-Schicht einer DAO ausgearbeitet und auf DAOs mit regulären Grammatiken angewandt. Schließlich wird das ausgearbeitete Modell Implementiert.
+In dieser Arbeit wird versucht die Frage zu beantworten, wie eine Menge von Akteuren auf eine dezentrale Weise einen Konsens über ein Wort einer regulären Sprache bilden kann.
+Die Arbeit besteht im Wesentlichen aus drei Teilen: Sie fasst notwendige theoretische Grundlagen zusammen. Auf diese aufbauend wird ein Modell für eine Selbst-Modifikation-Schicht einer DAO ausgearbeitet und auf DAOs mit regulären Grammatiken angewandt. Schließlich wird das ausgearbeitete Modell implementiert.
 
-Die weitere Arbeit ist wie folgt aufgebaut: In Kapitel \ref{theo} werden Theoretische Konzepte beschrieben auf denen diese Arbeit aufbaut. Ebenfalls wird eine ausführliche Definition einer Dezentralen-Autonomen-Organisation gegeben, wie sie zum Zeitpunkt der Arbeit vorliegt. Darauf aufbauend wird das Problem der Selbst-Modifikation erläutert und in Kapitel \ref{selfMod} eine Definition sowie eine Anwendung auf die regulären Sprachen erarbeitet. In Kapitel \ref{implementation} wird eine Implementation der Anwendung vorgestellt. Schließlich wird in Kapitel \ref{ausblick} eine Zusammenfassung der Ergebnisse, sowie ein Ausblick gegeben. 
+Die weitere Arbeit ist wie folgt aufgebaut: In Kapitel \ref{theo} werden theoretische Konzepte beschrieben auf, denen diese Arbeit aufbaut. Des Weiteren wird in Kapitel 3 eine ausführliche Definition einer Dezentralen-Autonomen-Organisation gegeben, wie sie zum Zeitpunkt der Arbeit vorliegt. Darauf aufbauend wird das Problem der Selbst-Modifikation erläutert und in Kapitel \ref{selfMod} eine Definition, sowie eine Anwendung auf die regulären Sprachen erarbeitet. In Kapitel \ref{implementation} wird eine Implementation der Anwendung vorgestellt. Schließlich wird in Kapitel \ref{ausblick} ein Ausblick gegeben.
 
 
 \chapter{Theoretische Grundlagen}
@@ -217,30 +235,30 @@ Die weitere Arbeit ist wie folgt aufgebaut: In Kapitel \ref{theo} werden Theoret
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      VERIFIZIERUNG 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Dieser Kapitel fasst theoretische Grundlangen zusammen, auf denen die Nachfolgenden Kapitel aufbauen. In Abschnit \ref{regGram} werden die Regulären Grammatiken vorgestellt sowie die Kontextfreien Grammatiken in Abschnit \ref{cfGram}. In Abschnit \ref{trie} wird die Trie Datenstruktur betrachtet. In Abschnit \ref{transSys} wird das initiale Transitionssysthem eingeführt. In Abschnit \ref{crypt} wird die asymetrische Verschlüsselung betrachtet.
+Dieses Kapitel fasst theoretische Grundlangen zusammen, auf denen die nachfolgenden Kapitel aufbauen. In Abschnit \ref{regGram} werden die regulären Grammatiken vorgestellt, sowie die kontextfreien Grammatiken in Abschnit \ref{cfGram}. In Abschnit \ref{trie} wird die Trie Datenstruktur betrachtet. In Abschnit \ref{transSys} wird das initiale Transitionssystem eingeführt. In Abschnit \ref{crypt} wird die asymmetrische Verschlüsselung betrachtet.
 
 \section{Reguläre Grammatiken}
 \label{regGram}
-Eine reguläre Grammatik definiert nach Noam Chomsky ist ein vier Tupel 
-$G = (N,T,S,P)$ bestehend aus 
+Eine reguläre Grammatik, definiert nach Noam Chomsky, ist ein Vier-Tupel 
+$G = (N,T,S,P)$ bestehend aus:
 
 \begin{enumerate}
-\item $N$ - einer Menge nichtterminaler Symbole 
-\item $T$ - einer Menge terminaler Symbole, mit $T\cap N = \emptyset$
-\item $S\in N$ - einem Startsymbol
-\item $P \subseteq N\times \{\epsilon\}\cup T \cup TN$ - einer Menge von Produktionen oder auch Produktionsregeln
+\item $N$ - Eine Menge nichtterminaler Symbole.
+\item $T$ - Eine Menge terminaler Symbole, mit $T\cap N = \emptyset$.
+\item $S\in N$ - Eine Startsymbol.
+\item $P \subseteq N\times \{\epsilon\}\cup T \cup TN$ - eine Menge von Produktionen oder auch Produktionsregeln.
 \end{enumerate}
 
 Sei weiter $\Sigma := N \cup T$ das Alphabet der Grammatik.
 
 Eine Produktion $(R,r)\in P$ kann auch als $R\rightarrow r$ geschrieben werden.
-Sie sagt aus, dass das Nichtterminal R in einem Schritt überführt werden kann zum Teilwort r:
+Sie sagt aus, dass das Nichtterminal R in einem Schritt zum Teilwort $r$ überführt werden kann:
 
 \begin{eqnarray}
   \alpha R \rightarrow \alpha r
 \end{eqnarray}
 
-Sind hierfür n Schritte notwendig, schreibt man $R \rightarrow^n r$. Um auszudrücken, dass $r$ generell aus $R$ ableitbar ist, kann man sich der reflexiv-transitiven Hülle der Produktionsregeln bedienen: $R \rightarrow ^* r$.
+Sind hierfür n Schritte notwendig, wird $R \rightarrow^n r$ geschrieben. Um auszudrücken, dass $r$ generell aus $R$ ableitbar ist, kann sich der reflexiv-transitiven Hülle der Produktionsregeln bedient werden: $R \rightarrow ^* r$.
 
 Die Sprache, die von der regulären Grammatik erzeugt wird, ist die Menge aller Wörter, die vom Startsymbol ableitbar sind: 
 \begin{eqnarray}
@@ -255,10 +273,10 @@ Ein Beispiel für eine reguläre Grammatik mit der dazugehörigen Sprache ist:
 \begin{center}
  $
 \begin{array}{rcl}
-  G_{abc} &=& (N,T,S,P) \\
-  N &=& \{ S, A, B, C \} \\
-  T &=& \{ a, b, c \} \\
-  P &=& \{ \\ 
+  G_{abc} &:=& (N,T,S,P) \\
+  N &:=& \{ S, A, B, C \} \\
+  T &:=& \{ a, b, c \} \\
+  P &:=& \{ \\ 
   &&  S \rightarrow a A,
     S \rightarrow b B,
     S \rightarrow c C,
@@ -287,7 +305,7 @@ $
 \section{Kontextfreie Grammatiken}
 \label{cfGram}
 
-Kontextfreie Sprachen unterscheiden sich nur in den Produktionsregeln von den regulären. Anders als bei regulären, wird für die rechte Seite einer Produktionsregel keine Einschränkung gemacht: $P \subseteq N\times (N\cup T)^*$
+Kontextfreie Sprachen unterscheiden sich nur in den Produktionsregeln von den Regulären. Anders als bei Regulären, wird für die rechte Seite einer Produktionsregel keine Einschränkung gemacht: $P \subseteq N\times (N\cup T)^*$.
 
 % \subsection*{Greibach-Normalform}
 % Da eine reguläre Grammatik ein Spezalfall einer Kontextfreien Grammatik ist und jede Kontextfreie Grammatik in der Greibach-Normalform darstellbar ist ist jede reguläre Grammatik ebenfalls in der Greibach-Normalform darstellbar.
@@ -298,7 +316,7 @@ Kontextfreie Sprachen unterscheiden sich nur in den Produktionsregeln von den re
 
 \subsection*{Wortteil}
 
-Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann definieren wir ein Wortteil: 
+Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann wird ein Wortteil definiert: 
 
 \begin{eqnarray}
   w_{i..j} := 
@@ -311,9 +329,9 @@ Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann definieren wir ein Wortte
 \section{Trie}
 \label{trie}
 
-Ein Trie oder Prefixbaum ist eine Baum-Datenstruktur, die es erlaubt eine Menge von Worten über einem Alphabet effizient zu Speichern. Dabei werden gemeinsame Präfixe von wörtern in Knoten zusammengefasst.
-Eine Trie verwandte Datenstruktur, die Patricia-Trie reduziert den Speicherverbrauch indem sie alle Knoten mit nur einem Nachfolger zu einem Knoten zusammenfasst.
-Alle im Trie und Patricia-Trie gespeicherten Wörter können durch ein Tiefenscan wiederhergestellt werden. \cite{Morrison1968}
+Ein Trie oder Prefixbaum ist eine Baum-Datenstruktur, die es erlaubt eine Menge von Worten über einem Alphabet effizient zu speichern. Dabei werden gemeinsame Präfixe von Wörtern in Knoten zusammengefasst.
+Eine zu Trie verwandte Datenstruktur, die Patricia-Trie, reduziert den Speicherverbrauch, indem sie alle Knoten mit nur einem Nachfolger zu einem Knoten zusammenfasst.
+Alle im Trie und Patricia-Trie gespeicherten Wörter können durch ein Tiefenscan wiederhergestellt werden \cite{Morrison1968}.
 Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aac, aacc, aaccc, aabbb, aabb \}$ zeigt die Abbildung \ref{trieImg}.
 
 \begin{figure}[ht]
@@ -326,10 +344,10 @@ Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aac, aacc, aaccc, aab
 \section{Transitionsystem}
 \label{transSys}
 
-Ein initialisiertes Transitionssystem ($T$) \cite{Glausch} gibt einen formalismus vor um ein zustandbasiertes System zu beschreiben. Die Beschreibung zerteilt sich in die des Zustandraumes, beschrieben durch eine Menge $M$, die der Dynamik, beschrieben durch eine Übergangsfunktion $\tau: M \rightarrow M$ und einer Anfangszustandsmenge $I\subset M$.
+Ein initialisiertes Transitionssystem ($T$) \cite{Glausch} gibt einen Formalismus vor, um ein zustandbasiertes System zu beschreiben. Die Beschreibung zerteilt sich in die des Zustandraumes, beschrieben durch eine Menge $M$; die der Dynamik, beschrieben durch eine Übergangsfunktion $\tau: M \rightarrow M$ und einer Anfangszustandsmenge $I\subset M$.
 
 \begin{eqnarray}
-   T = (M,I,\tau)
+   T := (M,I,\tau)
 \end{eqnarray}
 
 \subsection*{Ablauf}
@@ -342,7 +360,7 @@ Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gi
 
 % section  (end)
 
-\section{asymetrische Verschlüsselung}
+\section{Asymmetrische Verschlüsselung}
 \label{crypt}
 
 % \begin{figure}[ht]
@@ -351,10 +369,9 @@ Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gi
 %     \caption{ECDSA - secp256k1 Kurve https://en.bitcoin.it/wiki/File:Secp256k1.png 25.02.2015}
 % \end{figure}
 
-% \subsection*{asymetrische Verschlüsselung}
-Bei einem asymmetrischem Verschlüsselungsverfahren generiert der Benutzer ein Schlüsselpaar bestehend aus einem privatem und einem öffentlichem Schlüssel. Der öffentliche Schlüssel wird aus dem Privaten erzeugt und veröffentlicht. Wir werden im Folgenden den öffentlichen Schlüssel ebenfalls Adresse nennen. Die identifiziert einen Akteur.
+Bei einem asymmetrischem Verschlüsselungsverfahren generiert der Benutzer ein Schlüsselpaar bestehend aus einem privaten und einem öffentlichen Schlüssel. Der öffentliche Schlüssel wird aus dem Privaten erzeugt und veröffentlicht. Im Folgenden wird der öffentliche Schlüssel ebenfalls Adresse genannt. Diese identifiziert einen Akteur.
 
-Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256k1 Kurve verwendet. ECDSA ist eine DSA Verfahren basierend auf Eliptic Curve Kryptografie. ECDSA bietet viele Vorteile zu alternativen Verfahren wie RSA oder DH.\cite{Pouillard2014a}
+Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256k1 Kurve verwendet. ECDSA ist ein DSA Verfahren basierend auf der Eliptic Curve Kryptografie. ECDSA bietet viele Vorteile zu alternativen Verfahren wie RSA\footnote{Rivest, Shamir und Adleman - http://de.wikipedia.org/wiki/RSA-Kryptosystem 25.02.2015} oder DH\footnote{Diffie–Hellman http://en.wikipedia.org/wiki/Diffie-Hellman\_key\_exchange 25.02.2015}. \cite{Pouillard2014a}
 % 
 % \subsection*{Signierung}
 % 
@@ -368,41 +385,38 @@ Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256
 % 
 \chapter{Decentralized Autonomous Organization (DAO)}
 \label{daoEinf}
-In diesem Kapitel wird der Begriff der Decentralized Autonomous Organization Ausführlich betrachtet und diskutiert. Dabei folgt nach einer Einführung in Kapitel \ref{blockchain} die Betrachtung der dezentralisierenden Technologie: der Blockchain. In Kapitel \ref{interaction} wird die Interaktion mit einer DAO betrachtet.
+In diesem Kapitel wird der Begriff der Decentralized Autonomous Organization ausführlich betrachtet und diskutiert. Dabei folgt nach einer Einführung in Kapitel \ref{blockchain} die Betrachtung der dezentralisierenden Technologie der Blockchain. In Kapitel \ref{interaction} wird die Interaktion mit einer DAO betrachtet.
 
-Eine DAO ist ein relativ neues Konzept, welches durch das populärwerden von Technologien wie Bitcoin und Ethereum erstmals aufgetaucht ist. Die Fachwelt ist sich noch über die genaue Definition und die Abgrenzung zu verwanten Konzepten größtenteils uneinig.
+Eine DAO ist ein relativ neues Konzept, welches durch das Populär-werden von Technologien, wie Bitcoin und Ethereum, erstmals ins Interesse der Fachweld gerückt ist. Diese ist sich über die genaue Definition und die Abgrenzung zu verwanten Konzepten größtenteils noch uneinig.
 
 \begin{aquote}{Vitalik Buterin - Ethereum Founder - 06.05.2014\footnotemark}
  One of the most popular topics in the digital consensus space [...] is the concept of decentralized autonomous entities. [...] However, one of the hidden problems lurking beneath the space is a rather blatant one: no one even knows what all of these invididual terms mean. 
 \end{aquote}
 \footnotetext{https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide/ }
 
-Zwar existieren Versuche ``Decentralized Applications'' (DAs,Dapps) wie BitTorrent oder den ``Decentralized Autonomous Corporations'' (DACs) von dem der DAOs Abzugrenzen, jedoch gibt es hier keine Garantie auf Persistenz der Terminologie sowie ihrer Definitionen, deshalb werden im Folgenden die Begriffe DA, Dapp, DAC, DAO synonym verwendet.
+Zwar existieren Versuche ``Decentralized Applications'' (DAs,Dapps) wie BitTorrent oder den ``Decentralized Autonomous Corporations'' (DACs) von dem der DAOs abzugrenzen, jedoch gibt es hier keine Garantie auf Persistenz der Terminologie, sowie ihrer Definitionen. Deshalb werden im Folgenden die Begriffe DA, Dapp, DAC, DAO synonym verwendet.
 
-Intuitiv kann eine DAO als eine Gesellschaft verstanden werden, die ohne menschliche Einwirkung existiert und agiert. Sie kann ebenfalls als eine erweiterung des Open-Source Konzeptes betrachtet werden. Dabei ist nicht nur der Programmcode öffentlich, sondern auch ihre internen Berechnungen sowie wesentliche Teile ihrer Interaktionen. Diese sind durch einen gemeinsamen Konsens von der Erzeugung bis zum aktuellen Zustand determiniert und nachvollziehbar. Dieser Konsens wird auf eine dezentrale Weise gebildet, um zu verhindern, dass eine zentrale Instanz den Konsens manipuliert sowie um Robustheit und Beständigkeit zu sichern.
+Intuitiv kann eine DAO als eine Gesellschaft verstanden werden, die ohne menschliche Einwirkung existiert und agiert. Sie kann ebenfalls als eine Erweiterung des Open-Source Konzeptes betrachtet werden. Dabei sind nicht nur der Programmcode öffentlich, sondern auch ihre internen Berechnungen sowie wesentliche Teile ihrer Interaktionen. Diese sind durch einen gemeinsamen Konsens von der Erzeugung bis zum aktuellen Zustand determiniert und nachvollziehbar. Dieser Konsens wird auf eine dezentrale Weise gebildet, um zu verhindern, dass eine zentrale Instanz den Konsens manipuliert sowie um Robustheit und Beständigkeit zu sichern.
 
-In ihren Aktionen kann die DAO interne, deterministische Berechnungen anstellen, mit anderen DAOs kommunizieren und so auf Services zugreifen oder nicht selbst ausführbare Aufgaben, wie beispielsweise das Erweitern und Verbessern des Programmcodes, an Menschen delegieren. Ihr Besitz kann durch Anteile determiniert werden, die unter anderen DAOs oder Menschen aufgeteilt sind. Diese berechtigen beteiligte Akteure zu verschiedenen Aktionen innerhalb ihrer Regeln wie z.B. einen Zugriff auf Dividenden oder anderen Ressourcen der DAO, Partizipation bei internen Abstimmungen oder anderen spezifischen Aktionen. 
+In ihren Aktionen kann die DAO interne, deterministische Berechnungen anstellen, mit anderen DAOs kommunizieren und so auf Services zugreifen oder nicht selbst ausführbare Aufgaben, wie beispielsweise das Erweitern und Verbessern des Programmcodes, an Menschen delegieren. Ihr Besitz kann durch Anteile determiniert werden, die unter anderen DAOs oder Menschen aufgeteilt sind. Diese berechtigen beteiligte Akteure zu verschiedenen Aktionen innerhalb ihrer Regeln, wie z.B. einen Zugriff auf Dividenden oder anderen Ressourcen der DAO, Partizipation bei internen Abstimmungen oder anderen spezifischen Aktionen. Ethereum, Bitcoin und Namecoin sind allesamt Beispiele für DAOs. Ethereum ist dabei gleichzeitig eine Plattform für andere DAOs.
 
-Ethereum, Bitcoin und Namecoin sind allesamt Beispiele für DAOs. Ethereum ist dabei gleichzeitig eine Plattform für andere DAOs.
-% In der Bitcoin DAO sind die Anteile eines Akteurs ander DAO ebenfalls ihr zweck. Durch die limitierung besitzen sie in Märkten einen Wert sodass die Anteile als Werteträger zu einer dezentralen währung werden.
-
-Im folgenden möchten wir drei Teilbereiche von DAOs näher beleuchten: Als erstes die Funktionsweise des Blockchain Mechanismus, der eigentlichen Neuerung, die zum Entstehen von DAOs führte. Als nächstes den Teil, der die Interaktionen der DAO steuert. Als letztes die Selbstmanipulation der DAO, also dem Teil, welcher die Manipulation der Regeln der DAO steuert.
+Im folgenden werden drei Teilbereiche von DAOs näher betrachtet: Als erstes die Funktionsweise des Blockchain Mechanismus, der eigentlichen Neuerung, die zum Entstehen von DAOs führte. Als nächstes den Teil, der die Interaktionen der DAO steuert. Als letztes die Selbstmanipulation der DAO, also den Teil, welcher die Manipulation der Regeln der DAO steuert.
 
 
 \section{Dezentraler Konsens - Blockchain}
 \label{blockchain}
 
-Bitcoin hat mit der Einführung der Blockchain eine elegante und universelle Lösung für das Problem der Byzantinischen Generäle(BG) vorgeschlagen. Das Problem steht repräsentativ im Bereich der verteilten Systemen für die Schwierigkeit, einen Konsens zwischen Akteuren herzustellen, wenn einige, für Andere unbestimmte Akteure eigennützig sowie manipulativ agieren. 
-Bitcoin hat hier eine statistische Lösung präsentiert: \textbf{Es führt die Dezentralität des Konsens auf die natürliche Knappheit einer Ressource zurück.} Für Bitcoin ist es die Anzahl der Berechnungen, die ein Akteur in einer bestimmten Zeit machen kann. Ein General versucht dabei ein Mathematisches Rätsel zu lösen, welches statistisch gesehen 10 Minuten dauern müsste, wenn alle beteiligten Generäle an dem Problem arbeiten würden. 
+Bitcoin hat mit der Einführung der Blockchain eine elegante und universelle Lösung für das Problem der Byzantinischen Generäle(BG) vorgeschlagen. Das Problem steht repräsentativ im Bereich der verteilten Systeme für die Schwierigkeit, einen Konsens zwischen Akteuren herzustellen, wenn einige, für Andere unbestimmte Akteure, eigennützig sowie manipulativ agieren. 
+Bitcoin hat hier eine statistische Lösung präsentiert: Es führt die Dezentralität des Konsens auf die natürliche Knappheit einer Ressource zurück. Für Bitcoin ist es die Anzahl der Berechnungen, die ein Akteur in einer bestimmten Zeit machen kann. Ein General versucht dabei ein mathematisches Rätsel zu lösen, welches statistisch gesehen 10 Minuten dauern müsste, wenn alle beteiligten Generäle an dem Problem arbeiten würden.
 
-Hat ein General eine Lösung gefunden, teilt er dieses an alle ihm bekannten Generäle mit. Eine solche Lösung wird auch als ``Block'' bezeichnet. Jeder General arbeitet darauf hin mit dieser Lösung weiter und versucht sie zu erweitern, was wiederum statistisch gesehen 10 Minuten der Kraft aller Generäle kosten müsste. Jeder General arbeitet mit der von ihm zuerst gesehenen längsten Kette von Blöcken. Mit der Anzahl der Erweiterungen konvergiert nun die Beteiligung loyaler Generäle am Konsens zur Majorität, falls diese tatsächlich im Besitz einer Mehrheit der begrenzten Rechenressourcen sind.
-In einem Block befindet sich neben der vorhergehenden Lösung ebenfalls der aktuelle Konsenses, solange er auf den Vorhergehenden aufbaut und valide ist.
+Hat ein General eine Lösung gefunden, teilt er dieses an alle ihm bekannten Generäle mit. Eine solche Lösung wird auch als ``Block'' bezeichnet. Jeder General arbeitet daraufhin mit dieser Lösung weiter und versucht sie zu erweitern, was wiederum statistisch gesehen 10 Minuten der Kraft aller Generäle kosten müsste. Jeder General arbeitet mit der von ihm zuerst gesehenen längsten Kette von Blöcken. Mit der Anzahl der Erweiterungen konvergiert nun die Beteiligung loyaler Generäle am Konsens zur Majorität, falls diese tatsächlich im Besitz einer Mehrheit der begrenzten Rechenressourcen sind.
+In einem Block befindet sich neben der vorhergehenden Lösung auch der aktuelle Konsens, solange er auf dem Vorhergehenden aufbaut und valide ist.
 
 \begin{aquote}{Satoshi Nakamoto - 2008 \cite{Nakamoto2008}}
   The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains.
 \end{aquote}
 
-Jedoch gibt es ebenfalls Argumente dafür, das die Blockchain das Problem der Byzantinischen Generäle nicht vollständig löst:
+Jedoch gibt es Argumente dafür, dass die Blockchain das Problem der Byzantinischen Generäle nicht vollständig löst:
 
 \begin{aquote}{Garay et. al. 2014 \cite{Garay2014}}
   This is because in case the adversary finds a solution first, then every honest player will extend the adversary’s solution and switch to the adversarial input hence abandoning the original input. \\
@@ -411,55 +425,57 @@ Jedoch gibt es ebenfalls Argumente dafür, das die Blockchain das Problem der By
 Nakamoto’s protocol does not quite solve BA since it does not satisfy Validity with overwhelming probability.
 \end{aquote}
   
-Die Blockchain bei Bitcoin hat jedoch zumindest nicht den Anspruch das BG Problem zu lösen, da interagierende Akteure durch Kryptografie geschützt sind und nicht-Loyale Akteure wenig spielraum für eine Manipulation besitzen. Vielmehr ist es ein Instrument um einerseits Transaktionen mit einem Zeitstempel zu versehen und andererseits die ``double spending''\cite{Nakamoto2008} Attake zu verhindern.
+Die Blockchain bei Bitcoin hat jedoch zumindest nicht den Anspruch das BG Problem zu lösen, da interagierende Akteure durch Kryptografie geschützt sind und nicht-loyale Akteure wenig Spielraum für eine Manipulation besitzen. Vielmehr ist es ein Instrument um einerseits Transaktionen mit einem Zeitstempel zu versehen und andererseits die ``double spending''\cite{Nakamoto2008} Attake zu verhindern.
 
-Das Lösen eines Rätsels für das Recht einen neuen Block bestimmen zu können, wird als ``Proof of Work'' oder kurz POW bezeichnet, da ein General eine Arbeitsleistung beweisen muss, um den nächsten Block vorschlagen zu dürfen. Bitcoin und viele andere DAOs benutzen partielle Hash Invertierung als tatsächlichen POW Algorithmus. Dieser baut auf der Eigenschaft einer Hash-Funktion auf, dass es sehr einfach ist, einen Hash einer Nachricht zu berechnen, jedoch sehr schwer aus einem gegebenem Hash eine Nachricht zu rekonstruieren, die diesen Hash erzeugt. 
+Das Lösen eines Rätsels für das Recht einen neuen Block bestimmen zu können, wird als ``Proof of Work'' oder kurz POW bezeichnet, da ein General eine Arbeitsleistung beweisen muss, um den nächsten Block vorschlagen zu dürfen. Bitcoin und viele andere DAOs benutzen partielle Hash Invertierung als tatsächlichen POW Algorithmus. Dieser baut auf der Eigenschaft einer Hash-Funktion auf. Es ist sehr einfach, einen Hash einer Nachricht zu berechnen, jedoch sehr schwer aus einem gegebenem Hash eine Nachricht zu rekonstruieren, die diesen Hash erzeugt. 
 
-Der eigentliche Block besteht dabei aus einer Referenz des vorherigen Blocks $(ref)$ zusammen mit dem neuen Konsens ($kons$) und einer $nonce$, die frei wählbar ist. Zudem existiert durch die vorherigen Blöcke bestimmte Schwierigkeit ($\varepsilon$), so dass die Rechenzeit für den neuen Block bei 10 Minuten bleibt. Akteure, die im Wettbewerb um einen neuen Block stehen (auch ``Miner'' genannt) müssen nun eine nonce finden, dass einen Hashwert des Blockes unter der Schwierigkeit liegt:
+Der eigentliche Block besteht dabei aus einer Referenz des vorherigen Blocks $(ref)$ zusammen mit dem neuen Konsens ($kons$) und einer $nonce$, die frei wählbar ist. Zudem existiert eine, durch die vorherigen Blöcke bestimmte, Schwierigkeit ($\varepsilon$), so dass die Rechenzeit für den neuen Block bei 10 Minuten bleibt. Akteure, die im Wettbewerb um einen neuen Block stehen (auch ``Miner'' genannt) müssen nun eine nonce finden, damit ein Hashwert des Blockes unter der Schwierigkeit liegt:
 
 \begin{eqnarray}
    sha256(\ ref\circ kons\circ nonce\ ) < \varepsilon
 \end{eqnarray}
 
-POW ist jedoch umstritten, da das verbrauchen von Rechenressourcen durch Stromkosten, Investitionen in neue Hardware und Infrastruktur einerseits nicht ökonomisch und zum anderen nicht umweltfreundlich ist, siehe dazu \cite{Becker2011a}. Um die Rechenpower des Bitcoin-Netzwerkes in Relation zu setzen hatten die Top 500 Weltbesten Supercomputer der Welt im November 2014 gemeinsam eine Rechenleistung von 309 Pflop/s.\footnote{http://www.top500.org/lists/2014/11/ 18.02.2015} Das Bitcoinnetzwerk besitzt derzeit (18.02.2015) eine Rechenleistung von 4172436 Pflop/s.\footnote{http://bitcoinwatch.com/ 18.02.2015}.
+POW ist jedoch umstritten, da das Verbrauchen von Rechenressourcen durch Stromkosten, Investitionen in neue Hardware und Infrastruktur einerseits nicht ökonomisch und zum anderen nicht umweltfreundlich ist, siehe dazu \cite{Becker2011a}. Um die Rechenpower des Bitcoin-Netzwerkes in Relation zu setzen, hatten die Top 500 weltbesten Supercomputer im November 2014 gemeinsam eine Rechenleistung von 309 Pflop/s.\footnote{http://www.top500.org/lists/2014/11/ 18.02.2015} Das Bitcoinnetzwerk besitzt derzeit (18.02.2015) eine Rechenleistung von 4172436 Pflop/s.\footnote{http://bitcoinwatch.com/ 18.02.2015}.
+
+% \TODO[inline]{paragraph umformulieren}
 
 
-Neben POW gibt es jedoch auch andere Mechanismen für das Recht einen Block erstellen zu dürfen. Hier gilt ``Proof of Stake'' (POS) und seine Erweiterung ``Deligated Proof of Stake''(DPOS) als wesentlicher Konkurrent. Bei POS beweist ein Akteur, dass ihm ein bestimmter Anteil an der Blockchain zugehörigen DAO gehört. Bei  DPOS kann ein Anteilseigner zusätzlich sein Anteil an einen Miner delegieren und muss nicht selbst an der Erstellung eines Blocks teilnehmen. Jedoch sind hier theoretische Attacken möglich (siehe dazu \cite{EthereumBlogPOS} \cite{Vasant2015}), weshalb diese POW noch nicht abgelöst haben. Bitshares \footnote{https://bitshares.org/blog/delegated-proof-of-stake/ 18.02.2015} - ein Bitcoin Fork mit einem DPOS oder Peercoin\footnote{http://peercoin.net/ 18.02.2015} ebenfalls ein Fork mit reinem POS sind jedoch real wirtschaftliche Beispiele für DAOs mit einem Alternativen Konsensmechanismus die zumindest zeigen, dass diese Mechanismen es schaffen ebenfalls in der Praxis zu bestehen.
+Neben POW gibt es jedoch auch andere Mechanismen für das Recht einen Block erstellen zu dürfen. Hier gilt ``Proof of Stake'' (POS) und seine Erweiterung ``Deligated Proof of Stake''(DPOS) als wesentlicher Konkurrent. Bei POS beweist ein Akteur, dass ihm ein bestimmter Anteil an der Blockchain zugehörigen DAO gehört. Bei  DPOS kann ein Anteilseigner zusätzlich seinen Anteil an einen Miner delegieren und muss nicht selbst an der Erstellung eines Blocks teilnehmen. Jedoch sind hier theoretische Attacken möglich (siehe dazu \cite{EthereumBlogPOS} \cite{Vasant2015}), weshalb diese POW noch nicht abgelöst haben. Bitshares \footnote{https://bitshares.org/blog/delegated-proof-of-stake/ 18.02.2015} - ein Bitcoin Fork mit einem DPOS oder Peercoin\footnote{http://peercoin.net/ 18.02.2015}, ebenfalls ein Fork mit reinem POS, sind jedoch real wirtschaftliche Beispiele für DAOs mit einem alternativen Konsensmechanismus, die zumindest zeigen, dass diese Mechanismen es schaffen in der Praxis zu bestehen.
 
-Das erstellen von Blocks durch Miner ist bei den Blockchain-Mechanismen der hier vorgestellten DAOs ökonomisch motiviert. Jede DAO schüttet eine Belohnung an den Miner aus, der einen neuen Block findet. Die Belohnung ist ein interner Token(auch Coin genannt) der aufgrund seiner Knappheit einen Marktwert besitzt. Er kann jedoch auch als Besitzanteil der DAO interpretiert werden oder dient anderen zwecken. Bei Ethereum z.B. benötigen Akteure diesen Token um in der DAO agieren zu können. Im Bitcoins Blockchain Mechanismus werden derzeit (18.02.2015) 25 Bitcoins pro Block ausgeschüttet, was zum derzeitigen Marktpreis (240\$/Btc) einem Wert von 6000\$/Block entspricht.  
-Zum Zeitpunt des ersten Blocks existieren noch keine Coin-Bestände, diese werden von dem ersten Block an an konkurierende Miner für die Blockerstellung ausgeschüttet. Die Größe der Belohnung wird mit der Zeit kleiner, bis irgendwann eine Menge von 21 Millionen Coins erreicht ist. Eine andere Motivation der Miner ist eine Transaktionsgebühr, die ein Akteur seiner Transaktion anhängt. Diese Gebühr bekommt ein Miner, wenn er diese in seinem Block berücksichtigt.
+Das Erstellen von Blocks durch Miner ist bei den Blockchain-Mechanismen der hier vorgestellten DAOs ökonomisch motiviert. Jede DAO schüttet eine Belohnung an den Miner aus, der einen neuen Block findet. Die Belohnung ist ein interner Token(auch Coin genannt) der aufgrund seiner Knappheit einen Marktwert besitzt. Er kann jedoch auch als Besitzanteil der DAO interpretiert werden oder dient anderen Zwecken. Bei Ethereum benötigen Akteure diesen Token, um in der DAO agieren zu können. Im Bitcoins Blockchain-Mechanismus werden derzeit (18.02.2015) 25 Bitcoins pro Block ausgeschüttet, was zum derzeitigen Marktpreis (240\$/Btc) einem Wert von 6000\$/Block entspricht.  
+Zum Zeitpunkt des ersten Blocks existieren noch keine Coin-Bestände, diese werden von dem ersten Block an konkurierende Miner für die Blockerstellung ausgeschüttet. Die Größe der Belohnung wird mit der Zeit kleiner, bis irgendwann eine Menge von 21 Millionen Coins erreicht ist. Eine andere Motivation der Miner ist eine Transaktionsgebühr, die ein Akteur seiner Transaktion anhängt. Diese Gebühr bekommt ein Miner, wenn er diese in seinem Block berücksichtigt.
 
 \section{Interaktion}
 \label{interaction}
-Die Art der Interaktion mit einer DAO hängt von ihrer Programmierung ab. Handelt es sich um eine Blockchain basierte DAO so ist das bereits beschriebene Erstellen von Blöcken eine Iteraktion sowie das Überweisen von eigenen Coins an einen anderen Akteur. Bitcoin bietet zudem eine einfache Skriptsprache mit der die Akteure kleine Skripte erstellen können wie ``Multisignature'' bei dem ein Coinbestand erst freigegeben wird, wenn die Mehrheit der angegebenen Adressen ihn freigeben. Diese Skriptsprache ist jedoch nicht Turing-Vollständig. Die Ethereum DAO hingegen besitzt eine Turing-Vollständige Skriptsprache und wird aufgrund dessen als eine DAO Plattform referenziert. Das ermöglicht das einfache Erstellen von Nicht Blockchain basierter DAOs, da der Bereich der Dezentralisierung von der Ethereum Plattform abgenommen wird. Aktionen in Ethereum währen unter anderem das hinzufügen eines neuen Programms oder die Übermittlung der Interaktionen an interne DAOs. In Ethereum können sich Akteure einerseits außerhalb der Ethereum DAO befinden, andererseits sind alle DAOs innerhalb von Ethereum ebenfalls Akteure.
-
-Die Interaktion eines Akteurs mit einer Blockchain basierten DAO ist in Abbildung \ref{intSeq} illustriert und besitzt folgende Struktur:
+Die Art der Interaktion mit einer DAO hängt von ihrer Programmierung ab. Handelt es sich um eine Blockchain basierte DAO, so ist das bereits beschriebene Erstellen von Blöcken sowie das Überweisen von eigenen Coins an einen anderen Akteur eine Iteraktion. Bitcoin bietet zudem eine einfache Skriptsprache, mit der die Akteure kleine Skripte erstellen können. Beispielsweise kann bei ``Multisignature'' ein Coinbestand erst freigegeben werden, wenn die Mehrheit der angegebenen Adressen ihn freigeben. Diese Skriptsprache ist jedoch nicht turing-vollständig. Die Ethereum-DAO hingegen besitzt eine turing-vollständige Skriptsprache und wird aufgrund dessen als eine DAO Plattform referenziert. Dies ermöglicht das einfache Erstellen von nicht Blockchain basierten DAOs, da der Bereich der Dezentralisierung von der Ethereum Plattform abgenommen wird. Aktionen in Ethereum wären unter anderem das Hinzufügen eines neuen Programms oder die Übermittlung der Interaktionen an interne DAOs. In Ethereum können sich Akteure einerseits außerhalb der Ethereum-DAO befinden, andererseits sind alle DAOs innerhalb von Ethereum ebenfalls Akteure.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=1\textwidth]{bilder/interaktion.png}
-  \caption{Interaktion eines Akteurs mit einer dao.}
+  \caption{Interaktion eines Akteurs mit einer DAO.}
   \label{intSeq}
 \end{figure}
 
+Die Interaktion eines Akteurs mit einer Blockchain basierten DAO ist in Abbildung \ref{intSeq} illustriert und besitzt folgende Struktur:
+
 Der Akteur:
 \begin{enumerate}
-  \item Läd sich den für ihn relevanten Teil des Konsens herunter
-  \item Manipuliert diesen, jedoch muss die Manipulation den Regeln der DAO folgen, da sie sonst von den Minern abgelehnt wird
-  \item Signiert die Manipulation
+  \item Läd sich den für ihn relevanten Teil des Konsens herunter.
+  \item Manipuliert diesen, jedoch muss die Manipulation den Regeln der DAO folgen, da sie sonst von den Minern abgelehnt wird.
+  \item Signiert die Manipulation.
   \item Sendet seine Transaktion an ihn bekannte Miner, damit diese zu einen Block hinzugefügt wird.
 \end{enumerate}
 
 Der Miner:
 \begin{enumerate}
-  \item Bekommt von unterschiedlichen Quellen Transaktionen
-  \item Die Signatur jeder Transaktion wird validiert: ist der angegebene Akteur auch ihr Erzeuger?
-  \item Die Manipulation des derzeitigen Zustandes wird validiert: ist die Manipulation des aktuellen Zustandes nach den aktuellen Regeln valide?
-  \item Falls die Signatur und Manipulation valide ist, wird der derzeitige zustand aktualisiert und die Transaktion wird der Menge valider, bekannter Transaktionen hinzugefügt, die vom Miner in den nächsten Block hinzugefügt werden sollen.
-  \item Der Miner versucht nun nach dem ``Proof of *'' Mechanismus eine Berechtigung vom Netzwerk zu erhalten um seinen privaten Konsens zum allgemeinen Konsens der DAO zu machen.
+  \item Bekommt von unterschiedlichen Quellen Transaktionen.
+  \item Die Signatur jeder Transaktion wird validiert: Ist der angegebene Akteur auch ihr Erzeuger?
+  \item Die Manipulation des derzeitigen Zustandes wird validiert: Ist die Manipulation des aktuellen Zustandes nach den aktuellen Regeln valide?
+  \item Falls die Signatur und Manipulation valide ist, wird der derzeitige Zustand aktualisiert. Die Transaktion wird dann der Menge valider, bekannter Transaktionen hinzugefügt, die vom Miner in den nächsten Block hinzugefügt werden sollen.
+  \item Der Miner versucht nun nach dem ``Proof of *'' Mechanismus eine Berechtigung vom Netzwerk zu erhalten, um seinen privaten Konsens zum allgemeinen Konsens der DAO zu machen.
 \end{enumerate}
 
-Ein Akteur benötigt für das Agieren in der Ethereum DAO ein Bestand an der interner Währung. Wie viel, hängt von der Komplexität der ausgelösten Transaktion ab: Für jeden Berechnungsschritt wird ein kleiner Betrag erhoben. Ist nicht genügend Wert verfügbar, terminiert die Transaktion und wird vom Netzwerk abgelehnt. So wird auch das Halteproblem umgangen.
+Ein Akteur benötigt für das Agieren in der Ethereum-DAO einen Bestand an der internen Währung. Wie viel, hängt von der Komplexität der ausgelösten Transaktion ab. Für jeden Berechnungsschritt wird ein kleiner Betrag erhoben. Ist nicht genügend Wert verfügbar, terminiert die Transaktion und wird vom Netzwerk abgelehnt. So wird auch das Halteproblem umgangen.
 
 \begin{aquote}{Ethereum Whitepaper p. 28 \cite{Butterin2014}}
   [...] halting problem: there is no way to tell, in the general case, whether or not a given program will ever halt.
@@ -468,7 +484,7 @@ Ein Akteur benötigt für das Agieren in der Ethereum DAO ein Bestand an der int
 
 Eine Ethereum interne DAO besteht aus einem assoziativem Speicher der den Programmcode sowie Daten beinhaltet. Sie besitzt eine Adresse und hat einen Bestand an interner Währung: Ether.
 
-Ein Beispiel für eine interne DAO ist eine dezentrale Währung, wie sie derzeit vom Bitcoin repräsentiert wird (Quelle \cite{Butterin2014}) ist in Abbildung \ref{contract1} illustriert, ein weiteres Beispiel in Abbildung \ref{contract2} ist ein dezentrales DNS System wie ihn die Namecoin DAO implementiert.
+Ein Beispiel für eine interne DAO ist eine dezentrale Währung, wie sie derzeit vom Bitcoin repräsentiert wird (Quelle \cite{Butterin2014}). Sie ist in Abbildung \ref{contract1} illustriert. Ein weiteres Beispiel in Abbildung \ref{contract2} ist ein dezentrales DNS System, wie ihn die Namecoin DAO implementiert.
 
 % ! Akteure = Programme | Benutzer
 
@@ -501,7 +517,7 @@ Ein Beispiel für eine interne DAO ist eine dezentrale Währung, wie sie derzeit
   \label{contract2}
 \end{figure}
 
-Diese beiden Beispiele illustrieren wie vergleichsweise einfach es ist eine DAO auf einer bestehenden Plattform, wie der von Ethereum, zu erstellen, anstadt der bisherigen Blockchain-Basierten Ansätzen. Ethereum gilt deshalb auch als DAO Platform welche die dezentralität der DAO von ihrer eigentlichen Funktionalität entkoppelt. Eine weitere wichtige Funktionalität einer DAO ist die der Wartbarkeit. Jedoch stellt sich hier die Frage nach dem Besitz und den Berechtigungen der Besitzer, die DAO manipulieren zu können. Hierfür muss ebenfalls ein Regelwerk gefunden werden, der die Wartung der DAO, im folgenden auch Selbst-Modifikation genannt, von ihrer eigentlichen Funktionalität entkoppelt. 
+Diese beiden Beispiele illustrieren wie vergleichsweise einfach es ist eine DAO auf einer bestehenden Plattform, wie der von Ethereum, zu erstellen, im Gegensatz zu den bisherigen Blockchain-basierten Ansätzen. Ethereum gilt deshalb auch als DAO Plattform, welche die dezentralität der DAO von ihrer eigentlichen Funktionalität entkoppelt. Eine weitere wichtige Funktionalität einer DAO ist die der Wartbarkeit. Jedoch stellt sich hier die Frage nach dem Besitz und den Berechtigungen der Besitzer die DAO manipulieren zu können. Hierfür muss ebenfalls ein Regelwerk gefunden werden, das die Wartung der DAO, im folgenden auch Selbst-Modifikation genannt, von ihrer eigentlichen Funktionalität entkoppelt. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -510,15 +526,16 @@ Diese beiden Beispiele illustrieren wie vergleichsweise einfach es ist eine DAO 
 
 \chapter{Selbst-Modifikation-Schicht einer DAO}
 \label{selfMod}
-In diesem Kapitel wird die Selbst-Modifikation-Schicht einer DAO betrachtet. Hierfür wird in einer Einführung für die Notwendigkeit einer solchen Schicht argumentiert. In Kapitel \ref{smoddef} wird eine Definition einer solchen Schicht vorgeschlagen. In Kapitel \ref{smoddiskuss} werden die einzelnen Eigenschaften der Definition diskutiert. Für die Anwendung auf reguläre Grammatiken und die Implementation wird in Kapitel \ref{gramerw} eine Codierung durch eine Grammatikerweiterung vorgestellt. In Kapitel \ref{transsys} wird ein Transitionssystem für die Dynamik der Manipulation vorgestellt mit den dazugehörigen validen Transaktionen in Kapitel \ref{transvalid}.
+In diesem Kapitel wird die Selbst-Modifikation-Schicht einer DAO betrachtet. Hierfür wird in einer Einführung für die Notwendigkeit einer solchen Schicht argumentiert. In Kapitel \ref{smoddef} wird eine Definition einer solchen Schicht vorgeschlagen. In Kapitel \ref{smoddiskuss} werden die einzelnen Eigenschaften der Definition diskutiert. Für die Anwendung auf reguläre Grammatiken und die Implementation wird in Kapitel \ref{gramerw} eine Kodierung durch eine Grammatikerweiterung vorgestellt. In Kapitel \ref{transsys} wird ein Transitionssystem für die Dynamik der Manipulation und die dazugehörigen validen Transaktionen in Kapitel \ref{transvalid} vorgestellt.
 
-Durch eine Plattform wie Ethereum wird nun das Erstellen von DAOs um ein vielfaches leichter gemacht, jedoch gibt es noch keine einheitliche Lösungsansätze um die DAOs oder generell dezentrale Inhalte ebenfalls auf eine dezentrale Weise zu erstellen oder diese zu modifizieren. Es Fehlt einer Entkopplung der DAO von den Regeln, wie diese von den Inhabern gerecht, also proportional zu ihrem Besitz, Manipuliert werden können.
+Durch eine Plattform wie Ethereum wird nun das Erstellen von DAOs um ein vielfaches leichter gemacht, jedoch gibt es noch keine einheitlichen Lösungsansätze, um die DAOs oder generell dezentrale Inhalte auf eine dezentrale Weise zu erstellen oder zu modifizieren. Es fehlt eine Entkopplung der DAO von den Regeln, wie diese von den Inhabern gerecht, also proportional zu ihrem Besitz, manipuliert werden können.
+% \TODO[inline]{letzten satz umformulieren}
 
 % Derzeit - Linux/ Bitcoin/ Ethereum
-Derzeit werden DAOs, entweder von einer einzelnen Schlüsselperson, einer Organisation (wie bei Bitcoin die ``Bitcoin-Foundation''\footnote{https://bitcoinfoundation.org/ 25.02.2015}) oder einem Unternehmen (wie bei Ethereum ``Ethereum Switzerland GmbH''\footnote{https://www.ethereum.org/ 25.02.2015}) entwickelt und manipuliert. Trotz der dezentralen Natur der DAOs ist die Kontrolle über diese noch Zentralisiert. 
+Derzeit werden DAOs, entweder von einer einzelnen Schlüsselperson, einer Organisation (bei Bitcoin die ``Bitcoin-Foundation''\footnote{https://bitcoinfoundation.org/ 25.02.2015}) oder einem Unternehmen (bei Ethereum ``Ethereum Switzerland GmbH''\footnote{https://www.ethereum.org/ 25.02.2015}) entwickelt und manipuliert. Trotz der dezentralen Natur der DAOs ist die Kontrolle über diese noch zentralisiert. 
 % Die Zentralisierte Kontrolle ist eine notwendige Folge zweier Probleme:
 
-Da es sich um Bitcoin und Ethereum um dezentrale Anwendungen handelt, ist es nicht trivial, wem diese Anwendungen gehören: Der Besitz lässt sich nicht determinieren. Falls man die interen Tokens aus der Blockchain Schicht ebenfalls als Besitzanteil an den DAOs interpretiert, so können die Besitzer nicht über die Manipulationen der Regeln der DAO mitentscheiden.
+Da es sich bei Bitcoin und Ethereum um dezentrale Anwendungen handelt, ist es nicht trivial, wem diese Anwendungen gehören. Der Besitz lässt sich nicht eindeutig festlegen. Falls die interen Tokens aus der Blockchain-Schicht ebenfalls als Besitzanteil an den DAOs interpretiert werden, so können die Besitzer nicht über die Manipulationen der Regeln der DAO mitentscheiden.
 
 % Bitcoin - 100k ausschreibung
 Das Problem ist in der Community jedoch bekannt. Im Juni 2014 hat Oliver Janssens, einer der Early-Adopter von Bitcoin ein Preisgeld von 100 000 USD in BTC an denjenigen ausgeschrieben, der ein Konzept vorschlägt, wie die Bitcoin Foundation auf dezentrale weise abgelöst werden kann.
@@ -527,48 +544,46 @@ Das Problem ist in der Community jedoch bekannt. Im Juni 2014 hat Oliver Janssen
  The Bitcoin foundation [...] is internally recreating the same archaic political system that fails to work for society. Bitcoin is the currency of the internet generation. It puts the power back into the hands of the people. You cannot expect its main representative organisation to be exactly the opposite: A non-transparent, political and secretive elite.
 \end{aquote}
 
-Der Gewinner war die Bitcoin-Basierte dezentrale Crowdfunding Plattform Lighthouse\footnote{https://www.vinumeris.com/lighthouse}. Diese erfüllt nicht wirklich die Ansprüche an eine solche Selbst-Modifikation-Schicht.
+Der Gewinner war die Bitcoin-basierte dezentrale Crowdfunding Plattform Lighthouse\footnote{https://www.vinumeris.com/lighthouse}. Diese erfüllt die Ansprüche an eine solche Selbst-Modifikation-Schicht nicht wirklich.
 % Problem - Benutzer/ Kandidaten werden echt groß
-Der Mechanismus einer solchen Schicht muss einerseits eine große Anzahl an Stimmberechtigten Kandidaten (derzeit wurden rund 200k Bitcoin Adressen verwendet) berücksichtigen sowie eine ähnlich große Menge an Vorschlägen. Er sollte schnell und agil auf aufkommende Probleme reagieren können, jedoch niedrige Einstiegsbarrieren für Benutzer besitzen. Die Besitzverteilung sollte genau determiniert sein und die Manipulation der DAO gerecht - also proportional zu dem Besitz.
+Der Mechanismus einer solchen Schicht muss einerseits eine große Anzahl an stimmberechtigten Kandidaten berücksichtigen (derzeit wurden rund 200k Bitcoin Adressen verwendet) sowie eine ähnlich große Menge an Vorschlägen. Er sollte schnell und agil auf aufkommende Probleme reagieren können, jedoch niedrige Einstiegsbarrieren für Benutzer besitzen. Die Besitzverteilung sollte genau festgelegt sein und die Manipulation der DAO gerecht - also proportional zu dem Besitz.
 
-\textbf{Im folgenden möchte ich meinen Vorschlag einer solchen Schicht vorstellen. Hierfür werden wir als erstes die theoretischen Komponenten betrachten, dann ihre Anwendung auf die regulären Grammatiken und schließlich ihre Implementation.}
+\textbf{Im folgenden wird ein Vorschlag einer solchen Schicht vorstellen. Hierfür werden als Erstes die theoretischen Komponenten betrachten, anschließend ihre Anwendung auf die regulären Grammatiken und schließlich ihre Implementation.}
 
 
-Theoretisch kann eine solcher Mechanismus durch ein \textbf{initialisiertes Transitionssysthem $T=(M,I,\tau)$} nach \cite{Glausch} modelliert werden. Hierzu muss eine passende Zustandsmenge definiert werden, einen Initialzustand sowie die Übergangsfunktion, die valide Manipulationen (Transitionen) der DAO beschreibt.
+Theoretisch kann ein solcher Mechanismus durch ein \textbf{initialisiertes Transitionssystem $T=(M,I,\tau)$} nach \cite{Glausch} modelliert werden. Hierzu muss eine passende Zustandsmenge definiert werden, einen Initialzustand sowie die Übergangsfunktion, die valide Manipulationen (Transitionen) der DAO beschreibt.
 
-Durch die Dezentralisierung-Schicht wird sichergestellt, dass Transitionen \textbf{immer} von einem Akteur $a$ ausgelöst werden und das dieser Akteur ebenfalls ihr Urheber ist. Damit besitzen eine Transition die Form $(a, O')$. $O'$ beinhaltet dabei die Manipulationen des Akteurs.
+Durch die Dezentralisierung-Schicht wird sichergestellt, dass Transitionen \textbf{immer} von einem Akteur $a$ ausgelöst werden und das dieser Akteur ebenfalls ihr Urheber ist. Damit besitzt eine Transition die Form $(a, O')$. $O'$ beinhaltet dabei die Manipulationen des Akteurs.
 
 
 \section{Definition}
 \label{smoddef}
-In der Selbst-Modifikation-Schicht können wir davon ausgehen, dass für die Dezentralität der DAO bereits gesorgt ist. Es handelt sich entweder selbst um eine Blockchain-Basierte DAO oder eine, die eine Plattform wie Ethereum benutzt. Insofern gilt die DEzentralität im folgenden als gegeben.
+In der Selbst-Modifikation-Schicht wird davon ausgegangen, dass für die Dezentralität der DAO bereits gesorgt ist. Es handelt sich entweder selbst um eine Blockchain-Basierte DAO oder eine, die eine Plattform wie Ethereum benutzt. Insofern gilt die Dezentralität im folgenden als gegeben.
 
 Eine DAO in einer Grammatik $G$ ist ein Tupel $O_G=(A, K, <, share, vote)$ bestehend aus:
 
 \begin{enumerate}
-\item eine endliche Menge von Akteuren $A$
-\item eine eindeutige \textbf{Besitzverteilung} von Akteuren zur DAO
+\item Einer endliche Menge von Akteuren $A$.
+\item Einer eindeutige \textbf{Besitzverteilung} von Akteuren zur DAO.
 \begin{eqnarray}
   share: A \rightarrow \mathbb{N}
 \end{eqnarray}
-\item eine endliche Menge von validen \textbf{Kandidaten} mit mindestes einem Element 
+\item Einer endlichen Menge von validen \textbf{Kandidaten} mit mindestes einem Element.
 \begin{eqnarray}
   K_G \subseteq L(G) \land |K_G| \geq 1
 \end{eqnarray}
-\item eine strickte Totalordnung der Kandidaten 
+\item Eine strickten Totalordnung der Kandidaten.
 \begin{eqnarray}
    < \subset K\times K 
 \end{eqnarray}
-\item eine Bewertung der Kandidaten durch die Akteure. 
+\item Einer Bewertung der Kandidaten durch die Akteure.
 \begin{eqnarray}
   vote: A\times K \rightarrow [0,1]
 \end{eqnarray}
 \end{enumerate}
 
-Sei $\mathbf{DAO_G} = \{ O_G\ |$ $O_G$ ist DAO in der einer Grammatik $G$ $\}$ die Menge aller DAOs in der Grammatik $G$.
-% sowie $\mathbf{P_G}:= \{ K_G | K_G \subseteq L(G) \}$ die Menge aller möglichen Kandidatenmengen.
-
-Zudem existiert eine Konsensfunktion die eine DAO in ein valides Wort überführt. 
+Sei $\mathbf{DAO_G} = \{ O_G\ |$ $O_G$ ist DAO in der einer Grammatik $G$ $\}$ die Menge aller DAOs in der Grammatik $G$.  
+Zudem existiert eine Konsensfunktion, die eine DAO in ein valides Wort überführt. 
 \begin{eqnarray}
   consens: DAO_G \rightarrow L(G)
 \end{eqnarray}
@@ -577,18 +592,18 @@ Zudem existiert eine Konsensfunktion die eine DAO in ein valides Wort überführ
 \section{Diskussion der Eigenschaften}
 \label{smoddiskuss}
 
-Im Folgenden werden die Eigenschaften eienr DAO nähr betrachtet: in \ref{kand} die Kandidaten, in \ref{besitz} die Besitzverteilung der Akteure zur DAO, in \ref{defkonsens} wird die einigung der Akterue auf einen Konsenskandidaten beschrieben, in \ref{daoex} wird ein anschauliches Beispiel einer DAO gegeben. Schließlich werden in \ref{quality} Qualitätskritärien für die Implementierung gegeben.
+Im Folgenden werden die Eigenschaften einer DAO näher betrachtet: in Kapitel \ref{kand} die Kandidaten, in Kapitel \ref{besitz} die Besitzverteilung der Akteure zur DAO, in Kapitel \ref{defkonsens} wird die Einigung der Akterue auf einen Konsenskandidaten beschrieben, in Kapitel \ref{daoex} wird ein anschauliches Beispiel einer DAO beschrieben. Schließlich werden in Kapitel \ref{quality} Qualitätskritärien für die Implementierung beschrieben.
 
 \subsection{Kandidaten}
 \label{kand}
-Der Hier verfolgte Ansatz ist nur DAOs in regulären Grammatiken zu Betrachten. Diese Eigenschaft schränkt die Menge der möglichen Kandidaten ein. Zu der Kandidatenmenge existiert eine strickte Ordnungsrelation, die die Reihenfolge angibt, in der die Kandidaten hinzugefügt wurde.
+Der hier verfolgte Ansatz ist nur DAOs in regulären Grammatiken zu betrachten. Diese Eigenschaft schränkt die Menge der möglichen Kandidaten ein. Zu der Kandidatenmenge existiert eine strickte Ordnungsrelation, welche die Reihenfolge angibt, in der die Kandidaten hinzugefügt wurden.
 
 \subsection{Besitzverteilung}
 \label{besitz}
 
 %Aktienmodell
 
-Die Besitzverteilung wird ähnlich dem Aktienmarkt Modelliert. Dabei hat eine DAO ein bestimmte Anzahl an Teilen (geschrieben $|O_G| \in \mathbb{N}$), die unter den Akteuren aufgeteilt sind. 
+Die Besitzverteilung wird ähnlich dem Aktienmarkt modelliert. Dabei hat eine DAO ein bestimmte Anzahl an Teilen (geschrieben $|O_G| \in \mathbb{N}$), die unter den Akteuren aufgeteilt sind. 
 
 Die Funktion $share: A \rightarrow \mathbb{N}$ gibt den Anteil von $O_G$ an, der im Besitz von einem Akteur ist. 
 
@@ -597,11 +612,9 @@ Die Funktion $share: A \rightarrow \mathbb{N}$ gibt den Anteil von $O_G$ an, der
 \end{eqnarray}
 
 % Besitz = Bestimmung
-Der Besitz einer DAO $O_G$ wird durch das Recht definiert, dieses Kontrollieren zu können\cite{Waldron2004}. Ist der Besitz unter mehreren Akteuren aufgeteilt, so gibt der Anteil am Objekt an, zu welcher Gewichtung jeder einzelne Akteur über die DAO mitbestimmen kann.
+Der Besitz einer DAO $O_G$ wird durch das Recht definiert, dieses kontrollieren zu können\cite{Waldron2004}. Ist der Besitz unter mehreren Akteuren aufgeteilt, so gibt der Anteil am Objekt an, zu welcher Gewichtung jeder einzelne Akteur über die DAO mitbestimmen kann. Eine Konsensfunktion entscheidet schließlich über die Ausführung der Kontrolle.
 
-Eine Konsensfunktion entscheidet schließlich über die Ausführung der Kontrolle.
-
-Für die Bestimmung der Besitzverteilung können einerseits die Tokens benutzt werden, die in der Dezentralisierung-Schicht verwendet werden. Andererseits können auch neue eingeführt werden. Für den Blockchain basierten Ansatz der Dezentralisierung muss bei getrennten Besitz-Tokens jedoch sicher gestellt werden, dass die Tokens der Blockchain-Schicht einen Wert für die Miner und damit eine motivierende Funktion am Mining-Prozess teilzunehmen besitzen. 
+Für die Bestimmung der Besitzverteilung können die Tokens benutzt werden, die in der Dezentralisierung-Schicht verwendet werden. Es können auch Neue eingeführt werden. Für den Blockchain-Basierten Ansatz der Dezentralisierung muss bei getrennten Besitz-Tokens jedoch sicher gestellt werden, dass die Tokens der Blockchain-Schicht einen Wert für die Miner und damit eine motivierende Funktion am Mining-Prozess teilzunehmen besitzen. 
 
 % Gilt $share_O(a) > 0$, so nennt man $a$ auch ein \textbf{Member} von $O$.
 % 
@@ -617,8 +630,8 @@ Für die Bestimmung der Besitzverteilung können einerseits die Tokens benutzt w
   consens: DAO_G \rightarrow L(G)
 \end{eqnarray}
 
-Die Konsensfunktion überführt jede DAO in ein Wort der $L(G)$ Sprache.
-Dabei sucht die Funktion nach dem Kandidaten aus der Kandidatenmenge mit der maximalsten Bewertung. Die Bewertung eines Kandidaten ergibt sich dabei durch die Summe der gewichteten Bewertungen der Akteure. Falls mehrere Kandidaten die maximale Bewertung besitzen, wird der älteste Kandidat genommen.
+Die Konsensfunktion überführt jede DAO in ein Wort der Sprache $L(G)$.
+Dabei sucht die Funktion nach dem Kandidaten aus der Kandidatenmenge mit der maximalen Bewertung. Die Bewertung eines Kandidaten ergibt sich dabei aus der Summe der gewichteten Bewertungen der Akteure. Falls mehrere Kandidaten die maximale Bewertung besitzen, wird der älteste Kandidat genommen.
 
 \begin{eqnarray}
 value(k) &:=& \sum_{a\in A} share(a) \cdot vote(a,k) \\
@@ -634,13 +647,14 @@ consens (O_G) &:=& min_<(\{ k |\ value(k) = \max_{k'\in K_G} (value(k')) \})
 \subsection{Beispiel einer DAO}
 \label{daoex}
 
-Im folgenden ein Beispiel einer DAO $O_{G_{abc}}^1 := ( A, K, <, share, vote)$ für die Grammatik $G_{abc}$ definiert wie in \ref{regGramEx}.
+Sei $HASH$ die Menge aller 20-Byte Strings, dann ist die DAO $O_{G_{abc}}^1 := ( A, K, <, share, vote)$ ein Beispiel für die Grammatik $G_{abc}$ definiert wie in \ref{regGramEx}.
+
 
 \begin{eqnarray}
-  A &=& HASH\\
-  h_1 &=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
-  h_2 &=& 16iF9qZWG1tKhnjnX5KKCYdYdLv4A1FQ4b\\
-  h_3 &=& 1P3wGbbgDgLxivHw5BGGbLCHugsHBnjnjP\\
+  A &:=& HASH\\
+  h_1 &:=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
+  h_2 &:=& 16iF9qZWG1tKhnjnX5KKCYdYdLv4A1FQ4b\\
+  h_3 &:=& 1P3wGbbgDgLxivHw5BGGbLCHugsHBnjnjP\\
   share&:& hash\mapsto 
   \begin{cases}
     10 &: hash = h_1 \\
@@ -648,7 +662,7 @@ Im folgenden ein Beispiel einer DAO $O_{G_{abc}}^1 := ( A, K, <, share, vote)$ f
     6 &: hash = h_3 \\
     0 &: otherwise
   \end{cases} \\
-  K &=& \{aaaaa, aac, aacc, aaccc\} \\
+  K &:=& \{aaaaa, aac, aacc, aaccc\} \\
   % && aaaaa < aac < aacc < aaccc \\
   <&:=&\{(aaaaa,aac),(aac,aacc),(aacc,aaccc)\}^+\\
   vote&:& hash,k\mapsto
@@ -671,13 +685,15 @@ consens(O_{G_{abc}}^1) &= aacc
 \subsection{Qualitätskriterien}
 \label{quality}
 
-Für die Implementation ist auf folgende Qualitätskriterien zu achten:
+% \TODO[inline]{ANwendung nicht implementierung}
+% \TODO[inline]{drauf bezug nehmen}
+Für die Anwendung ist auf folgende Qualitätskriterien zu achten:
 
 \begin{description} 
   \item[\textbf{RESMIN:}]\hfill \\
     Es sind möglichst wenig Ressourcen (Speicher und Rechenleistung) vom Ethereum-Netzwerk notwendig, um Transaktionen zu validieren.
   \item[\textbf{INTMIN:}]\hfill \\
-    Eine Akteur soll möglichst wenig Interaktionen benötigen, um auf eine gewünschte, von ihm erreichbare Manipulation zu kommen.
+    Ein Akteur soll möglichst wenig Interaktionen benötigen, um auf eine gewünschte, von ihm erreichbare, Manipulation zu kommen.
 \end{description}
 
 % 
@@ -695,24 +711,26 @@ Für die Implementation ist auf folgende Qualitätskriterien zu achten:
 
 \section{Grammatikerweiterung}
 \label{gramerw}
-Als Zustandsmenge für das Transitionssystem können wir nun die Menge aller möglichen DAOs nehmen. Allerdings muss man die Menge für die Implementation codieren sowie die Validitätsbedingungen auf der codierten Menge definieren. Eine passende Codierung die wir näher betrachten wollen ist eine DAO zu einem Wort einer Sprache zu machen. Diese Sprache nennen wir \textbf{Metasprache} der ursprünglichen Sprache ($L(G)$). Eine Bedingung muss jedoch sein, dass das Wort ohne Verlust von Informationen wieder zurück zur selben DAO decodiert werden kann. Damit können wir Transitionsbedingungen als Manipulationen des codierten Wortes definieren. 
+Als Zustandsmenge für das Transitionssystem kann nun die Menge aller möglichen DAOs genommen werden. Allerdings muss die Menge für die Implementation kodiert sowie die Validitätsbedingungen auf der kodierten Menge definiert werden. Eine passende Kodierung die näher betrachtet wird, ist es eine DAO zu einem Wort einer Sprache zu machen. Diese Sprache wird \textbf{Metasprache} der ursprünglichen Sprache ($L(G)$) genannt. Eine Bedingung muss jedoch sein, dass das Wort ohne Verlust von Informationen wieder zurück zur selben DAO dekodiert werden kann. Damit können Transitionsbedingungen als Manipulationen des kodierten Wortes definiert werden. 
 
-Da die Wörter der codierten DAOs ebenfalls valide und invalide Teile der Wörter der ursprünglichen Sprache ($L(G)$) erkennen müssen und somit die Metasprache konstruierende Grammatik, ebenfalls die ursprüngliche Grammatik beinhalten muss, wird eine Funktion $S$ angegeben, die die ursprüngliche Grammatik $G$ so erweitert, dass diese zur gesuchten Metasprache wird $L(S(G))$.
+Die Wörter der kodierten DAOs müssen ebenfalls valide und invalide Teile der Wörter der ursprünglichen Sprache ($L(G)$) erkennen. Somit die Metasprache konstruierende Grammatik, ebenfalls die ursprüngliche Grammatik beinhalten muss, wird eine Funktion $S$ angegeben, die die ursprüngliche Grammatik $G$ so erweitert, dass diese zur gesuchten Metasprache $L(S(G))$ wird.
+% \TODO[inline]{paragraph vereinfachen}
 
-Formaler gesagt muss eine Funktion $S: REG\rightarrow CFG$ gefunden werden, zusammen mit den Funktionen $\phi: DAO_G \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow DAO_G$ für die die Eigenschaft $\phi\circ\phi^{-1} = id_{DAO_G}$ gilt.
+Formal muss eine Funktion $S: REG\rightarrow CFG$ gefunden werden, zusammen mit den Funktionen $\phi: DAO_G \rightarrow L(S(G))$ und $\phi^{-1}: L(S(G)) \rightarrow DAO_G$, für welche die Eigenschaft $\phi\circ\phi^{-1} = id_{DAO_G}$ gilt.
 
-Da die Funktion $S$, $\phi$ sowie $\phi^{-1}$ viele Komponenten haben, werden sie inkrementell eingeführt: Zuerst wird $S_1, \phi_1, \phi^{-1}_1$ definiert, diese codieren und decodieren die Kandidatenmenge einer DAO in ein Wort. Anschließend wird die Besitzverteilung sowie die Kandidatenbewertung ebenfalls eingearbeitet, sodass wir die gesuchten Funktionen erhalten.
+Da die Funktion $S$, $\phi$ sowie $\phi^{-1}$ viele Komponenten haben, werden sie inkrementell eingeführt: Zuerst wird $S_1, \phi_1, \phi^{-1}_1$ definiert, diese kodieren und dekodieren die Kandidatenmenge einer DAO in ein Wort. Anschließend wird die Besitzverteilung sowie die Kandidatenbewertung eingearbeitet, sodass sich die gesuchten Funktionen ergeben.
 
-\subsection{Codierung der Kandidatenmenge}
+\subsection{Kodierung der Kandidatenmenge}
 \label{codekand}
-Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik codiert werden können. 
+Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, so dass alle Wörter aus der Kandidatenmenge in einem Wort der erweiterten Grammatik kodiert werden können. 
 
-Dazu muss es eine Grammatik-Erweiterung $S_1: REG\rightarrow CFG$ gefunden werden.
-Um zu zeigen, dass es sich bei $S_1$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi_1: P(L(G)) \rightarrow L(S(G))$ und $\phi_1^{-1}: L(S(G)) \rightarrow P(L(G))$ gezeigt werden, für die die Bedingungen $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ erfüllt ist.
+Dazu muss eine Grammatik-erweiterung $S_1: REG\rightarrow CFG$ gefunden werden.
+Um zu zeigen, dass es sich bei $S_1$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi_1: P(L(G)) \rightarrow L(S(G))$ und $\phi_1^{-1}: L(S(G)) \rightarrow P(L(G))$ gezeigt werden, für die die Bedingungen $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ erfüllt sind.
 
-Dieses kann mit Hilfe eine Trie-Datenstruktur realisiert werden, die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist eben ein Wort der Metasprache, die durch die Grammatikerweiterung $S_1$ konstruiert wird:
+Dieses kann mit Hilfe einer Trie-Datenstruktur realisiert werden, die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist ein Wort der Metasprache, die durch die Grammatikerweiterung $S_1$ konstruiert wird:
 
-Sei $T(K_G)$ die Trie Datenstruktur, die die Menge $K_G$ codiert. Wir wissen, dass es eine Funktion $c: K_G \mapsto T(K_G)$ sowie $c^{-1}: T(K_G) \mapsto K_G$ existiert, für die $c\circ c^{-1} = id_{P(L(G))}$ gilt \cite{Morrison1968}. Zu finden ist demnach ein Isomorphismus $s: T(K_G) \mapsto w \in L(S_1(G))$ sowie $s^{-1}: w \in L(S_1(G)) \mapsto T(K_G)$ die ein Trie serialisieren und deserialisieren. Da ein Trie ein Baum ist wird für die Serialisierung einfach die geklammerte preorder Notation verwendet, die bekannterweise Isomorph ist. Damit haben wir die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$ gefunden. 
+% \TODO[inline]{Isomorph -> Isomorphismus : die uns den gewünschten Isomorphismus liefert }
+Sei $T(K_G)$ die Trie Datenstruktur, welche die Menge $K_G$ kodiert. Es ist bekannt, dass eine Funktion $c: K_G \mapsto T(K_G)$ sowie $c^{-1}: T(K_G) \mapsto K_G$ existiert, für die $c\circ c^{-1} = id_{P(L(G))}$ gilt \cite{Morrison1968}. Zu finden ist demnach ein Isomorphismus $s: T(K_G) \mapsto w \in L(S_1(G))$ sowie $s^{-1}: w \in L(S_1(G)) \mapsto T(K_G)$, die ein Trie serialisieren und deserialisieren. Da eine Trie ein Baum ist, können wir als Serialisierung die geklammerte preorder-Notation verwendet, die uns den gewünschten Isomorphismus liefert. Damit ergeben sich die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$. 
 
 Dieses wird anhand eines Beispiels für die Sprache $L(G) = \{ a^xb^yc^z\ |\ x,y,z\in \mathbb{N} \}$ und die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc \}$ in Abbildung \ref{trieexk} durch die Trie $T(K_G)$ illustriert.
 
@@ -723,22 +741,20 @@ Dieses wird anhand eines Beispiels für die Sprache $L(G) = \{ a^xb^yc^z\ |\ x,y
     \label{trieexk}
 \end{figure}
 
-Mit der dazugehörigen preorder-Serialisierung die $[,]$ als Klammerzeichen sowie $\&$ als Trennzeichen verwendet:
+Mit der dazugehörigen preorder-Serialisierung die $[$ und $]$ als Klammerzeichen sowie $\&$ als Trennzeichen verwendet:
 
 \begin{eqnarray}
 aa[aaa\&c\&c[c\&cc]]
 \end{eqnarray}
 
 
-Für die grammatik-erweiternde Funktion $S_1$ wird an jedem Ableitungsschritt in der Grammatik $G$ eine Mehrdeutigkeit zugelassen. Dafür werden die Produktionsregeln folgendermaßen erweitert:
+Für die Grammatik erweiternde Funktion $S_1$ wird an jedem Ableitungsschritt in der Grammatik $G$ eine Mehrdeutigkeit zugelassen. Dafür werden die Produktionsregeln folgendermaßen erweitert:
 
 \begin{eqnarray}
   P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\}
 \end{eqnarray}
 
-Diese Mehrdeutigkeit ($[O_R]$) nennen wir \textbf{Optionsmenge} sowie die darin enthaltenen Elemente ($r$) \textbf{Option}. 
-
-Eine solche Grammatikerweiterung erzeugt eben die Serialisierung einer Trie welche eine Menge valider Worte codiert:
+Diese Mehrdeutigkeit ($[O_R]$) wird \textbf{Optionsmenge} sowie die darin enthaltenen Elemente ($r$) \textbf{Option} genannt. Eine solche Grammatikerweiterung erzeugt die Serialisierung einer Trie, welche eine Menge valider Worte kodiert:
 
 \begin{eqnarray}
   aa[aaa\&c\&c[c\&cc]]\in L(S_1(G))
@@ -839,8 +855,8 @@ $
 % \TODO[inline]{ist hier ein formaler Beweis notwendig?}
 
 
-\subsection{Codierung der Besitzverteilung}
-Die Akteure lassen sich durch ein 20-Byte String genau identifizieren. Sei $HASH$ die Menge aller 20-Byte Strings. Im Folgenden werden die Hash-Strings in der Base58\footnote{https://en.bitcoin.it/wiki/Base58Check\_encoding 26.02.2015} Notation angegeben. Die Besitzverteilung ist eine Auflistung aller beteiligter Akteure sowie deren Anteile an der DAO.
+\subsection{Kodierung der Besitzverteilung}
+Die Akteure lassen sich durch einen 20-Byte String genau identifizieren. Sei $HASH$ die Menge aller 20-Byte Strings. Im folgenden werden die Hash-Strings in der Base58\footnote{https://en.bitcoin.it/wiki/Base58Check\_encoding 26.02.2015} Notation angegeben. Die Besitzverteilung ist eine Auflistung aller beteiligter Akteure sowie deren Anteile an der DAO.
 Sei $hash\in HASH$ sowie $number\in\mathbb{N}$.
 
 \begin{eqnarray}
@@ -850,23 +866,23 @@ P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}
 Eine Beispiel-Verteilung ist: 
 
 \begin{eqnarray}
-  h_1 &=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
-  h_2 &=& 16iF9qZWG1tKhnjnX5KKCYdYdLv4A1FQ4b\\
-  h_3 &=& 1P3wGbbgDgLxivHw5BGGbLCHugsHBnjnjP\\
-  a &=& [h_1\ 10][h_2\ 7][h_3\ 5] \\
+  h_1 &:=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
+  h_2 &:=& 16iF9qZWG1tKhnjnX5KKCYdYdLv4A1FQ4b\\
+  h_3 &:=& 1P3wGbbgDgLxivHw5BGGbLCHugsHBnjnjP\\
+  a &:=& [h_1\ 10][h_2\ 7][h_3\ 5] \\
   A &\rightarrow^*& a
 \end{eqnarray}
 
-In diesem Beispiel gehören Akteur $h_1$ - 10 Anteile, $h_2$ - 7 Anteile und $h_3$ - 5 Anteile. Somit ist die DAO - Größe 22 Anteile.
+In diesem Beispiel gehören Akteur $h_1$ - 10 Anteile, $h_2$ - 7 Anteile und $h_3$ - 5 Anteile. Somit gehören zur DAO 22 Anteile.
 
 % \subsection{Optimierung der Kandidatenbewertung}
 
-\subsection{Codierung der Kandidatenbewertung}
-Um jede $DAO$ ohne Verlust von Information codieren zu können, muss jede mögliche Bewertungsverteilung von Akteuren und Kandidaten im Metawort enthalten sein können. 
-Dieses kann erreicht werden, wenn die Bewertung der Kandidaten ($V$) an Optionen gebunden sind ($O_R \rightarrow r\& [V] O_R$). Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten codieren, wenn sie dieser Option zugeordnet sind. 
+\subsection{Kodierung der Kandidatenbewertung}
+Um jede $DAO$ ohne Verlust von Information kodieren zu können, muss jede mögliche Bewertungsverteilung von Akteuren und Kandidaten im Metawort enthalten sein. 
+Dieses kann erreicht werden, wenn die Bewertungen der Kandidaten ($V$) an Optionen gebunden sind ($O_R \rightarrow r\& [V] O_R$). Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten kodieren, wenn sie dieser Option zugeordnet. 
 
-Zusätzlich möchten wir Bewertungen einer Option zulassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
-Die Bewertung dieser Option wird als ein Attribut in der Ableitung Synthetisiert\cite{Knuth1968} und damit jeweils von einer Bewertung einer tieferen Ebene ersetzt.
+Zusätzlich werden Bewertungen einer Option zugelassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
+Die Bewertung dieser Option wird als ein Attribut in der Ableitung synthetisiert\cite{Knuth1968} und damit jeweils von einer Bewertung einer tieferen Ebene ersetzt.
 
 Sei $FLOAT = [0,1]$ die Menge der maschinell darstellbaren Fließkommazahlen zwischen 0 und 1: $float\in FLOAT$
 
@@ -877,32 +893,32 @@ P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}
  Ein Beispiel ist:
 
 \begin{eqnarray}
-  h_1 &=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
-  v &=& [h_1\ 1.0] \\
+  h_1 &:=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
+  v &:=& [h_1\ 1.0] \\
   V &\rightarrow^*& v \\
   O_R &\rightarrow^*& r\&[v]
 \end{eqnarray}
 
 
 
-\subsection{Codierung der Delegationen}
+\subsection{Kodierung der Delegationen}
 
 Für die Minimierung der Interaktion(INTMIN) wird transitives Abstimmen zugelassen. Akteure können nicht nur für die Option selbst abstimmen, sondern auch ihre Stimme für Optionsmengen an andere Akteure delegieren. Diese können im Kontext der delegierten Option für den Akteur mitbestimmen.
 
-Ein solcher Akteur kann wiederum entweder eine Person, ein Zusammenschluss von Personen wie eine Interessengemeinschaft in Form einer DAO oder eine DAO ohne Fremdeinwirkung sein, die bestimmte Werte zu optimieren versucht.
+Ein solcher Akteur kann entweder eine Person, ein Zusammenschluss von Personen, wie eine Interessengemeinschaft in Form einer DAO, oder eine DAO ohne Fremdeinwirkung sein, die bestimmte Werte zu optimieren versucht.
 
-Delegationen werden für Optionsmengen vererbt. Durch die lineare Struktur der Worte ergibt sich eine strickte Totalordnung der Delegationen, womit bei konkurierenden Delegationen immer die Delegation niedrigerer Ordnung genommen wird. Eine Stimme des Akteurs selbst, wird einer Stimme eines Deleganten vorgezogen.
+Delegationen werden für Optionsmengen vererbt. Durch die lineare Struktur der Worte ergibt sich eine strickte Totalordnung der Delegationen, womit bei konkurierenden Delegationen immer die Delegation niedrigerer Ordnung genommen wird. Eine Stimme des Akteurs selbst wird einer Stimme eines Deleganten vorgezogen.
 
 \begin{eqnarray}
 P_{Delegations} := \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\} 
 \end{eqnarray}
 
-Eine Beispiel-Verteilung ist: 
+Eine Beispielverteilung ist: 
 
 \begin{eqnarray}
-  h_2 &=& 16iF9qZWG1tKhnjnX5KKCYdYdLv4A1FQ4b\\
-  h_3 &=& 1P3wGbbgDgLxivHw5BGGbLCHugsHBnjnjP\\
-  d &=& [h_2\ h_3] \\
+  h_2 &:=& 16iF9qZWG1tKhnjnX5KKCYdYdLv4A1FQ4b\\
+  h_3 &:=& 1P3wGbbgDgLxivHw5BGGbLCHugsHBnjnjP\\
+  d &:=& [h_2\ h_3] \\
   D &\rightarrow^*& d
 \end{eqnarray}
 
@@ -951,7 +967,7 @@ Eine Beispiel-Verteilung ist:
 \end{align}
 
 \subsubsection*{Beispielwort}
-Das zugehörige Metawort zur DAO $O_{G_{abc}}^1$ definiert wie in \ref{daoExDef} $\phi(O_{G_{abc}}^1) = w \in L(S(G))$ wird in der Abbildung \ref{metaword} dargestellt mit dem dazugehörige Konsens (\ref{examplekonsens}).
+Das zugehörige Metawort zur DAO $O_{G_{abc}}^1$ definiert wie in \ref{daoExDef} $\phi(O_{G_{abc}}^1) = w \in L(S(G))$ wird mit dem dazugehörige Konsens (\ref{examplekonsens}) in Abbildung \ref{metaword} dargestellt.
 
 \begin{eqnarray}
 consens(w) = aacc \label{examplekonsens}
@@ -995,10 +1011,10 @@ Nach dem die Kandidaten, die Akteure sowie ihre Anteile und die Bewertung der Ka
 consens: L(S(G)) \rightarrow L(G)
 \end{eqnarray}
 
-Die Idee hier ist, dass die transitive Hülle der Delegationen als
-Attribut während der Ableitung vererbt(inherited) wird. Die Stimmenge 
-wird hingegen als Attribut synthetisiert.\cite{Knuth1968} Delegationen zusammen mit den Stimmen quantifizieren jede Option aus einer Optionsmenge und wählen
-eine Konsens-Option mit den Maximalsten Stimmen niedrigster Ordnung.
+Die Idee dabei ist, dass die transitive Hülle der Delegationen als
+Attribut wärend der Ableitung vererbt(inherited) wird. Die Stimmmenge 
+wird hingegen als Attribut synthetisiert \cite{Knuth1968}. Delegationen zusammen mit den Stimmen quantifizieren jede Option aus einer Optionsmenge und wählen
+eine Konsens-Option mit den maximalen Stimmen niedrigster Ordnung.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1008,18 +1024,19 @@ eine Konsens-Option mit den Maximalsten Stimmen niedrigster Ordnung.
 \section{Transitionssystem}
 \label{transsys}
 
-Zur Wiederholung besteht ein Transitionssystem $T=(M,I,\tau)$ aus einer Zustandsmenge $M$, einem Initialzustand $I$ und einer Übergangsfunktion $\tau$.
-Nach dem wir nun die Zustandsmenge als Metasprache $M=L(S(G))$ sowie die Codierung und Decodierung einer DAO in ein Wort der Metasprache gefunden haben, widmen wir uns der Übergangsfunktion $\tau$.
+Ein Transitionssystem $T=(M,I,\tau)$ besteht aus einer Zustandsmenge $M$, einem Initialzustand $I$ und einer Übergangsfunktion $\tau$.
+Nachdem die Zustandsmenge als Metasprache $M=L(S(G))$ sowie die Kodierung und Dekodierung einer DAO in ein Wort der Metasprache gefunden wurde, wird die Übergangsfunktion $\tau$ betrachtet.
 
 Als Initialzustand wird ein beliebiges Wort aus der Metasprache verwendet, welches weder Stimmen, noch Delegationen beinhaltet.
 
 \begin{eqnarray}
-I = \{s_0\in L(S(G))\}
+I := \{s_0\in L(S(G))\}
 \end{eqnarray}
 
-Wir werden uns auf die Manipulation der Kandidatenmenge sowie der Kandidatenbewertung beschränken. Weitere Manipulationen werden in Aussicht gestellt. Valide Manipulationen der Kandidatenmenge soll das Erstellen und das Erweitern von Optionsmengen sein. Für die Kandidatenbewertung sollen das Hinzufügen und Entfernen der eigenen Stimmen sowie der eigenen Delegationen für Optionsmengen valide sein. 
+Es wird sich auf die Manipulation der Kandidatenmenge sowie der Kandidatenbewertung beschränkt. Weitere Manipulationen werden in Aussicht gestellt. Valide Manipulationen der Kandidatenmenge sollen das Erstellen und das Erweitern von Optionsmengen sein. Für die Kandidatenbewertung sollen das Hinzufügen und Entfernen der eigenen Stimmen sowie der eigenen Delegationen für Optionsmengen valide sein. 
 
-Falls die Besitzverteilung von der Blockchain-Schickt übernommen wird, greift die Dynamik dieser Schickt ebenfalls auf den derzeitigen Zustand des Metawortes. Wir möchten uns jedoch auf solche DAOs beschränken, bei denen die Besitzverteilung ausschließlich in der Selbst-Modifikation-Schicht manipuliert wird. Hier möchten wir das Überweisen eines Akteurs von eigenen Anteilen an einen anderen Akteur zulassen.
+Falls die Besitzverteilung von der Blockchain-Schicht übernommen wird, 
+wirken sich alle Manipulationen der Besitzverteilung ebenfalls auf das Metawort aus. Es wird sich jedoch auf solche DAOs beschränkt, bei denen die Besitzverteilung ausschließlich in der Selbst-Modifikation-Schicht manipuliert wird. Hierbei wird das Überweisen eigener Anteile eines Akteurs an einen anderen Akteur zulassen.
 
 
 % 
@@ -1049,7 +1066,7 @@ Akteure können jederzeit die Aktualisierungsmenge erweitern in dem sie eine Akt
 
 
 \subsection{Transformation}
-Sei $\Delta \neq \emptyset$ dann können wir die Transitionsfunktion $\tau$ folgendermaßen definieren.
+Sei $\Delta \neq \emptyset$, so kann die Transitionsfunktion $\tau$ folgendermaßen definiert werden:
 
 \begin{eqnarray}
   \tau( w ) := 
@@ -1059,7 +1076,7 @@ Sei $\Delta \neq \emptyset$ dann können wir die Transitionsfunktion $\tau$ folg
   \end{cases}
 \end{eqnarray}
 
-Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, in dem die für die Transformation verwendete Aktualisierung entfernt wird. Wurde keine Aktualisierung verwendet, so sind alle Aktualisierungen invalide:
+Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, indem die für die Transformation verwendete Aktualisierung entfernt wird. Wurde keine Aktualisierung verwendet, so sind alle Aktualisierungen invalide:
 
 \begin{eqnarray}
   \Delta' := 
@@ -1073,7 +1090,7 @@ Nach jeder Transformation wird die Aktualisierungsmenge ebenfalls aktualisiert, 
 \section{Validierung der Aktualisierung}
 \label{transvalid}
 
-Um die Validität einer Transformation zu testen, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem manipuliertem Wort $w'$ betrachtet. Die Transformation ist valide, falls die Kandidatenmenge wie in Abschnitt \ref{manipulationkandidaten} vorgestellt manipuliert wird, die Kandidatenbewertung wie in Abschnitt \ref{manipulationbewertung} vorgestellt manipuliert wird oder die Anteile wie in Abschnitt \ref{manipulationanteile} vorgestellt manipuliert werden.
+Um die Validität einer Transformation zu testen, wird das derzeitige Wort $w$ zusammen mit dem auslösenden Akteur $a$ sowie seinem manipuliertem Wort $w'$ betrachtet. Die Transformation ist valide, falls die Kandidatenmenge wie in Abschnitt \ref{manipulationkandidaten} vorgestellt, die Kandidatenbewertung wie in Abschnitt \ref{manipulationbewertung} vorgestellt oder die Anteile, wie in Abschnitt \ref{manipulationanteile} vorgestellt, manipuliert werden.
 
 % \subsection*{ACID Eigenschaft der Transaktionen}
 % 
@@ -1090,18 +1107,18 @@ Um die Validität einer Transformation zu testen, wird das derzeitige Wort $w$ z
 
 \subsection{Manipulation der Kandidaten}
 \label{manipulationkandidaten}
-Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange das neu vorgeschlagene Wort, ein Wort der Metasprache ist, sowie die Bewertungen der Kandidaten nicht verändert werden.
+Eine Optionsmenge kann an jeder Position im Wort erzeugt oder erweitert werden, solange das neu vorgeschlagene Wort ein Wort der Metasprache ist sowie die Bewertungen der Kandidaten nicht verändert werden.
 \begin{eqnarray}
 (A,K',share',vote') = \phi^{-1}(w') \nonumber\\
 \land (A,K,share,vote) = \phi^{-1}(w) \nonumber\\
 \Rightarrow vote = vote' \\
   w'\in L(S(G))
 \end{eqnarray}
-Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten, sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
+Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalten sowie noch nicht in der bisherigen Optionsmenge enthalten sein.
 
-\subsubsection{Erzeugen einer Optionsmenge}
+\subsubsection*{Erzeugen einer Optionsmenge}
 
-Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$, dann ist das Erzeugen einee Optionsmenge valide, wenn folgende Bedingungen erfüllt sind:
+Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$, dann ist das Erzeugen einer Optionsmenge valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1129,7 +1146,7 @@ Dabei muss $o_2$ frei von Delegationen und Stimmen sein.
 
 % \TODO[inline]{ist hier ein Beweis das die Kritärien nicht verletzt werden notwendig?}
 
-\subsubsection{Erweitern einer Optionsmenge}
+\subsubsection*{Erweitern einer Optionsmenge}
  
 Sei $o,d,r \in T'^*$ sowie $R,O_R \in N'$, dann ist das Erweitern einer Option valide, wenn folgende Bedingungen erfüllt sind:
 
@@ -1153,8 +1170,8 @@ $r$ muss dabei Delegations- und Stimmfrei sein sowie neu:
 
 Sei für alle Manipulationen $a\in HASH$ der auslösende Akteur.
 
-\subsubsection{Hinzufügen einer Stimme}
-Sei $b_1,b_2,v,r \in T'^*$, dann ist das Hinzufügen einer Stimme valide, wenn folgende Bedingugnen erfüllt sind:
+\subsubsection*{Hinzufügen einer Stimme}
+Sei $b_1,b_2,v,r \in T'^*$, dann ist das Hinzufügen einer Stimme valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1163,9 +1180,9 @@ Sei $b_1,b_2,v,r \in T'^*$, dann ist das Hinzufügen einer Stimme valide, wenn f
   w' &=& w_{0 .. i-1}\ r \& [v[a\ n]]\ w_{j+1 .. n}
 \end{eqnarray}
 
-\subsubsection{Löschen einer Stimme}
+\subsubsection*{Löschen einer Stimme}
 
-Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$, dall lässt sich eine Stimme valide löschen, wenn folgende Bedingungen erfüllt sind:
+Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$, so lässt sich eine Stimme valide löschen, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1174,8 +1191,8 @@ Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$, dall lässt sich eine Stimme val
 \end{eqnarray}
 
 
-\subsubsection{Hinzufügen einer Delegation}
-Da die Reihenfolge der Delegationen wichtig ist, für die Auflösung konkurierender Delegationen, daher ist das Hinzufügen einer Delegation an jeder Stelle in einer Delegationsmenge möglich.
+\subsubsection*{Hinzufügen einer Delegation}
+Da die Reihenfolge der Delegationen wichtig für die Auflösung konkurierender Delegationen ist, ist das Hinzufügen einer Delegation an jeder Stelle in einer Delegationsmenge möglich.
 
 Sei $o,d_i \in T'^*$ sowie $h'\in HASH$ und $h\neq a$, dann ist das Hinzufügen einer Delegation valide, wenn folgende Bedingungen erfüllt sind:
 
@@ -1188,7 +1205,7 @@ Sei $o,d_i \in T'^*$ sowie $h'\in HASH$ und $h\neq a$, dann ist das Hinzufügen 
 
 \subsubsection*{Löschen einer Delegation}
 
-Sei $o,d_i \in T'^*$ sowie $h'\in HASH$, dann ist das Löschen einer Delegation valide, wenn folgende Bedingungen erfüllt sind:
+Sei $o,d_i \in T'^*$ sowie $h'\in HASH$, so ist das Löschen einer Delegation valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1197,10 +1214,10 @@ Sei $o,d_i \in T'^*$ sowie $h'\in HASH$, dann ist das Löschen einer Delegation 
   w' &=& w_{0 .. (i-1)}\ [o][uv]\ w_{(j+1) .. n}
 \end{eqnarray}
 
-\subsection{Überweisung von Anteilen}
+\subsection{Überweisung der Anteilen}
 \label{manipulationanteile}
 
-Ein Akteur kann seine Anteile an einen Anderen überweisen. Dabei müssen die Fälle unterschieden werden, ob der Empfänger bereits Anteile hält, bei dem Fall wird die Überweisungssumme seinen Beständen addiert, oder ob es sich um einen neuen Akteur handelt. Dieser wird mit der Überweisungssumme neu hinzugefügt. 
+Ein Akteur kann seine Anteile an einen anderen überweisen. Dabei müssen zwei Fälle unterschieden werden. Hält der Empfänger bereits Anteile, wird die Überweisungssumme seinen Beständen addiert. Handelt es sich um einen neuen Akteur, wird die Überweisungssumme neu hinzugefügt. 
 
 Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$, dann ist das Überweisen von Anteilen valide, wenn folgende Bedingungen erfüllt sind:
 
@@ -1209,7 +1226,7 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$, dann ist das Überw
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
-  b_1, b_2, b_3, b_4, b_5, b_6 &\in& \{ w | w = ([h\ n])^*\text{ mit } h \in HASH\text{ und }n\in\mathbb{N} \} \\
+  b_1, ..., b_6 &\in& \{ w | w = ([h\ n])^*\text{ mit } h \in HASH\text{ und }n\in\mathbb{N} \} \\
   w_{i..j} &=& [ b_1 b_2 b_3 [a\ n] b_4 b_5 b_6 ] \\
   m' &=& (m+l) \\
   n' &=& (n-l) \\
@@ -1229,9 +1246,9 @@ Dabei ist $(m+l),(n-l)\in\mathbb{N}$.
 \chapter{Implementation}
 \label{implementation}
 
-In diesem Kapitel wird die Implementation der Anwendung einer Selbst-Modifikations-Schicht auf DAOs regulärer Grammatik vorgestellt. Dafür wird in Kapitel \ref{architecture} die gewählte Architektur vorgestellt sowie in Kapitel \ref{metalang} der Umgang mit Grammatiken und der Metasprache.
+In diesem Kapitel wird die Implementation der Anwendung einer Selbst-Modifikations-Schicht auf DAOs mit regulärer Grammatik vorgestellt. Dafür wird in Kapitel \ref{architecture} die gewählte Architektur vorgestellt sowie in Kapitel \ref{metalang} der Umgang mit Grammatiken und der Metasprache.
 
-Implementiert wurde im Rahmen dieser Arbeit eine \textbf{zentralisierte} Version der Selbst-Modifikation-Schicht. Die Dezentralität wurde erst einmal ignoriert, da die Funktionsweise der Selbst-Modifikation im Vordergrund steht. Jedoch sind alle Grundlagen dafür gelegt die hier erarbeitete Lösung auf Ethereum oder eine andere Turing-Vollständige DAO Platform zu portieren und damit zu dezentralisieren.
+Implementiert wurde im Rahmen dieser Arbeit eine \textbf{zentralisierte} Version der Selbst-Modifikation-Schicht. Die Dezentralität wurde ersteinmal außen vor gelassen, da die Funktionsweise der Selbst-Modifikation im Vordergrund steht. Jedoch sind alle Grundlagen dafür gelegt, die hier erarbeitete Lösung auf Ethereum oder eine andere turing-vollständige DAO Plattform zu portieren und damit zu dezentralisieren.
 
 
 \section{Architektur}
@@ -1244,8 +1261,8 @@ Implementiert wurde im Rahmen dieser Arbeit eine \textbf{zentralisierte} Version
     \label{client-server}
 \end{figure}
 
-Ziel der Implementation ist einerseits eine lauffähige Implementierung des Konzeptes. Andererseits einem Benutzer zu ermöglichen mit Anwendungsbeispielen zu experimentieren: reguläre Grammatiken anzulegen sowie diese mit der Angabe der Besitzverteilung und eines Initialwortes zu einer DAO zu machen.
-Implementiert ist die Interaktion mit der DAO Selbst-Modifikation-Schicht wie in \ref{interaction} beschrieben. Ein Akteur kann dabei entweder eine vorhandene DAO manipulieren oder eine neue erstellen. Technisch wurde hier eine Klassische Client-Server Architektur benutzt wie sie in Abbildung \ref{client-server} illustriert ist. Dafür wurde das MeteorJS\footnote{http://meteor.com 25.02.2015} Web Framework verwendet
+Ziel der Implementation ist eine lauffähige Implementierung des Konzeptes. Um es einem Benutzer zu ermöglichen mit Anwendungsbeispielen zu experimentieren, wie reguläre Grammatiken anzulegen und diese mit der Angabe der Besitzverteilung und eines Initialwortes zu einer DAO zu machen.
+Implementiert ist die Interaktion mit der DAO Selbst-Modifikation-Schicht wie in \ref{interaction} beschrieben. Ein Akteur kann dabei entweder eine vorhandene DAO manipulieren oder eine Neue erstellen. Technisch wurde hier eine Klassische Client-Server Architektur benutzt wie sie in Abbildung \ref{client-server} dargestellt ist. Dafür wurde das MeteorJS\footnote{http://meteor.com 25.02.2015} Web Framework verwendet
 welches auf NodeJS\footnote{http://nodejs.org/ 25.02.2015} basiert - einem serverseitigen JavaScript Compiler. Für die Datenspeicherung wird MongoDB\footnote{http://www.mongodb.org/ 25.02.2015} verwendet - eine NoSQL Datenbank. Der Client kommuniziert über HTTP und WebSocket mit dem Server.
 
 %http://yuml.me/diagram/scruffy/class/draw
@@ -1261,26 +1278,26 @@ welches auf NodeJS\footnote{http://nodejs.org/ 25.02.2015} basiert - einem serve
     \caption{Datenmodell}
 \end{figure}
 
-Das Datenmodell(Abbildung \ref{datamodel}) ist in zwei Bereiche unterteilt: Einerseits die DAOs und andererseits die Grammatiken. 
+Das Datenmodell (Abbildung \ref{datamodel}) ist in zwei Bereiche unterteilt: Einerseits die DAOs und andererseits die Grammatiken. 
 
 Ein Akteur hat nun die Möglichkeiten 
 
 \begin{enumerate}
-  \item Vorhandene Grammatiken aufzulisten
-  \item Eine vorhandene Grammatik zu inspizieren
-  \item Eine neue Grammatiken hinzuzufügen
-  \item DAOs aufzulisten
-  \item Den Aufbaue und die Historie einer DAO einzusehen
-  \item Eine DAO zu manipulieren
-  \item Eine neue DAO zu erstellen
+  \item Vorhandene Grammatiken aufzulisten.
+  \item Eine vorhandene Grammatik zu inspizieren.
+  \item Eine neue Grammatiken hinzuzufügen.
+  \item DAOs aufzulisten.
+  \item Den Aufbaue und die Historie einer DAO einzusehen.
+  \item Eine DAO zu manipulieren.
+  \item Eine neue DAO zu erstellen.
 \end{enumerate}
 
-Für die Signierung wird die Bibliothek BitcoinJS-lib\footnote{https://github.com/bitcoinjs/bitcoinjs-lib 26.02.2015} verwendet. Sie stellt die notwendigen ECDSA sowie SHA Funktionen zu Verfügung. Für dem Umgang mit Grammatiken und Worten wird JISON\footnote{http://zaach.github.io/jison 26.02.2015} eine JavaScript Portierung des Bison/Flex LALR(1) Parser-Generators verwendet.
+Für die Signierung wird die Bibliothek BitcoinJS-lib\footnote{https://github.com/bitcoinjs/bitcoinjs-lib 26.02.2015} verwendet. Sie stellt die notwendigen ECDSA sowie SHA Funktionen zu Verfügung. Für dem Umgang mit Grammatiken und Worten wird JISON\footnote{http://zaach.github.io/jison 26.02.2015}, eine JavaScript Portierung des Bison/Flex LALR(1) Parser-Generators, verwendet.
 %   LALR(1) 
 %     Subset of CFG
 %     S(G) is in LALR(1)
 
-BitcoinJS-lib stellt notwendige kryptografische Funktionen bereit: das Erstellen von einem Private-Key auf Basis eines Strings, das erstellen eines Public-Key und einer Adresse auf Basis des Private-Keys, das Signieren von Nachrichten mit einem Private-Key sowie das Verifizieren von Nachrichten mit ihrer Signatur und einer Adresse. Dieses deckt alle Funktionen ab, die für die sichere Kommunikation von einem Akteur und der DAO notwendig sind.
+BitcoinJS-lib stellt notwendige kryptografische Funktionen bereit: das Erstellen von einem Private-Key auf Basis eines Strings, das Erstellen eines Public-Key und einer Adresse auf Basis des Private-Keys, das Signieren von Nachrichten mit einem Private-Key sowie das Verifizieren von Nachrichten mit ihrer Signatur und einer Adresse. Dieses deckt alle Funktionen ab, die für die sichere Kommunikation von einem Akteur und der DAO notwendig sind.
 
 \section{Metasprache}
 \label{metalang}
@@ -1290,7 +1307,7 @@ BitcoinJS-lib stellt notwendige kryptografische Funktionen bereit: das Erstellen
     \caption{Grammatikerweiterung und Parser Generator}
 \end{figure}
 
-Für das erzeugen von Parsern wird der Parser-Generator JISON so erweitert, dass dieser bei Eingabe einer regulären Grammatik $G$ einen Parser für die zur Grammatik zugehörigen Metasprache erzeugt. Dieser Parser interpretiert eine Wort der $L(S(G))$ Sprache als ein Parse Baum Objekt (PTO). Eine Grammatik wird als Bison Grammatik (Abbildung \ref{bisongrammar}) in der EBNF Schreibweise angegeben.
+Für das Erzeugen von Parsern wird der Parser-Generator JISON so erweitert, dass dieser bei Eingabe einer regulären Grammatik $G$ einen Parser für die zur Grammatik zugehörigen Metasprache erzeugt. Dieser Parser interpretiert ein Wort der $L(S(G))$ Sprache als ein Parse-Baum-Objekt (PTO). Eine Grammatik wird als Bison Grammatik (Abbildung \ref{bisongrammar}) in der EBNF Schreibweise angegeben.
 
 \begin{figure}[ht]
   \centering
@@ -1323,10 +1340,10 @@ Für das erzeugen von Parsern wird der Parser-Generator JISON so erweitert, dass
   \label{bisongrammar}
 \end{figure}
 
-Das Parse Baum Objekt besitzt folgende Funktionen:
+Das Parse-Baum-Objekt besitzt folgende Funktionen:
 
 \paragraph*{toString}
-wandelt das Parse Baum Objekt wieder um in ein Wort der Metasprache, das dieses Parse Baum Objekt konstruiert.
+wandelt das Parse-Baum-Objekt wieder in ein Wort der Metasprache um, welches dieses Parse-Baum-Objekt konstruiert.
 
 \paragraph*{getConsensString}
 wählt den Konsens-Kandidaten aus:
@@ -1334,13 +1351,13 @@ wendet die Konsensfunktion an und liefert ein Wort der $L(G)$ Sprache zurück.
 % der Kandidat mit der maximalsten Bewertung sowie der 
 
 \paragraph*{validate}
-erhält ein weiteres (PTO), die eine Manipulation des derzeitigen PTOs beinhaltet, sowie eine Akteur-Adresse und überprüft ob die Manipulation des derzeitigen PTOs vom Akteur valide ist.
+erhält ein weiteres PTO, die eine Manipulation des derzeitigen PTOs beinhaltet, sowie eine Akteur-Adresse und überprüft, ob die Manipulation des derzeitigen PTOs vom Akteur valide ist.
 
 \paragraph*{add}
 erhält ein Wort $w$ der $L(G)$ Sprache und fügt es dem Derzeitigen PTO hinzu. Diese Operation fügt der DAO einen neuen Kandidaten hinzu.
 
 \paragraph*{getCandidates}
-liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen. Dadurch lässt sich leicht die Funktion $vote$ rekonstruieren.
+liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen. Dadurch lässt sich die Funktion $vote$ leicht rekonstruieren.
 
 
 % \subsection*{ abc - Grammatik }
@@ -1379,7 +1396,7 @@ liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%       Aussicht
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Zusammenfassung und Ausblick}
+\chapter{Ausblick}
 \label{ausblick}
 % outline nochmal
 % Auswertung - bewertende zusammenfassung
@@ -1389,10 +1406,10 @@ liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen.
 
 \section{Anwendung auf kontextfreie Grammatiken}
 
-Eine interessante Anwendung des hier vorgestellten Ansatzes einer Selbst-Modifikation-Schicht ist die Anwendung auf die kontextfreien Sprachen. Damit können alle Programmiersprachen zumindest Syntaktisch abgebildet werden. Dieses ist jedoch nicht Trivial. Das Problem hierbei ist die Kodierung der Kandidatenmenge. Auf Grund der Limitierung der Ableitungsregeln kann ein Ableitungsbaum einer regulären Grammatik keine Knoten haben, die mehrere Kinder mit Nichtterminalen Besitzen(Äste). Somit ist der Ableitungsbaum eine lineare Struktur. Dieses ermöglicht die Konstruktion eines Präfixbaumes bei dem Äste als Optionen angesehen werden. 
-Zwar lässt sich die Zusammenfassung der Kandidaten bei kontextfreien Grammatiken mit der selben Methode anhand des Ableitungsbaumes konstruieren, jedoch multiplizieren sich die Optionen in unterschiedlichen Kindern eines Knotens. Dadurch gilt die in \ref{codekand} geforderte Bedingung $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ nicht, da Optionen hinzu kommen. Ebenfalls lässt sich nicht jede Kandidatenbewertung durch das Anhängen an Optionsknoten codieren.
+Eine interessante Anwendung des hier vorgestellten Ansatzes einer Selbst-Modifikation-Schicht ist die Anwendung auf die kontextfreien Sprachen. Damit können alle Programmiersprachen zumindest syntaktisch abgebildet werden. Dieses ist jedoch nicht trivial. Das Problem hierbei ist die Kodierung der Kandidatenmenge. Aufgrund der Limitierung der Ableitungsregeln kann ein Ableitungsbaum einer regulären Grammatik keine Knoten haben, die mehrere Kinder mit Nichtterminalen besitzen (Äste). Somit ist der Ableitungsbaum eine lineare Struktur. Dies ermöglicht die Konstruktion eines Präfixbaumes, bei dem Äste als Optionen angesehen werden. 
+Zwar lässt sich die Zusammenfassung der Kandidaten bei kontextfreien Grammatiken mit der selben Methode anhand des Ableitungsbaumes konstruieren, jedoch multiplizieren sich die Optionen in unterschiedlichen Kindern eines Knotens. Somit gilt die in \ref{codekand} geforderte Bedingung $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ nicht, da Optionen hinzu kommen. Ebenfalls lässt sich nicht jede Kandidatenbewertung durch das Anhängen an Optionsknoten kodieren.
 
-Betrachten wir einmal das Beispiel der Sprache $L(G) = { [ab][abc] }$ mit der konstruierenden Grammatik: 
+Im folgenden writ das Beispiel der Sprache $L(G) = \{ [ab][abc] \}$ mit der konstruierenden Grammatik betrachtet: 
 
 \begin{eqnarray}
   G &=& (T,N,P,S)\\
@@ -1401,24 +1418,23 @@ Betrachten wir einmal das Beispiel der Sprache $L(G) = { [ab][abc] }$ mit der ko
   P &=& \{ S\rightarrow BB, B\rightarrow a, B\rightarrow b\}
 \end{eqnarray}
 
-Die Kandidatenmenge $K_1={ab, ac, ba}$
-Sowie das anhand des Ableitungbaumes valide Metawort: 
+die Kandidatenmenge $K_1:=\{ab, ac, ba\}$ sowie das anhand des Ableitungbaumes valide Metawort: 
 
 \[ [A][ a\&[v_1]b\&[v_2] ][][ a\&[v_3]b\&[v_4]c\&[v_5] ][] ][] \] 
 
 
 Die sich aus dem Metawort bildenden Kandidaten sind: $K_2=\{ aa, bb, ab, ba, ac, bc \}$
 
-Weiter gibt es kein Mechanismus der jedes mögliche Kandidatenbewertung in der Sprache darstellen kann: Es stehen in diesem Beispiel 5 Bewertungsvariablen für 6 Kandidaten zur Verfügung. 
+Zudem gibt es keinen Mechanismus, der jede mögliche Kandidatenbewertung in der Sprache darstellen kann. Es stehen in diesem Beispiel 5 Bewertungsvariablen für 6 Kandidaten zur Verfügung. 
 
 \section{Dezentralisierung}
-Wie bereits erwähnt ist die Dezentralisierung der Selbst-Modifikation-Schicht der DAO z.B. durch eine Portierung auf die Ethereum Plattform der nächste notwendige Schritt.
+Wie bereits erwähnt, ist die Dezentralisierung der Selbst-Modifikation-Schicht der DAO z.B. durch eine Portierung auf die Ethereum Plattform der nächste notwendige Schritt.
 
 \section{Anonymisierung}
-Durch die Pseudonyme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Dadurch lässt sich der Konsens manipulieren in dem auf strategisch wichtige Akteure Druck ausgeübt wird um ihre Stimme zu ändern. Auch wird das Abstimmverhalten der Anteilseigener beeinflusst, da diese fürchten könnten ihre Pseudonymen Status verlieren zu können. Die Anonyme Wahl ist ebenfalls ein Kriterium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere erstrebenswerte Erweiterung ist. Diese Anonymisierung könnte durch Homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard2007}.
+Durch die pseudonyme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Somit lässt sich der Konsens manipulieren, indem auf strategisch wichtige Akteure Druck ausgeübt wird, um ihre Stimme zu ändern. Auch wird das Abstimmverhalten der Anteilseigener beeinflusst, da diese fürchten könnten ihren pseudonymen Status zu verlieren. Die anonyme Wahl ist ein Kriterium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere erstrebenswerte Erweiterung ist. Diese Anonymisierung könnte durch homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard2007}.
 
 \section{Manipulation der Besitzverteilung}
-Derzeit ist die Größe einer DAO fest, sodass die einzige Möglichkeit an Anteile zu gelangen, diese von Anderen überwiesen zu bekommen ist. Eine mögliche Erweiterung währe die der Erschaffung neuer Anteile. Diese können entweder von der DAO verkauft oder anhand festgelegter Regeln herausgegeben werden. Ein Beispiel Regelsatz währe das binden an Optionsmengen. Derjenige Akteur erhält die neuen Anteile, dessen vorgeschlagene Option für eine bestimmte Dauer den Platz der Konsens-Option einnimmt.
+Derzeit ist die Größe einer DAO fest. Die einzige Möglichkeit an Anteile zu gelangen, ist diese von anderen überwiesen zu bekommen. Eine mögliche Erweiterung wäre die der Erschaffung neuer Anteile. Diese können entweder von der DAO verkauft oder anhand festgelegter Regeln herausgegeben werden. Ein Beispielregelsatz wäre das Binden an Optionsmengen. Derjenige Akteur erhält die neuen Anteile, dessen vorgeschlagene Option für eine bestimmte Dauer den Platz der Konsens-Option einnimmt.
 
 % \subsection*{Manipulation der Grammatik}
 % Ein weiterer, jedoch Spekulativer Schritt währe die manipulation der grammatik
@@ -1438,3 +1454,13 @@ Derzeit ist die Größe einer DAO fest, sodass die einzige Möglichkeit an Antei
 \bibliographystyle{alpha}
 
 \end{document}
+
+
+
+
+
+
+% gg
+% 
+% 
+% 
