@@ -329,7 +329,7 @@ Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann wird ein Wortteil definie
 \section{Trie}
 \label{trie}
 
-Ein Trie oder Prefixbaum ist eine Baum-Datenstruktur, die es erlaubt eine Menge von Worten über einem Alphabet effizient zu speichern. Dabei werden gemeinsame Präfixe von Wörtern in Knoten zusammengefasst.
+Ein Trie oder Prefixbaum ist eine Baum-Datenstruktur, die es erlaubt eine Menge von Worten über einem Alphabet effizient zu speichern. Dabei werden gemeinsame Präfixe von Wörtern in Knoten zusammengefasst. Weiter dürfen keine Kinder eines Knotens mit gleichem Namen existieren. 
 Eine zu Trie verwandte Datenstruktur, die Patricia-Trie, reduziert den Speicherverbrauch, indem sie alle Knoten mit nur einem Nachfolger zu einem Knoten zusammenfasst.
 Alle im Trie und Patricia-Trie gespeicherten Wörter können durch ein Tiefenscan wiederhergestellt werden \cite{Morrison1968}.
 Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aac, aacc, aaccc, aabbb, aabb \}$ zeigt die Abbildung \ref{trieImg}.
@@ -407,7 +407,10 @@ Im folgenden werden drei Teilbereiche von DAOs näher betrachtet: Als erstes die
 \label{blockchain}
 
 Bitcoin hat mit der Einführung der Blockchain eine elegante und universelle Lösung für das Problem der Byzantinischen Generäle(BG) vorgeschlagen. Das Problem steht repräsentativ im Bereich der verteilten Systeme für die Schwierigkeit, einen Konsens zwischen Akteuren herzustellen, wenn einige, für Andere unbestimmte Akteure, eigennützig sowie manipulativ agieren. 
+
 Bitcoin hat hier eine statistische Lösung präsentiert: Es führt die Dezentralität des Konsens auf die natürliche Knappheit einer Ressource zurück. Für Bitcoin ist es die Anzahl der Berechnungen, die ein Akteur in einer bestimmten Zeit machen kann. Ein General versucht dabei ein mathematisches Rätsel zu lösen, welches statistisch gesehen 10 Minuten dauern müsste, wenn alle beteiligten Generäle an dem Problem arbeiten würden.
+
+% Alle Akteure besitzten eine Kopie eines gemeinsamen Konsenses. Durch einen Dezentralen Mechanismus wird ein Akteur ausgewählt, welcher den derzeitigen Konsens erweitern kann. Die Erweiterung wird darauf hin von allen Akteuren als Konsens angenommen, falls diese konsistent ist. Hiernach wird nach einiger Zeit der Mechanismus erneut ausgelöst. Damit ein Akteur zum erweitern des Konsenses ausgewählt wird, muss dieser einen Beweis liefern, dass dieser über eine bestimmte Menge an Rechenressourcen verfügt. Die Menge der Rechenressourcen ist natürlich knapp.
 
 Hat ein General eine Lösung gefunden, teilt er dieses an alle ihm bekannten Generäle mit. Eine solche Lösung wird auch als ``Block'' bezeichnet. Jeder General arbeitet daraufhin mit dieser Lösung weiter und versucht sie zu erweitern, was wiederum statistisch gesehen 10 Minuten der Kraft aller Generäle kosten müsste. Jeder General arbeitet mit der von ihm zuerst gesehenen längsten Kette von Blöcken. Mit der Anzahl der Erweiterungen konvergiert nun die Beteiligung loyaler Generäle am Konsens zur Majorität, falls diese tatsächlich im Besitz einer Mehrheit der begrenzten Rechenressourcen sind.
 In einem Block befindet sich neben der vorhergehenden Lösung auch der aktuelle Konsens, solange er auf dem Vorhergehenden aufbaut und valide ist.
@@ -416,7 +419,7 @@ In einem Block befindet sich neben der vorhergehenden Lösung auch der aktuelle 
   The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains.
 \end{aquote}
 
-Jedoch gibt es Argumente dafür, dass die Blockchain das Problem der Byzantinischen Generäle nicht vollständig löst:
+Jedoch gibt es Argumente dafür, dass die Blockchain das Problem der Byzantinischen Generäle nicht vollständig löst. Die Bitcoin - Blockchain hatte jedoch nicht den Anspruch, das BG Problem vollständig zu lösen. Es löst ledignlich eine schwächere Version, nämlich die der Einigung der Generäle.
 
 \begin{aquote}{Garay et. al. 2014 \cite{Garay2014}}
   This is because in case the adversary finds a solution first, then every honest player will extend the adversary’s solution and switch to the adversarial input hence abandoning the original input. \\
@@ -425,7 +428,9 @@ Jedoch gibt es Argumente dafür, dass die Blockchain das Problem der Byzantinisc
 Nakamoto’s protocol does not quite solve BA since it does not satisfy Validity with overwhelming probability.
 \end{aquote}
   
-Die Blockchain bei Bitcoin hat jedoch zumindest nicht den Anspruch das BG Problem zu lösen, da interagierende Akteure durch Kryptografie geschützt sind und nicht-loyale Akteure wenig Spielraum für eine Manipulation besitzen. Vielmehr ist es ein Instrument um einerseits Transaktionen mit einem Zeitstempel zu versehen und andererseits die ``double spending''\cite{Nakamoto2008} Attake zu verhindern.
+
+% da interagierende Akteure durch Kryptografie geschützt sind und nicht-loyale Akteure wenig Spielraum für eine Manipulation besitzen. Vielmehr ist es ein Instrument um einerseits Transaktionen mit einem Zeitstempel zu versehen und andererseits die ``double spending''\cite{Nakamoto2008} Attake zu verhindern.
+
 
 Das Lösen eines Rätsels für das Recht einen neuen Block bestimmen zu können, wird als ``Proof of Work'' oder kurz POW bezeichnet, da ein General eine Arbeitsleistung beweisen muss, um den nächsten Block vorschlagen zu dürfen. Bitcoin und viele andere DAOs benutzen partielle Hash Invertierung als tatsächlichen POW Algorithmus. Dieser baut auf der Eigenschaft einer Hash-Funktion auf. Es ist sehr einfach, einen Hash einer Nachricht zu berechnen, jedoch sehr schwer aus einem gegebenem Hash eine Nachricht zu rekonstruieren, die diesen Hash erzeugt. 
 
@@ -484,7 +489,7 @@ Ein Akteur benötigt für das Agieren in der Ethereum-DAO einen Bestand an der i
 
 Eine Ethereum interne DAO besteht aus einem assoziativem Speicher der den Programmcode sowie Daten beinhaltet. Sie besitzt eine Adresse und hat einen Bestand an interner Währung: Ether.
 
-Ein Beispiel für eine interne DAO ist eine dezentrale Währung, wie sie derzeit vom Bitcoin repräsentiert wird (Quelle \cite{Butterin2014}). Sie ist in Abbildung \ref{contract1} illustriert. Ein weiteres Beispiel in Abbildung \ref{contract2} ist ein dezentrales DNS System, wie ihn die Namecoin DAO implementiert.
+Ein Beispiel für eine interne DAO ist eine dezentrale Währung, wie sie derzeit vom Bitcoin repräsentiert wird (Quelle \cite{Butterin2014}). Sie ist in Abbildung \ref{contract1} illustriert. Ein weiteres Beispiel in Abbildung \ref{contract2} ist ein dezentrales Domain Name System (DNS), wie ihn die Namecoin DAO implementiert. Es assoziiert Namen ($msg.data[0]$) mit Addressen ($msg.data[1]$), falls mit dem Namen noch keine Assoziation besteht.
 
 % ! Akteure = Programme | Benutzer
 
@@ -548,7 +553,7 @@ Der Gewinner war die Bitcoin-basierte dezentrale Crowdfunding Plattform Lighthou
 % Problem - Benutzer/ Kandidaten werden echt groß
 Der Mechanismus einer solchen Schicht muss einerseits eine große Anzahl an stimmberechtigten Kandidaten berücksichtigen (derzeit wurden rund 200k Bitcoin Adressen verwendet) sowie eine ähnlich große Menge an Vorschlägen. Er sollte schnell und agil auf aufkommende Probleme reagieren können, jedoch niedrige Einstiegsbarrieren für Benutzer besitzen. Die Besitzverteilung sollte genau festgelegt sein und die Manipulation der DAO gerecht - also proportional zu dem Besitz.
 
-\textbf{Im folgenden wird ein Vorschlag einer solchen Schicht vorstellen. Hierfür werden als Erstes die theoretischen Komponenten betrachten, anschließend ihre Anwendung auf die regulären Grammatiken und schließlich ihre Implementation.}
+\textbf{Im folgenden wird ein Vorschlag einer solchen Schicht vorgestellt. Hierfür werden als Erstes die theoretischen Komponenten betrachten, anschließend ihre Anwendung auf die regulären Grammatiken und schließlich ihre Implementation.}
 
 
 Theoretisch kann ein solcher Mechanismus durch ein \textbf{initialisiertes Transitionssystem $T=(M,I,\tau)$} nach \cite{Glausch} modelliert werden. Hierzu muss eine passende Zustandsmenge definiert werden, einen Initialzustand sowie die Übergangsfunktion, die valide Manipulationen (Transitionen) der DAO beschreibt.
