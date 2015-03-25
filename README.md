@@ -1,4 +1,4 @@
-# Abstract
+# Ein dezentrales Transitionssystem zur Manipulation von Wörtern einer regulären Sprache
 
 [
 Im Internet werden zunehmend Inhalte kollaborativ erzeugt. Dabei entsteht ein Inhalt durch Beiträge einzelner Akteure, die räumlich und zeitlich getrennt agieren können. Zentral ist dabei die Frage, wie der Konsens über einen Inhalt auf eine dezentrale Weise gebildet werden kann. In dieser Arbeit untersuchen wir den Prozess der verteilten Zusammenarbeit für Inhalte, die als Wörter einer regulären Sprache beschrieben werden können.
