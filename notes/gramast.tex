@@ -862,7 +862,7 @@ $
 
 \subsection{Kodierung der Besitzverteilung}
 Die Akteure lassen sich durch einen 20-Byte String genau identifizieren. Sei $HASH$ die Menge aller 20-Byte Strings. Im folgenden werden die Hash-Strings in der Base58\footnote{https://en.bitcoin.it/wiki/Base58Check\_encoding 26.02.2015} Notation angegeben. Die Besitzverteilung ist eine Auflistung aller beteiligter Akteure sowie deren Anteile an der DAO.
-Sei $hash\in HASH$ sowie $number\in\mathbb{N}$.
+Sei $hash\in HASH$, $MAXINT = 2^{32}-1$ sowie $number\in NUMBER:=[0,MAXINT]$.
 
 \begin{eqnarray}
 P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}
@@ -889,17 +889,20 @@ Dieses kann erreicht werden, wenn die Bewertungen der Kandidaten ($V$) an Option
 Zusätzlich werden Bewertungen einer Option zugelassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
 Die Bewertung dieser Option wird als ein Attribut in der Ableitung synthetisiert\cite{Knuth1968} und damit jeweils von einer Bewertung einer tieferen Ebene ersetzt.
 
-Sei $FLOAT = [0,1]$ die Menge der maschinell darstellbaren Fließkommazahlen zwischen 0 und 1: $float\in FLOAT$
+Sei $MAXINT = 2^{32}-1$ sowie $number\in NUMBER:=[0,MAXINT]$.
+
+% Sei $FLOAT = [0,1]$ die Menge der maschinell darstellbaren Fließkommazahlen zwischen 0 und 1: $float\in FLOAT$
+
 
 \begin{eqnarray}
-P_{Voting} := \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon\}
+P_{Voting} := \{V\rightarrow [hash\ number]V, V \rightarrow \varepsilon\}
 \end{eqnarray}
   
  Ein Beispiel ist:
 
 \begin{eqnarray}
   h_1 &:=& 1HTN35UxBFTbcN8g2KfXC6TW2ipbytsysh\\
-  v &:=& [h_1\ 1.0] \\
+  v &:=& [h_1\ MAXINT] \\
   V &\rightarrow^*& v \\
   O_R &\rightarrow^*& r\&[v]
 \end{eqnarray}
@@ -954,7 +957,6 @@ Eine Beispielverteilung ist:
   T' :=& T \cup \{[ , ], \&, |\ [,],\& \notin \Sigma \} \nonumber\\
   &\cup HASH
   \cup NUMBER
-  \cup FLOAT 
   \\
   P_{Acteurs} :=& \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon \\
   &| hash\in HASH, number\in NUMBER\} \\
@@ -962,7 +964,7 @@ Eine Beispielverteilung ist:
   &\vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
   P_{Start} :=& \{S'\rightarrow [A][O_S][D]\} \\
   P_{Delegations} :=& \{D\rightarrow [hash\ hash]D,D\rightarrow [hash\ hash]\nonumber\\&| hash\in HASH\} \\
-  P_{Voting} :=& \{V\rightarrow [hash\ float]V, V \rightarrow \varepsilon \nonumber \\&| hash\in HASH, float\in FLOAT\} \\
+  P_{Voting} :=& \{V\rightarrow [hash\ number]V, V \rightarrow \varepsilon \nonumber \\&| hash\in HASH, number\in NUMBER\} \\
   P' :=& P
   \cup P_{Options} 
   \cup P_{Start} 
@@ -987,12 +989,12 @@ consens(w) = aacc \label{examplekonsens}
     [h_3 5]
   ] [
     aa[
-      aaa&[h_1 1.0]
+      aaa&[h_1 4294967295]
       c&[]
       c[
         c&[]
         cc&[]
-      ][]&[h_3 0.9]
+      ][]&[h_3 3865470565]
     ][h_2 h_3]&[]
   ][]
   \end{lstlisting}
@@ -1123,7 +1125,7 @@ Die neu hinzukommenden Optionen dürfen keine Delegationen oder Stimmen enthalte
 
 \subsubsection*{Erzeugen einer Optionsmenge}
 
-Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in \mathbb{N}$, dann ist das Erzeugen einer Optionsmenge valide, wenn folgende Bedingungen erfüllt sind:
+Sei $S(G) = (T', N', S', P')$ eine erweiterte Grammatik. Sei weiter $O,S'\in N'$ sowie $v,o_1,o_2 \in T'^*$, $o_1\neq 0_2$ und $0\leq i\leq j\leq n$ mit $i,j,k,n \in [0,MAXINT]$, dann ist das Erzeugen einer Optionsmenge valide, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1187,7 +1189,7 @@ Sei $b_1,b_2,v,r \in T'^*$, dann ist das Hinzufügen einer Stimme valide, wenn f
 
 \subsubsection*{Löschen einer Stimme}
 
-Sei $v_1, v_2 \in T'^*$ sowie $n\in\mathbb{N}$, so lässt sich eine Stimme valide löschen, wenn folgende Bedingungen erfüllt sind:
+Sei $v_1, v_2 \in T'^*$ sowie $n\in[0,MAXINT]$, so lässt sich eine Stimme valide löschen, wenn folgende Bedingungen erfüllt sind:
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
@@ -1224,14 +1226,14 @@ Sei $o,d_i \in T'^*$ sowie $h'\in HASH$, so ist das Löschen einer Delegation va
 
 Ein Akteur kann seine Anteile an einen anderen überweisen. Dabei müssen zwei Fälle unterschieden werden. Hält der Empfänger bereits Anteile, wird die Überweisungssumme seinen Beständen addiert. Handelt es sich um einen neuen Akteur, wird die Überweisungssumme neu hinzugefügt. 
 
-Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$, dann ist das Überweisen von Anteilen valide, wenn folgende Bedingungen erfüllt sind:
+Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in [0,MAXINT]$, dann ist das Überweisen von Anteilen valide, wenn folgende Bedingungen erfüllt sind:
 
 
 % \TODO[inline]{hier ist zum ersten mal nicht die Symbolkonkatination gemeint sondern die Interpretation der werte(+,-), muss das als Interpretation geschrieben werden?}
 
 \begin{eqnarray}
   w &=& w_{0 .. i-1}\ w_{i..j}\ w_{j+1 .. n} \\
-  b_1, ..., b_6 &\in& \{ w | w = ([h\ n])^*\text{ mit } h \in HASH\text{ und }n\in\mathbb{N} \} \\
+  b_1, ..., b_6 &\in& \{ w | w = ([h\ n])^*\text{ mit } h \in HASH\text{ und }n\in[0,MAXINT] \} \\
   w_{i..j} &=& [ b_1 b_2 b_3 [a\ n] b_4 b_5 b_6 ] \\
   m' &=& (m+l) \\
   n' &=& (n-l) \\
@@ -1244,7 +1246,7 @@ Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in\mathbb{N}$, dann ist das Überw
   w' &=& w_{0 .. (i-1)}\ [ b_1 b_2 b_3 [a\ n'] b_4 b_5 b_6 [h' l]]\ w_{(j+1) .. n}
 \end{eqnarray}
 
-Dabei ist $(m+l),(n-l)\in\mathbb{N}$.
+Dabei ist $(m+l)\footnote{Bei dieser Operationen muss in der Implementation darauf geachtet werden, dass es zu keinem Überlauf der Werte kommt.}, (n-l)\in[0,MAXINT]$.
 
 
 
