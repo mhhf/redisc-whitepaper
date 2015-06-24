@@ -1,1 +1,1 @@
-digraph nameOfGraph { q0->q1; q0 [label = "asd"]; }
+digraph nameOfGraph { start [shape=point]; aaaaa, aab, aba, abb, aa [shape=square]; start-> a[label=a]; a -> aa[label=a]; a -> ab[label=b]; aa -> aaaaa[label=a]; aa -> aab[label=b]; ab -> aba[label=a]; ab -> abb[label=b]; }

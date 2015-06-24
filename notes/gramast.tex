@@ -16,7 +16,8 @@
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[utf8x]{inputenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp}
 \else % if luatex or xelatex
   \usepackage{fontspec}
   \ifxetex
@@ -25,6 +26,7 @@
   \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
   \newcommand{\euro}{€}
 \fi
+\DeclareUnicodeCharacter{00A0}{ }
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
 \ifxetex
@@ -60,8 +62,9 @@
 \setcounter{secnumdepth}{0}
 
 % Treeview
-\usepackage{tikz}
-\usepackage{tikz-qtree}
+% \usepackage{tikz}
+% \usepackage{tikz-qtree}
+\usepackage{qtree}
 
 \hypersetup{linkcolor = black}
 
@@ -88,6 +91,7 @@ breaklines=true,        % sets automatic line breaking
 breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
 escapeinside={\%*}{*)}          % if you want to add a comment within your code
 }
+
 
 % Definitionen
 \usepackage{amsthm}
@@ -133,7 +137,7 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 
 \author{Denis Erfurt}
 \date{\now}
-\title{Ein dezentrales Transitionssystem zur Manipulation von Wörtern einer regulären Sprache}
+\title{Ein dezentrales Transitionssystem zur Manipulation von geteilten Wörtern einer regulären Sprache}
 
 
 \begin{document}
@@ -321,7 +325,7 @@ Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann wird ein Wortteil definie
 \begin{eqnarray}
   w_{i..j} := 
   \begin{cases}
-    (t_k)_{i\leq k \leq j}\text{ mit }t_k\in T &:\ i\leq j \\
+    (t_k)_{i\leq k \leq j}\text{ mit }t_k\in T &:\ i\leq j \\
     \varepsilon &:\ i>j
   \end{cases}
 \end{eqnarray}
@@ -332,13 +336,53 @@ Sei $G=(S,N,T,P)$ eine Grammatik und $w\in L(G)$, dann wird ein Wortteil definie
 Ein Trie oder Prefixbaum ist eine Baum-Datenstruktur, die es erlaubt eine Menge von Worten über einem Alphabet effizient zu speichern. Dabei werden gemeinsame Präfixe von Wörtern in Knoten zusammengefasst. Weiter dürfen keine Kinder eines Knotens mit gleichem Namen existieren. 
 Eine zu Trie verwandte Datenstruktur, die Patricia-Trie, reduziert den Speicherverbrauch, indem sie alle Knoten mit nur einem Nachfolger zu einem Knoten zusammenfasst.
 Alle im Trie und Patricia-Trie gespeicherten Wörter können durch ein Tiefenscan wiederhergestellt werden \cite{Morrison1968}.
-Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aac, aacc, aaccc, aabbb, aabb \}$ zeigt die Abbildung \ref{trieImg}.
+Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aab, aba, abb, aa \}$ zeigt die Abbildung \ref{trieImg}.
 
 \begin{figure}[ht]
     \centering
-    \Tree [.aa aaa c [.c c cc ] [.b bb b ] ]
+    \digraph
+    [scale=0.6]{nameOfGraph}
+    {
+      start [shape=point];
+      aaaaa, aab, aba, abb, aa [shape=square];
+      start-> a[label=a];
+      a -> aa[label=a];
+      a -> ab[label=b];
+      aa -> aaaaa[label=a];
+      aa -> aab[label=b];
+      ab -> aba[label=a];
+      ab -> abb[label=b];
+    }
     \caption{Beispiel einer Patricia-Trie Datenstruktur}
     \label{trieImg}
+\end{figure}
+
+Im Folgenden wird mit einer modifizierten Form der Trie gearbeitet: 
+Für die Wiederherstellung der Wortmenge wird für jeden Knoten eine zusätzliche Information benötigt, ob es sich bei diesem um ein Blatt handelt ( In Abbildung \ref{trieImg} als Rechteck dargestellt ). 
+Darauf kann verzichtet werden indem zwei Kindern eines Knotens erlaubt wird den selben Namen zu tragen, solange einer von beiden ein echtes Blatt, also ein Knoten ohne Nachfolger ist. (Siehe als Beispiel Abbildung \ref{trieImg4})
+Dadurch wächst zwar die Größe der Datenstruktur, jedoch bleibt die Eindeutigkeit erhalten, wenn nur noch Pfade von der Wurzel bis zu echten Blättern für die Wiederherstellung der Wortmenge zugelassen werden.
+Eine solche modifizierte Trie ist zu einer normalen Trie isomorph.
+Eine Beobachtung der modifizierten Trie ist, dass die Anzahl der echten Blattknoten gleich der Anzahl der Elemente der Wortmenge ist. Dieses erleichtert die weitere Arbeit mit der Datenstruktur.
+
+\begin{figure}[ht]
+    \centering
+    \digraph
+    [scale=0.6]{nameOfGraph2}
+    {
+      aaaaa, aab, aba, abb, aa_1 [shape=square];
+      aa_1, aa_2 [label=aa];
+      start [shape=point];
+      start-> a[label=a];
+      a -> aa[label=a];
+      a -> aa_1[label=a];
+      a -> aa_2[label=a];
+      aa -> aaaaa[label=a];
+      aa -> aab[label=b];
+      aa_2 -> aba[label=a];
+      aa_2 -> abb[label=b];
+    }
+    \caption{Modifizierte Patricia-Trie Datenstruktur}
+    \label{trieImg4}
 \end{figure}
 
 \section{Transitionsystem}
@@ -371,7 +415,7 @@ Eine Folge $(s_n)_{n\in\mathbb{N}}$ mit $s_n\in M$ ist ein Ablauf von T, wenn gi
 
 Bei einem asymmetrischem Verschlüsselungsverfahren generiert der Benutzer ein Schlüsselpaar bestehend aus einem privaten und einem öffentlichen Schlüssel. Der öffentliche Schlüssel wird aus dem Privaten erzeugt und veröffentlicht. Im Folgenden wird der öffentliche Schlüssel ebenfalls Adresse genannt. Diese identifiziert einen Akteur.
 
-Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256k1 Kurve verwendet. ECDSA ist ein DSA Verfahren basierend auf der Eliptic Curve Kryptografie. ECDSA bietet viele Vorteile zu alternativen Verfahren wie RSA\footnote{Rivest, Shamir und Adleman - http://de.wikipedia.org/wiki/RSA-Kryptosystem 25.02.2015} oder DH\footnote{Diffie–Hellman http://en.wikipedia.org/wiki/Diffie-Hellman\_key\_exchange 25.02.2015}. \cite{Pouillard2014a}
+Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256k1 Kurve verwendet. ECDSA ist ein DSA Verfahren basierend auf der Eliptic Curve Kryptografie. ECDSA bietet viele Vorteile zu alternativen Verfahren wie RSA\footnote{Rivest, Shamir und Adleman - http://de.wikipedia.org/wiki/RSA-Kryptosystem 25.02.2015} oder DH\footnote{Diffie–Hellman http://en.wikipedia.org/wiki/Diffie-Hellman\_key\_exchange 25.02.2015}. \cite{Pouillard2014}
 % 
 % \subsection*{Signierung}
 % 
@@ -484,7 +528,7 @@ Ein Akteur benötigt für das Agieren in der Ethereum-DAO einen Bestand an der i
 
 \begin{aquote}{Ethereum Whitepaper p. 28 \cite{Butterin2014}}
   [...] halting problem: there is no way to tell, in the general case, whether or not a given program will ever halt.
-  [...] our solution works by requiring a transaction to set a maximum number of computational steps that it is allowed to take, and if execution takes longer computation is reverted but fees are still paid.
+  [...] our solution works by requiring a transaction to set a maximum number of computational steps that it is allowed to take, and if execution takes longer computation is reverted but fees are still paid.
 \end{aquote}
 
 Eine Ethereum interne DAO besteht aus einem assoziativem Speicher der den Programmcode sowie Daten beinhaltet. Sie besitzt eine Adresse und hat einen Bestand an interner Währung: Ether.
@@ -522,7 +566,7 @@ Ein Beispiel für eine interne DAO ist eine dezentrale Währung, wie sie derzeit
   \label{contract2}
 \end{figure}
 
-Diese beiden Beispiele illustrieren wie vergleichsweise einfach es ist eine DAO auf einer bestehenden Plattform, wie der von Ethereum, zu erstellen, im Gegensatz zu den bisherigen Blockchain-basierten Ansätzen. Ethereum gilt deshalb auch als DAO Plattform, welche die dezentralität der DAO von ihrer eigentlichen Funktionalität entkoppelt. Eine weitere wichtige Funktionalität einer DAO ist die der Wartbarkeit. Jedoch stellt sich hier die Frage nach dem Besitz und den Berechtigungen der Besitzer die DAO manipulieren zu können. Hierfür muss ebenfalls ein Regelwerk gefunden werden, das die Wartung der DAO, im folgenden auch Selbst-Modifikation genannt, von ihrer eigentlichen Funktionalität entkoppelt. 
+Diese beiden Beispiele illustrieren wie vergleichsweise einfach es ist eine DAO auf einer bestehenden Plattform, wie der von Ethereum, zu erstellen, im Gegensatz zu den bisherigen Blockchain-basierten Ansätzen. Ethereum gilt deshalb auch als DAO Plattform, welche die Dezentralität der DAO von ihrer eigentlichen Funktionalität entkoppelt. Eine weitere wichtige Funktionalität einer DAO ist die der Wartbarkeit. Jedoch stellt sich hier die Frage nach dem Besitz und den Berechtigungen der Besitzer die DAO manipulieren zu können. Hierfür muss ebenfalls ein Regelwerk gefunden werden, das die Wartung der DAO, im folgenden auch Selbst-Modifikation genannt, von ihrer eigentlichen Funktionalität entkoppelt. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -732,17 +776,29 @@ Die reguläre Grammatik wird so zu einer kontextfreien Grammatik erweitert, so d
 Dazu muss eine Grammatik-erweiterung $S_1: REG\rightarrow CFG$ gefunden werden.
 Um zu zeigen, dass es sich bei $S_1$ um die gesuchte Erweiterung handelt, muss die Existenz der Funktionen $\phi_1: P(L(G)) \rightarrow L(S(G))$ und $\phi_1^{-1}: L(S(G)) \rightarrow P(L(G))$ gezeigt werden, für die die Bedingungen $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ erfüllt sind.
 
-Dieses kann mit Hilfe einer Trie-Datenstruktur realisiert werden, die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist ein Wort der Metasprache, die durch die Grammatikerweiterung $S_1$ konstruiert wird:
+Dieses kann mit Hilfe einer mod. Patricia Trie-Datenstruktur realisiert werden, die redundant auftauchende Präfixe der Kandidaten zusammengefasst. Die Serialisierung der Tries ist ein Wort der Metasprache, die durch die Grammatikerweiterung $S_1$ konstruiert wird:
 
 % \TODO[inline]{Isomorph -> Isomorphismus : die uns den gewünschten Isomorphismus liefert }
-Sei $T(K_G)$ die Trie Datenstruktur, welche die Menge $K_G$ kodiert. Es ist bekannt, dass eine Funktion $c: K_G \mapsto T(K_G)$ sowie $c^{-1}: T(K_G) \mapsto K_G$ existiert, für die $c\circ c^{-1} = id_{P(L(G))}$ gilt \cite{Morrison1968}. Zu finden ist demnach ein Isomorphismus $s: T(K_G) \mapsto w \in L(S_1(G))$ sowie $s^{-1}: w \in L(S_1(G)) \mapsto T(K_G)$, die ein Trie serialisieren und deserialisieren. Da eine Trie ein Baum ist, können wir als Serialisierung die geklammerte preorder-Notation verwendet, die uns den gewünschten Isomorphismus liefert. Damit ergeben sich die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$. 
+Sei $T(K_G)$ die mod. Patricia Trie Datenstruktur, welche die Menge $K_G$ kodiert. Es ist bekannt, dass eine Funktion $c: K_G \mapsto T(K_G)$ sowie $c^{-1}: T(K_G) \mapsto K_G$ existiert, für die $c\circ c^{-1} = id_{P(L(G))}$ gilt \cite{Morrison1968}. Zu finden ist demnach ein Isomorphismus $s: T(K_G) \mapsto w \in L(S_1(G))$ sowie $s^{-1}: w \in L(S_1(G)) \mapsto T(K_G)$, die ein Trie serialisieren und deserialisieren. Da eine Trie ein Baum ist, können wir als Serialisierung die geklammerte preorder-Notation verwendet, die uns den gewünschten Isomorphismus liefert. Damit ergeben sich die Funktionen $\phi_1 := c \circ s$ sowie $\phi_1^{-1} := c^{-1} \circ s^{-1}$. 
 
 Dieses wird anhand eines Beispiels für die Sprache $L(G) = \{ a^xb^yc^z\ |\ x,y,z\in \mathbb{N} \}$ und die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc \}$ in Abbildung \ref{trieexk} durch die Trie $T(K_G)$ illustriert.
 
 \begin{figure}[ht]
     \centering
-    \Tree [.aa aaa c [.c c cc ] ]
-    \caption{Trie für die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc \}$}
+    \digraph
+    [scale=0.6]{nameOfGraph3}
+    {
+      aaaaa, aac_1, aacc, aaccc [shape=square];
+      aac_1, aac_2 [label=aac];
+      start [shape=point];
+      start-> aa[label=aa];
+      aa -> aaaaa[label=aaa];
+      aa -> aac_1[label=c];
+      aa -> aac_2[label=c];
+      aac_2 -> aacc[label=c];
+      aac_2 -> aaccc[label=cc];
+    }
+    \caption{mod. Patricia Trie für die Kandidatenmenge $\{aaaaa, aac, aacc, aaccc \}$}
     \label{trieexk}
 \end{figure}
 
@@ -759,7 +815,7 @@ Für die Grammatik erweiternde Funktion $S_1$ wird an jedem Ableitungsschritt in
   P_{Options} := \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\}
 \end{eqnarray}
 
-Diese Mehrdeutigkeit ($[O_R]$) wird \textbf{Optionsmenge} sowie die darin enthaltenen Elemente ($r$) \textbf{Option} genannt. Eine solche Grammatikerweiterung erzeugt die Serialisierung einer Trie, welche eine Menge valider Worte kodiert:
+Diese Mehrdeutigkeit ($[O_R]$) wird \textbf{Optionsmenge} sowie die darin enthaltenen Elemente ($r$) \textbf{Option} genannt. Eine solche Grammatikerweiterung erzeugt die Serialisierung einer mod. Patricia Trie, welche eine Menge valider Worte kodiert:
 
 \begin{eqnarray}
   aa[aaa\&c\&c[c\&cc]]\in L(S_1(G))
@@ -774,7 +830,7 @@ $
   S_1(G) :=& (N', T', S, P') \\
   N' :=& N \cup \{ O_R\ |\ (R\rightarrow r)\in P\land O_R \notin \Sigma\}\\
   T' :=& T \cup \{[ , ], \&\ |\ [,],\&\notin \Sigma \}\\
-  P_{Options} :=& \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
+  P_{Options} :=& \{R \rightarrow [O_R], O_R \rightarrow r\& O_R, O_R \rightarrow r \ \vert\ R\rightarrow r\in P \land r\in \Sigma^*\} \\
   P' :=& P \cup P_{Options} 
 \end{array}
 $
@@ -862,7 +918,7 @@ $
 
 \subsection{Kodierung der Besitzverteilung}
 Die Akteure lassen sich durch einen 20-Byte String genau identifizieren. Sei $HASH$ die Menge aller 20-Byte Strings. Im folgenden werden die Hash-Strings in der Base58\footnote{https://en.bitcoin.it/wiki/Base58Check\_encoding 26.02.2015} Notation angegeben. Die Besitzverteilung ist eine Auflistung aller beteiligter Akteure sowie deren Anteile an der DAO.
-Sei $hash\in HASH$, $MAXINT = 2^{32}-1$ sowie $number\in NUMBER:=[0,MAXINT]$.
+Sei $hash\in HASH$, $MAXINT = 2^{32}-1$ sowie $number\in NUMBER:=[0,MAXINT]$.
 
 \begin{eqnarray}
 P_{Acteurs} := \{A\rightarrow[hash\ number]A,A\rightarrow \varepsilon\}
@@ -884,12 +940,12 @@ In diesem Beispiel gehören Akteur $h_1$ - 10 Anteile, $h_2$ - 7 Anteile und $h_
 
 \subsection{Kodierung der Kandidatenbewertung}
 Um jede $DAO$ ohne Verlust von Information kodieren zu können, muss jede mögliche Bewertungsverteilung von Akteuren und Kandidaten im Metawort enthalten sein. 
-Dieses kann erreicht werden, wenn die Bewertungen der Kandidaten ($V$) an Optionen gebunden sind ($O_R \rightarrow r\& [V] O_R$). Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten kodieren, wenn sie dieser Option zugeordnet. 
+Dieses kann erreicht werden, wenn die Bewertungen der Kandidaten ($V$) an Optionen gebunden sind ($O_R \rightarrow r\& [V] O_R$). Da es für jeden Kandidaten aus der Kandidatenmenge genau eine Option gibt, die nur diesem Kandidaten zugeordnet ist (ein Blatt eines Tries), lässt sich jede Bewertungsverteilung des Kandidaten kodieren, wenn sie dieser Option zugeordnet. 
 
 Zusätzlich werden Bewertungen einer Option zugelassen, die mehreren Kandidaten zugeordnet sind. Dies sind solche, die wiederum eine Optionsmenge beinhalten. Wenn ein Akteur eine Option in einer Optionsmenge bewertet, so gibt er seine Stimme der Option im Kontext zu dem bisherigen Präfix des Wortes.
 Die Bewertung dieser Option wird als ein Attribut in der Ableitung synthetisiert\cite{Knuth1968} und damit jeweils von einer Bewertung einer tieferen Ebene ersetzt.
 
-Sei $MAXINT = 2^{32}-1$ sowie $number\in NUMBER:=[0,MAXINT]$.
+Sei $MAXINT = 2^{32}-1$ sowie $number\in NUMBER:=[0,MAXINT]$.
 
 % Sei $FLOAT = [0,1]$ die Menge der maschinell darstellbaren Fließkommazahlen zwischen 0 und 1: $float\in FLOAT$
 
@@ -1226,7 +1282,7 @@ Sei $o,d_i \in T'^*$ sowie $h'\in HASH$, so ist das Löschen einer Delegation va
 
 Ein Akteur kann seine Anteile an einen anderen überweisen. Dabei müssen zwei Fälle unterschieden werden. Hält der Empfänger bereits Anteile, wird die Überweisungssumme seinen Beständen addiert. Handelt es sich um einen neuen Akteur, wird die Überweisungssumme neu hinzugefügt. 
 
-Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in [0,MAXINT]$, dann ist das Überweisen von Anteilen valide, wenn folgende Bedingungen erfüllt sind:
+Sei $h'\in HASH$ mit $h' \neq a$ sowie $l,m,n\in [0,MAXINT]$, dann ist das Überweisen von Anteilen valide, wenn folgende Bedingungen erfüllt sind:
 
 
 % \TODO[inline]{hier ist zum ersten mal nicht die Symbolkonkatination gemeint sondern die Interpretation der werte(+,-), muss das als Interpretation geschrieben werden?}
@@ -1438,7 +1494,7 @@ Zudem gibt es keinen Mechanismus, der jede mögliche Kandidatenbewertung in der 
 Wie bereits erwähnt, ist die Dezentralisierung der Selbst-Modifikation-Schicht der DAO z.B. durch eine Portierung auf die Ethereum Plattform der nächste notwendige Schritt.
 
 \section{Anonymisierung}
-Durch die pseudonyme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Somit lässt sich der Konsens manipulieren, indem auf strategisch wichtige Akteure Druck ausgeübt wird, um ihre Stimme zu ändern. Auch wird das Abstimmverhalten der Anteilseigener beeinflusst, da diese fürchten könnten ihren pseudonymen Status zu verlieren. Die anonyme Wahl ist ein Kriterium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere erstrebenswerte Erweiterung ist. Diese Anonymisierung könnte durch homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard2007}.
+Durch die pseudonyme Natur der Anteilseigener lassen sich Rückschlüsse darüber ziehen, welcher Akteur für welche Option abgestimmt hat. Somit lässt sich der Konsens manipulieren, indem auf strategisch wichtige Akteure Druck ausgeübt wird, um ihre Stimme zu ändern. Auch wird das Abstimmverhalten der Anteilseigener beeinflusst, da diese fürchten könnten ihren pseudonymen Status zu verlieren. Die anonyme Wahl ist ein Kriterium für demokratische Wahlen in vielen Organisationen, sodass eine Anonymisierung der Abstimmung eine weitere erstrebenswerte Erweiterung ist. Diese Anonymisierung könnte durch homomorphe Verschlüsselung\cite{Gentry2009} oder durch andere kryptografische Mittel realisiert werden. Siehe dazu \cite{Fouard2007a}.
 
 \section{Manipulation der Besitzverteilung}
 Derzeit ist die Größe einer DAO fest. Die einzige Möglichkeit an Anteile zu gelangen, ist diese von anderen überwiesen zu bekommen. Eine mögliche Erweiterung wäre die der Erschaffung neuer Anteile. Diese können entweder von der DAO verkauft oder anhand festgelegter Regeln herausgegeben werden. Ein Beispielregelsatz wäre das Binden an Optionsmengen. Derjenige Akteur erhält die neuen Anteile, dessen vorgeschlagene Option für eine bestimmte Dauer den Platz der Konsens-Option einnimmt.

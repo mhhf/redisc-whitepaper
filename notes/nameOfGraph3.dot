@@ -1,0 +1,1 @@
+digraph nameOfGraph3 { aaaaa, aac_1, aacc, aaccc [shape=square]; aac_1, aac_2 [label=aac]; start [shape=point]; start-> aa[label=aa]; aa -> aaaaa[label=aaa]; aa -> aac_1[label=c]; aa -> aac_2[label=c]; aac_2 -> aacc[label=c]; aac_2 -> aaccc[label=cc]; }
