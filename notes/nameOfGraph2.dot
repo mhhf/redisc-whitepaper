@@ -1,1 +1,1 @@
-digraph nameOfGraph2 { aaaaa, aab, aba, abb, aa_1 [shape=square]; aa_1, aa_2 [label=aa]; start [shape=point]; start-> a[label=a]; a -> aa[label=a]; a -> aa_1[label=a]; a -> aa_2[label=a]; aa -> aaaaa[label=a]; aa -> aab[label=b]; aa_2 -> aba[label=a]; aa_2 -> abb[label=b]; }
+digraph nameOfGraph2 { aaaaa, aab, aba, abb, aa_1 [shape=square]; aa_1 [label=aa]; aa_2 [label=aa]; start [shape=point]; start-> a[label=a]; a -> ab[label=b]; a -> aa_1[label=a]; a -> aa_2[label=a]; aa_2 -> aaaaa[label=aaa]; aa_2 -> aab[label=b]; ab -> aba[label=a]; ab -> abb[label=b]; }

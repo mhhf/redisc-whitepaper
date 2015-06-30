@@ -6,7 +6,7 @@
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
+% \usepackage{fixltx2e} % provides \textsubscript
 \usepackage[english, ngerman]{babel}
 
 \usepackage{lmodern} \normalfont %to load T1lmr.fd 
@@ -62,9 +62,9 @@
 \setcounter{secnumdepth}{0}
 
 % Treeview
-% \usepackage{tikz}
-% \usepackage{tikz-qtree}
-\usepackage{qtree}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+% \usepackage{qtree}
 
 \hypersetup{linkcolor = black}
 
@@ -348,7 +348,7 @@ Ein Beispiel eines Patricia-Trie für die Menge $\{ aaaaa, aab, aba, abb, aa \}$
       start-> a[label=a];
       a -> aa[label=a];
       a -> ab[label=b];
-      aa -> aaaaa[label=a];
+      aa -> aaaaa[label=aaa];
       aa -> aab[label=b];
       ab -> aba[label=a];
       ab -> abb[label=b];
@@ -370,16 +370,17 @@ Eine Beobachtung der modifizierten Trie ist, dass die Anzahl der echten Blattkno
     [scale=0.6]{nameOfGraph2}
     {
       aaaaa, aab, aba, abb, aa_1 [shape=square];
-      aa_1, aa_2 [label=aa];
+      aa_1 [label=aa];
+      aa_2 [label=aa];
       start [shape=point];
       start-> a[label=a];
-      a -> aa[label=a];
+      a -> ab[label=b];
       a -> aa_1[label=a];
       a -> aa_2[label=a];
-      aa -> aaaaa[label=a];
-      aa -> aab[label=b];
-      aa_2 -> aba[label=a];
-      aa_2 -> abb[label=b];
+      aa_2 -> aaaaa[label=aaa];
+      aa_2 -> aab[label=b];
+      ab -> aba[label=a];
+      ab -> abb[label=b]; 
     }
     \caption{Modifizierte Patricia-Trie Datenstruktur}
     \label{trieImg4}
@@ -1472,7 +1473,7 @@ liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen.
 Eine interessante Anwendung des hier vorgestellten Ansatzes einer Selbst-Modifikation-Schicht ist die Anwendung auf die kontextfreien Sprachen. Damit können alle Programmiersprachen zumindest syntaktisch abgebildet werden. Dieses ist jedoch nicht trivial. Das Problem hierbei ist die Kodierung der Kandidatenmenge. Aufgrund der Limitierung der Ableitungsregeln kann ein Ableitungsbaum einer regulären Grammatik keine Knoten haben, die mehrere Kinder mit Nichtterminalen besitzen (Äste). Somit ist der Ableitungsbaum eine lineare Struktur. Dies ermöglicht die Konstruktion eines Präfixbaumes, bei dem Äste als Optionen angesehen werden. 
 Zwar lässt sich die Zusammenfassung der Kandidaten bei kontextfreien Grammatiken mit der selben Methode anhand des Ableitungsbaumes konstruieren, jedoch multiplizieren sich die Optionen in unterschiedlichen Kindern eines Knotens. Somit gilt die in \ref{codekand} geforderte Bedingung $\phi_1\circ\phi_1^{-1} = id_{P(L(G))}$ nicht, da Optionen hinzu kommen. Ebenfalls lässt sich nicht jede Kandidatenbewertung durch das Anhängen an Optionsknoten kodieren.
 
-Im folgenden writ das Beispiel der Sprache $L(G) = \{ [ab][abc] \}$ mit der konstruierenden Grammatik betrachtet: 
+Im folgenden wird das Beispiel der Sprache $L(G) = \{ [ab][abc] \}$ mit der konstruierenden Grammatik betrachtet: 
 
 \begin{eqnarray}
   G &=& (T,N,P,S)\\
