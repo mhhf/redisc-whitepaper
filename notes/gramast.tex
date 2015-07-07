@@ -144,7 +144,14 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 \begin{document}
 
 \include{title}
+\newpage
+\thispagestyle{empty}
+\mbox{}
 \include{selbstst}
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
 
 % \TODO[inline]{schichten früher einführen - dao -def}
 % \TODO[inline]{Schicht nennen? oder einfach nur selbst-modifikation}
@@ -152,6 +159,8 @@ escapeinside={\%*}{*)}          % if you want to add a comment within your code
 
 
 
+\newpage
+\pagenumbering{Roman} 
 \section*{Zusammenfassung}
 % überblick
 % problembeschreibung, literaturüberblick, related work, 
@@ -196,6 +205,9 @@ Dafür wird ein Modell mit einer Implementation vorgestellt. Dieses Model beinha
 
 \newpage
 \tableofcontents
+\newpage
+\thispagestyle{empty}
+\mbox{}
 
 
 
@@ -205,7 +217,8 @@ Dafür wird ein Modell mit einer Implementation vorgestellt. Dieses Model beinha
 
 
 \newpage
-
+\setcounter{page}{1} 
+\pagenumbering{arabic} 
 \chapter{Einleitung}
 
 Angenommen es gäbe eine Webseite, die sich im Besitz von Akteuren befindet. Alle Akteure wollen gerecht, also proportional zu ihrem Besitz, über die Inhalte der Webseite entscheiden können, sowie ihre Entscheidungsgewalt in bestimmten Bereichen an andere vertrauenswürdige Akteure delegieren können. Dieses gilt für die medialen Inhalte, die Programmierung, die Architektur, die Wertflüsse, wie ein geteiltes Budget oder eine Einkommensverteilung, sowie nicht automatisierbare Prozesse, wie das Validieren neuer Beiträge. Das eigentliche Ergebnis wird anhand einer Mehrheit der Besitzer bestimmt.
@@ -233,6 +246,9 @@ Die Arbeit besteht im Wesentlichen aus drei Teilen: Sie fasst notwendige theoret
 Die weitere Arbeit ist wie folgt aufgebaut: In Kapitel \ref{theo} werden theoretische Konzepte beschrieben auf, denen diese Arbeit aufbaut. Des Weiteren wird in Kapitel 3 eine ausführliche Definition einer Dezentralen-Autonomen-Organisation gegeben, wie sie zum Zeitpunkt der Arbeit vorliegt. Darauf aufbauend wird das Problem der Selbst-Modifikation erläutert und in Kapitel \ref{selfMod} eine Definition, sowie eine Anwendung auf die regulären Sprachen erarbeitet. In Kapitel \ref{implementation} wird eine Implementation der Anwendung vorgestellt. Schließlich wird in Kapitel \ref{ausblick} ein Ausblick gegeben.
 
 
+\newpage
+\thispagestyle{empty}
+\mbox{}
 \chapter{Theoretische Grundlagen}
 \label{theo}
 
@@ -429,6 +445,9 @@ Für die Signierung und Verifizierung von Nachrichten wird ECDSA mit der secp256
 % 
 % \[ (msg, sign, addr) \]
 % 
+\newpage
+\thispagestyle{empty}
+\mbox{}
 \chapter{Decentralized Autonomous Organization (DAO)}
 \label{daoEinf}
 In diesem Kapitel wird der Begriff der Decentralized Autonomous Organization ausführlich betrachtet und diskutiert. Dabei folgt nach einer Einführung in Kapitel \ref{blockchain} die Betrachtung der dezentralisierenden Technologie der Blockchain. In Kapitel \ref{interaction} wird die Interaktion mit einer DAO betrachtet.
@@ -1308,6 +1327,9 @@ Dabei ist $(m+l)\footnote{Bei dieser Operationen muss in der Implementation dara
 
 
 
+\newpage
+\thispagestyle{empty}
+\mbox{}
 \chapter{Implementation}
 \label{implementation}
 
@@ -1460,6 +1482,14 @@ liefert $K_G$ der DAO zurück: ein Array aller Kandidaten mit ihren Bewertungen.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%       Aussicht
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
 
 \chapter{Ausblick}
 \label{ausblick}
